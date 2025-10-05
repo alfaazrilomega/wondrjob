@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ADMIN
+  SOCIETY
+  COMPANY
+  HRD
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  role          UserRole  @default(SOCIETY)
+  phone         String?
+  address       String?
+  date_of_birth DateTime?
+  createdAt     DateTime  @default(now())
+  society       Society?
+  company       Company?
+  hrd           HRD?
+
+  Admin Admin[]
+}
+
+model Admin {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  password      String
+  phone         String?
+  address       String?
+  date_of_birth DateTime?
+  user_id       String    @unique
+  user          User      @relation(fields: [user_id], references: [id])
+}
+
+model HRD {
+  id         Int     @id @default(autoincrement())
+  user_id    String  @unique
+  user       User    @relation(fields: [user_id], references: [id])
+  company_id Int
+  company    Company @relation(fields: [company_id], references: [id])
+}
+
+model Society {
+  id            Int               @id @default(autoincrement())
+  name          String
+  headline      String?
+  address       String
+  phone         String
+  date_of_birth DateTime
+  gender        String?
+  location      String?
+  skills        String[]
+  user_id       String            @unique
+  user          User              @relation(fields: [user_id], references: [id])
+  portofolio    Portofolio[]
+  applied_jobs  PositionApplied[]
+}
+
+model Company {
+  id           Int                   @id @default(autoincrement())
+  name         String
+  logo         String?
+  address      String
+  phone        String
+  description  String
+  user_id      String                @unique
+  user         User                  @relation(fields: [user_id], references: [id])
+  jobs         AvailablePosition[]
+  monthlyStats CompanyMonthlyStats[]
+  hrds         HRD[]
+}
+
+model CompanyMonthlyStats {
+  id          Int     @id @default(autoincrement())
+  companyId   Int
+  company     Company @relation(fields: [companyId], references: [id])
+  month       Int // 1-12
+  year        Int
+  successRate Float // Percentage, e.g., 0.75 for 75%
+
+  @@unique([companyId, month, year]) // Ensure unique entry per company per month/year
+}
+
+model AvailablePosition {
+  id                    Int               @id @default(autoincrement())
+  position_name         String
+  capacity              Int
+  description           String
+  submission_start_date DateTime
+  submission_end_date   DateTime
+  company_id            Int
+  company               Company           @relation(fields: [company_id], references: [id])
+  applicants            PositionApplied[]
+  embedding             JobEmbedding?
+}
+
+model Portofolio {
+  id          Int     @id @default(autoincrement())
+  skill       String
+  description String
+  file        String
+  society_id  Int
+  society     Society @relation(fields: [society_id], references: [id])
+
+  PortfolioEmbedding PortfolioEmbedding[]
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model PositionApplied {
+  id                    Int               @id @default(autoincrement())
+  available_position_id Int
+  society_id            Int
+  apply_date            DateTime          @default(now())
+  status                ApplicationStatus @default(PENDING)
+  resume                String?
+  coverLetter           String?
+  expectedSalary        Int?
+  earliestStartDate     DateTime?
+  workPermit            Boolean?
+  referral              String?
+  position              AvailablePosition @relation(fields: [available_position_id], references: [id])
+  society               Society           @relation(fields: [society_id], references: [id])
+}
+
+model JobEmbedding {
+  id          String   @id @default(cuid())
+  jobId       Int      @unique
+  embedding   Json
+  skills      String[]
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  job AvailablePosition @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+model PortfolioEmbedding {
+  id          String   @id @default(cuid())
+  portfolioId Int      @unique
+  embedding   Json
+  skills      String[]
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  portfolio Portofolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+}
