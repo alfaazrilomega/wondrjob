@@ -1,9 +1,9 @@
-import { middleware } from './middleware';
-import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { middleware } from "./middleware";
+import { NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
 // Mock Next.js server and Supabase client
-jest.mock('next/server', () => ({
+jest.mock("next/server", () => ({
   NextResponse: {
     next: jest.fn(() => ({
       headers: new Headers(),
@@ -13,7 +13,7 @@ jest.mock('next/server', () => ({
   },
 }));
 
-jest.mock('@supabase/ssr', () => ({
+jest.mock("@supabase/ssr", () => ({
   createServerClient: jest.fn(() => ({
     auth: {
       getUser: jest.fn(),
@@ -21,24 +21,24 @@ jest.mock('@supabase/ssr', () => ({
   })),
 }));
 
-describe('middleware', () => {
+describe("middleware", () => {
   let mockRequest: any;
   let mockResponse: any;
   let mockSupabase: any;
 
   beforeEach(() => {
     mockRequest = {
-      url: 'http://localhost:3000/dashboard',
+      url: "http://localhost:3000/dashboard",
       nextUrl: {
-        pathname: '/',
-        origin: 'http://localhost:3000',
+        pathname: "/",
+        origin: "http://localhost:3000",
       },
       headers: new Headers(),
       cookies: {
         get: jest.fn(),
         set: jest.fn(),
         remove: jest.fn(),
-      }
+      },
     };
     mockResponse = {
       headers: new Headers(),
@@ -61,8 +61,8 @@ describe('middleware', () => {
   });
 
   // Test Case 1: Public route access
-  it('should allow access to public routes without authentication', async () => {
-    mockRequest.nextUrl.pathname = '/login';
+  it("should allow access to public routes without authentication", async () => {
+    mockRequest.nextUrl.pathname = "/login";
     const response = await middleware(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);
@@ -71,9 +71,11 @@ describe('middleware', () => {
   });
 
   // Test Case 2: Authenticated user access to protected route
-  it('should allow access to protected routes for authenticated users', async () => {
-    mockRequest.nextUrl.pathname = '/dashboard';
-    mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'user-123' } } });
+  it("should allow access to protected routes for authenticated users", async () => {
+    mockRequest.nextUrl.pathname = "/dashboard";
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: { id: "user-123" } },
+    });
 
     const response = await middleware(mockRequest);
 
@@ -84,8 +86,8 @@ describe('middleware', () => {
   });
 
   // Test Case 3: Unauthenticated user access to protected route
-  it('should redirect unauthenticated users to the login page for protected routes', async () => {
-    mockRequest.nextUrl.pathname = '/dashboard';
+  it("should redirect unauthenticated users to the login page for protected routes", async () => {
+    mockRequest.nextUrl.pathname = "/dashboard";
     mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
     const response = await middleware(mockRequest);
@@ -93,13 +95,17 @@ describe('middleware', () => {
     expect(response).toBe(mockResponse);
     expect(createServerClient).toHaveBeenCalledTimes(1);
     expect(mockSupabase.auth.getUser).toHaveBeenCalledTimes(1);
-    expect(NextResponse.redirect).toHaveBeenCalledWith(new URL('/login', mockRequest.nextUrl.origin));
+    expect(NextResponse.redirect).toHaveBeenCalledWith(
+      new URL("/login", mockRequest.nextUrl.origin),
+    );
   });
 
   // Test Case 4: Session refresh (getUser called)
-  it('should call getUser to refresh the session for protected routes', async () => {
-    mockRequest.nextUrl.pathname = '/settings';
-    mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'user-456' } } });
+  it("should call getUser to refresh the session for protected routes", async () => {
+    mockRequest.nextUrl.pathname = "/settings";
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: { id: "user-456" } },
+    });
 
     await middleware(mockRequest);
 
@@ -108,8 +114,8 @@ describe('middleware', () => {
   });
 
   // Test Case 5: Public API route access
-  it('should allow access to public API routes without authentication', async () => {
-    mockRequest.nextUrl.pathname = '/api/auth/login';
+  it("should allow access to public API routes without authentication", async () => {
+    mockRequest.nextUrl.pathname = "/api/auth/login";
     const response = await middleware(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);
@@ -118,8 +124,8 @@ describe('middleware', () => {
   });
 
   // Test Case 6: Another public route
-  it('should allow access to another public route', async () => {
-    mockRequest.nextUrl.pathname = '/signup';
+  it("should allow access to another public route", async () => {
+    mockRequest.nextUrl.pathname = "/signup";
     const response = await middleware(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);

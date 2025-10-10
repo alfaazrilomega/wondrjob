@@ -14,10 +14,11 @@ export async function POST(request: Request) {
     }
 
     const supabase = await createClient();
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
     if (authError) {
       return NextResponse.json({ error: authError.message }, { status: 400 });
@@ -38,19 +39,19 @@ export async function POST(request: Request) {
       );
     }
 
-    let redirectTo = '/homepage'; // Default redirect
+    let redirectTo = "/homepage"; // Default redirect
     switch (user.role) {
-      case 'ADMIN':
-        redirectTo = '/admin';
+      case "ADMIN":
+        redirectTo = "/admin";
         break;
-      case 'COMPANY':
-        redirectTo = '/dashboard/company';
+      case "COMPANY":
+        redirectTo = "/dashboard/company";
         break;
-      case 'HRD':
-        redirectTo = '/dashboard/hrd';
+      case "HRD":
+        redirectTo = "/dashboard/hrd";
         break;
-      case 'SOCIETY':
-        redirectTo = '/homepage';
+      case "SOCIETY":
+        redirectTo = "/homepage";
         break;
     }
 
@@ -59,10 +60,10 @@ export async function POST(request: Request) {
       session: authData.session,
       redirectTo,
     });
-
   } catch (error) {
     console.error("Login error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Login failed";
+    const errorMessage =
+      error instanceof Error ? error.message : "Login failed";
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import Link from "next/link"; // Import Link
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { use } from "react";
 import CompanyMonthlySuccessRateChart from "@/app/Component/company/CompanyMonthlySuccessRateChart";
+import Image from "next/image";
 
-// --- TYPE DEFINITIONS (based on schema.prisma) ---
+// --- TYPE DEFINITIONS ---
 interface Job {
   id: number;
   position_name: string;
   description: string;
+  capacity: number;
 }
 
 interface CompanyMonthlyStats {
@@ -22,6 +24,7 @@ interface CompanyMonthlyStats {
 interface Company {
   id: number;
   name: string;
+  logo: string | null;
   address: string;
   phone: string;
   description: string;
@@ -29,70 +32,122 @@ interface Company {
   monthlyStats: CompanyMonthlyStats[];
 }
 
-// --- UI COMPONENTS ---
+import { usePathname } from "next/navigation";
 
-const Header = ({ companyName }: { companyName: string }) => (
-  <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#223649] px-10 py-3">
-    <div className="flex items-center gap-8">
-      <div className="flex items-center gap-4 text-white">
-        <div className="size-4">
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+// --- PUBLIC HEADER ---
+const PublicHeader = () => {
+  const pathname = usePathname();
+  const glowStyle = { textShadow: "0 0 8px rgba(159, 84, 255, 0.6)" };
+
+  return (
+    <header
+      className="sticky top-0 z-50 w-full"
+      style={{
+        backgroundColor: "rgba(16, 16, 24, 0.5)",
+        borderBottom: "1px solid rgba(159, 84, 255, 0.2)",
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
+        <Link href="/" passHref>
+          <span
+            className="cursor-pointer text-2xl font-bold text-[#E0E0E0]"
+            style={glowStyle}
           >
-            <path
-              d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.263 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z"
-              fill="currentColor"
-            ></path>
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M10.4485 13.8519C10.4749 13.9271 10.6203 14.246 11.379 14.7361C12.298 15.3298 13.7492 15.9145 15.6717 16.3735C18.0007 16.9296 20.8712 17.2655 24 17.2655C27.1288 17.2655 29.9993 16.9296 32.3283 16.3735C34.2508 15.9145 35.702 15.3298 36.621 14.7361C37.3796 14.246 37.5251 13.9271 37.5515 13.8519C37.5287 13.7876 37.4333 13.5973 37.0635 13.2931C36.5266 12.8516 35.6288 12.3647 34.343 11.9175C31.79 11.0295 28.1333 10.4437 24 10.4437C19.8667 10.4437 16.2099 11.0295 13.657 11.9175C12.3712 12.3647 11.4734 12.8516 10.9365 13.2931C10.5667 13.5973 10.4713 13.7876 10.4485 13.8519ZM37.5563 18.7877C36.3176 19.3925 34.8502 19.8839 33.2571 20.2642C30.5836 20.9025 27.3973 21.2655 24 21.2655C20.6027 21.2655 17.4164 20.9025 14.7429 20.2642C13.1498 19.8839 11.6824 19.3925 10.4436 18.7877V34.1275C10.4515 34.1545 10.5427 34.4867 11.379 35.027C12.298 35.6207 13.7492 36.2054 15.6717 36.6644C18.0007 37.2205 20.8712 37.5564 24 37.5564C27.1288 37.5564 29.9993 37.2205 32.3283 36.6644C34.2508 36.2054 35.702 35.6207 36.621 35.027C37.4573 34.4867 37.5485 34.1546 37.5563 34.1275V18.7877ZM41.5563 13.8546V34.1455C41.5563 36.1078 40.158 37.5042 38.7915 38.3869C37.3498 39.3182 35.4192 40.0389 33.2571 40.5551C30.5836 41.1934 27.3973 41.5564 24 41.5564C20.6027 41.5564 17.4164 41.1934 14.7429 40.5551C12.5808 40.0389 10.6502 39.3182 9.20848 38.3869C7.84205 37.5042 6.44365 36.1078 6.44365 34.1455L6.44365 13.8546C6.44365 12.2684 7.37223 11.0454 8.39581 10.2036C9.43325 9.3505 10.8137 8.67141 12.343 8.13948C15.4203 7.06909 19.5418 6.44366 24 6.44366C28.4582 6.44366 32.5797 7.06909 35.657 8.13948C37.1863 8.67141 38.5667 9.3505 39.6042 10.2036C40.6278 11.0454 41.5563 12.2684 41.5563 13.8546Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </div>
-        <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-          {companyName}
-        </h2>
-      </div>
-      <div className="flex items-center gap-9">
-        <Link
-          className="text-white text-sm font-medium leading-normal"
-          href="/company"
-        >
-          Home
+            WondrJob
+          </span>
         </Link>
-        <Link className="text-white text-sm font-medium leading-normal" href="">
-          Companies
-        </Link>
+        <nav className="flex items-center gap-8">
+          <Link href="/" passHref>
+            <span
+              className={`cursor-pointer transition-colors hover:text-[#9F54FF] hover:[text-shadow:0_0_8px_rgba(159,84,255,0.6)] relative ${
+                pathname === "/"
+                  ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
+                  : "text-white/60"
+              }`}>
+              Home
+              {pathname === "/" && (
+                <span
+                  className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#9F54FF]"
+                  style={{ boxShadow: "0 0 4px #9F54FF" }}
+                ></span>
+              )}
+            </span>
+          </Link>
+          <Link href="/company" passHref>
+            <span
+              className={`cursor-pointer transition-colors hover:text-[#9F54FF] hover:[text-shadow:0_0_8px_rgba(159,84,255,0.6)] relative ${
+                pathname.startsWith("/company")
+                  ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
+                  : "text-white/60"
+              }`}>
+              Companies
+              {pathname.startsWith("/company") && (
+                <span
+                  className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#9F54FF]"
+                  style={{ boxShadow: "0 0 4px #9F54FF" }}
+                ></span>
+              )}
+            </span>
+          </Link>
+        </nav>
       </div>
-    </div>
-  </header>
+    </header>
+  );
+};
+
+// --- HELPERS ---
+const sanitizeLogoUrl = (url: string | null | undefined): string => {
+  if (!url) return "/next.svg";
+  if (url.includes("google.com/imgres")) {
+    try {
+      const urlObj = new URL(url);
+      const imgurl = urlObj.searchParams.get("imgurl");
+      if (imgurl) return imgurl;
+    } catch (e) {
+      console.error("Could not parse logo URL", e);
+      return "/next.svg";
+    }
+  }
+  return url;
+};
+
+// --- SVG ICONS ---
+const MapPinIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#9F54FF"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+    <circle cx="12" cy="10" r="3"></circle>
+  </svg>
 );
 
-const JobListItem = ({ job, address }: { job: Job; address: string }) => (
-  <div className="flex items-center gap-4 bg-[#101a23] px-4 min-h-[72px] py-2 justify-between">
-    <div className="flex flex-col justify-center">
-      <p className="text-white text-base font-medium leading-normal line-clamp-1">
-        {job.position_name}
-      </p>
-      <p className="text-[#90adcb] text-sm font-normal leading-normal line-clamp-2">
-        {address}
-      </p>
-    </div>
-    <div className="shrink-0">
-      <Link href={`/apply/${job.id}`} passHref>
-        <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#223649] text-white text-sm font-medium leading-normal w-fit">
-          <span className="truncate">Apply Now</span>
-        </button>
-      </Link>
-    </div>
-  </div>
+const PhoneIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#9F54FF"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
 );
 
-// MAIN
+// --- MAIN COMPONENT ---
 export default function CompanyDetailPage({
   params,
 }: {
@@ -133,7 +188,8 @@ export default function CompanyDetailPage({
   }, [id]);
 
   const latestSuccessRate = useMemo(() => {
-    if (!company || company.monthlyStats.length === 0) return 0;
+    if (!company || !company.monthlyStats || company.monthlyStats.length === 0)
+      return 0;
     const sortedStats = [...company.monthlyStats].sort((a, b) => {
       if (a.year !== b.year) return b.year - a.year;
       return b.month - a.month;
@@ -143,16 +199,16 @@ export default function CompanyDetailPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#101a23] text-white flex items-center justify-center">
-        Loading...
+      <div className="min-h-screen bg-[#101018] text-white flex items-center justify-center">
+        <p>Loading...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#101a23] text-white flex items-center justify-center">
-        Error: {error}
+      <div className="min-h-screen bg-[#101018] text-white flex items-center justify-center">
+        <p>Error: {error}</p>
       </div>
     );
   }
@@ -162,84 +218,140 @@ export default function CompanyDetailPage({
   }
 
   return (
-    <div
-      className="relative flex size-full min-h-screen flex-col bg-[#101a23] group/design-root overflow-x-hidden"
-      style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif' }}
-    >
-      <div className="layout-container flex h-full grow flex-col">
-        <Header companyName={company.name} />
-        <main className="px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
-                {company.name}
-              </p>
-            </div>
+    <>
+      <style jsx global>{`
+        .glass-pane {
+          background-color: rgba(26, 26, 46, 0.5);
+          border: 1px solid rgba(159, 84, 255, 0.2);
+          backdrop-filter: blur(10px);
+          border-radius: 10px;
+          box-shadow: 0 0 20px rgba(159, 84, 255, 0.1);
+        }
+      `}</style>
+      <div
+        className="min-h-screen bg-[#101018] text-white p-4 md:p-8"
+        style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif' }}
+      >
+        <PublicHeader />
 
-            <div className="p-4 grid grid-cols-[20%_1fr] gap-x-6">
-              <div className="col-span-2 grid grid-cols-subgrid border-t border-t-[#314d68] py-5">
-                <p className="text-[#90adcb] text-sm font-normal leading-normal">
-                  Address
-                </p>
-                <p className="text-white text-sm font-normal leading-normal">
-                  {company.address}
-                </p>
-              </div>
-              <div className="col-span-2 grid grid-cols-subgrid border-t border-t-[#314d68] py-5">
-                <p className="text-[#90adcb] text-sm font-normal leading-normal">
-                  Phone
-                </p>
-                <p className="text-white text-sm font-normal leading-normal">
-                  {company.phone}
-                </p>
-              </div>
-              <div className="col-span-2 grid grid-cols-subgrid border-t border-t-[#314d68] py-5">
-                <p className="text-[#90adcb] text-sm font-normal leading-normal">
+        <main className="max-w-7xl mx-auto">
+          {/* Company Banner */}
+          <div className="glass-pane flex items-center justify-between p-6 mb-8">
+            <div className="flex items-center gap-5">
+                <div className="relative w-20 h-20 flex-shrink-0">
+                    <Image
+                        src={sanitizeLogoUrl(company.logo)}
+                        alt={`${company.name} logo`}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        className="rounded-full"
+                    />
+                </div>
+                <div>
+                    <h1 className="text-[2rem] font-bold text-[#E0E0E0] leading-none">
+                        {company.name}
+                    </h1>
+                    <p className="text-white/60 mt-1">
+                        IT Infrastructure Innovators
+                    </p>
+                </div>
+            </div>
+            <button className="bg-[#9F54FF] text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(159,84,255,0.8)]">
+              Follow
+            </button>
+          </div>
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-2 flex flex-col gap-8">
+              <div className="glass-pane p-8">
+                <h2 className="text-2xl font-bold text-white mb-4">
                   Description
-                </p>
-                <p className="text-white text-sm font-normal leading-normal">
+                </h2>
+                <p
+                  style={{ color: "rgba(224, 224, 224, 0.7)" }}
+                  className="leading-relaxed"
+                >
                   {company.description}
                 </p>
               </div>
+
+              <div className="glass-pane p-8">
+                <h2 className="text-2xl font-bold text-white mb-6">
+                  Available Positions
+                </h2>
+                <div className="flex flex-col">
+                  {company.jobs && company.jobs.length > 0 ? (
+                    company.jobs.map((job, index) => (
+                      <div
+                        key={job.id}
+                        className={`flex flex-col md:flex-row items-start md:items-center justify-between py-4 ${index < company.jobs.length - 1 ? "border-b border-[rgba(159,84,255,0.2)]" : ""}`}
+                      >
+                        <div className="mb-4 md:mb-0">
+                          <h3 className="font-bold text-lg text-white">
+                            {job.position_name}
+                          </h3>
+                          <p className="text-sm text-white/60">
+                            Jakarta, Indonesia • {job.capacity} Openings
+                          </p>
+                        </div>
+                        <Link href={`/job-posting/${job.id}`} passHref>
+                          <button className="px-5 py-2 w-full md:w-auto rounded-lg border-2 border-[#9F54FF] text-[#9F54FF] font-semibold transition-all duration-300 hover:bg-[#9F54FF] hover:text-white flex-shrink-0">
+                            View Details
+                          </button>
+                        </Link>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-white/60 py-8">
+                      No available positions at the moment.
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Available Positions
-            </h2>
-            {company.jobs.length > 0 ? (
-              company.jobs.map((job) => (
-                <JobListItem key={job.id} job={job} address={company.address} />
-              ))
-            ) : (
-              <p className="px-4 text-[#90adcb]">
-                No available positions at the moment.
-              </p>
-            )}
+            {/* Right Column */}
+            <div className="lg:col-span-1 flex flex-col gap-8">
+              <div className="glass-pane p-6">
+                <h2 className="text-xl font-bold text-white mb-4">
+                  Company Details
+                </h2>
+                <div className="flex flex-col gap-5">
+                  <div className="flex items-start gap-4">
+                    <MapPinIcon />
+                    <span className="text-white/80">{company.address}</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <PhoneIcon />
+                    <span className="text-white/80">{company.phone}</span>
+                  </div>
+                </div>
+              </div>
 
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Company Monthly Stats
-            </h2>
-            <div className="flex flex-wrap gap-4 px-4 py-6">
-              <div className="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#314d68] p-6">
-                <p className="text-white text-base font-medium leading-normal">
+              <div className="glass-pane p-6">
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Company Monthly Stats
+                </h2>
+                <p className="text-sm text-white/60 mb-4">
                   Historical Success Rate
                 </p>
-                <p className="text-white tracking-light text-[32px] font-bold leading-tight truncate">
+                <p className="text-6xl font-bold text-white mb-1">
                   {latestSuccessRate.toFixed(0)}%
                 </p>
-                <div className="flex gap-1">
-                  <p className="text-[#90adcb] text-base font-normal leading-normal">
-                    Last 12 Months
-                  </p>
-                </div>
-                <div className="flex-1">
-                  <CompanyMonthlySuccessRateChart data={company.monthlyStats} />
+                <p className="text-sm text-white/60 mb-6">Last 12 Months</p>
+                <div className="h-48">
+                  <CompanyMonthlySuccessRateChart
+                    data={company.monthlyStats || []}
+                    lineColor="#9F54FF"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </main>
       </div>
-    </div>
+    </>
   );
 }

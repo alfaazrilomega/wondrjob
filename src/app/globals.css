@@ -4,15 +4,12 @@
 
 @import "tw-animate-css";
 
-
-
 @custom-variant dark (&:is(.dark *));
-
-
 
 :root {
   overflow-x: hidden;
-  inline-size: 100%;--radius: 0.625rem;
+  inline-size: 100%;
+  --radius: 0.625rem;
   --background: oklch(0% 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -45,8 +42,6 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
 }
-
-
 
 @theme inline {
   --font-sans: "Mona Sans", sans-serif;
@@ -93,16 +88,12 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-
-
 .body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: lightgray;
 }
-
-
 
 .container {
   position: relative;
@@ -114,8 +105,6 @@
   gap: 100px;
 }
 
-
-
 .back-vid {
   position: fixed;
   inset-inline-end: 0;
@@ -123,8 +112,6 @@
   z-index: -1;
   mix-blend-mode: normal;
 }
-
-
 
 header {
   display: flex;
@@ -144,15 +131,10 @@ header {
   inline-size: 100vw;
 }
 
-
-
 .left {
   display: flex;
   align-items: center;
-
 }
-
-
 
 .left h1 {
   margin: 0;
@@ -161,26 +143,20 @@ header {
   color: white;
 }
 
-
-
 header ul {
   display: flex;
   justify-content: space-between;
   inline-size: 30%;
   padding: 15px 15px;
   border-radius: 50px;
-  background-color: rgba(0, 0, 69, 0.30);
+  background-color: rgba(0, 0, 69, 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 10px #727fde65;
 }
 
-
-
 header ul li {
   list-style: none;
 }
-
-
 
 header ul a {
   text-decoration: none;
@@ -188,8 +164,6 @@ header ul a {
   margin: 0 10px;
   color: white;
 }
-
-
 
 .btn-signin {
   background-color: #0203381e;
@@ -202,13 +176,11 @@ header ul a {
   transition: all 0.3s ease;
   cursor: pointer;
   z-index: 999;
-  background: linear-gradient(to right, #3a7bd5,#00d2ff,#928DAB,#3a7bd5);
+  background: linear-gradient(to right, #3a7bd5, #00d2ff, #928dab, #3a7bd5);
   background-size: 200%;
   animation: animationhover 2.5s linear infinite;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
-
-
 
 .btn-signin:hover {
   animation: colorShift 0ms ease forwards;
@@ -217,14 +189,10 @@ header ul a {
   cursor: pointer;
 }
 
-
-
 .btn-signin:active {
   animation: pressDown 0.2s ease;
   cursor: pointer;
 }
-
-
 
 @keyframes pressDown {
   0% {
@@ -241,27 +209,29 @@ header ul a {
   }
 }
 
-
-
 @keyframes animationhover {
   to {
     background-position: 200%;
   }
 }
 
-
-
 @keyframes colorShift {
   0% {
-    background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #5300a0, #757575, #656565);
+    background: linear-gradient(
+      to right,
+      #656565,
+      #7f42a7,
+      #6600c5,
+      #5300a0,
+      #757575,
+      #656565
+    );
   }
   100% {
     background: linear-gradient(to right, white, #e0e0e0, white);
     color: black;
   }
 }
-
-
 
 @keyframes pressDown {
   0% {
@@ -278,8 +248,6 @@ header ul a {
   }
 }
 
-
-
 .blackhole-box {
   position: absolute;
   inset-block-start: 0;
@@ -289,17 +257,12 @@ header ul a {
   inline-size: 100vw;
 }
 
-
-
 .blackhole-box video {
   inline-size: 100%;
   margin-block-start: -23.5%;
-
 }
 
-
-
-.main-content {
+.body .main-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -307,38 +270,37 @@ header ul a {
   transform: translateX(-140%);
 }
 
-
-
 .content {
   margin-inline-start: 10%;
   z-index: 999;
   margin-block-end: 10%;
 }
 
-
-
 .tag-box {
   position: relative;
   inline-size: 15rem;
   block-size: 2rem;
   border-radius: 50px;
-  background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #5300a0, #757575, #656565);
+  background: linear-gradient(
+    to right,
+    #656565,
+    #7f42a7,
+    #6600c5,
+    #5300a0,
+    #757575,
+    #656565
+  );
   background-size: 200%;
   animation: animationGradient 2.5s linear infinite;
   box-shadow: 0 0 15px rgb(255, 255, 255, 0.3);
   margin-block-end: 10%;
-
 }
-
-
 
 @keyframes animationGradient {
   to {
     background-position: 200%;
   }
 }
-
-
 
 .tag-box .tag {
   position: absolute;
@@ -352,15 +314,10 @@ header ul a {
   cursor: pointer;
 }
 
-
-
 .tag-box .tag:hover {
   color: #5300a0;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.418);
-
 }
-
-
 
 .text-bold-h1 {
   font-weight: 600;
@@ -370,20 +327,14 @@ header ul a {
   line-height: 1.2;
   text-transform: uppercase;
   font-family: "Mona Sans", sans-serif;
-
 }
-
-
 
 .content h1 {
   margin-block-start: 1rem;
   letter-spacing: 0.1rem;
   line-height: 1.2;
   text-shadow: 0 0 10px rgba(128, 128, 128, 0.418);
-
 }
-
-
 
 .description {
   font-size: 0.9rem;
@@ -392,19 +343,13 @@ header ul a {
   line-height: 1.3;
   text-shadow: 0 0 10px rgba(128, 128, 128, 0.795);
   margin-block-end: 1rem;
-
 }
-
-
 
 .btns {
   display: flex;
   gap: 1rem;
   margin-block-start: 2rem;
-
 }
-
-
 
 .btn-get-started {
   text-decoration: none;
@@ -417,18 +362,12 @@ header ul a {
   cursor: pointer;
   text-decoration-color: blue;
   transition: background-color 0.2s ease;
-
 }
-
-
 
 .btn-get-started:hover {
   background-color: #1a1a1a;
   color: white;
-
 }
-
-
 
 .btn-signing-main {
   text-decoration: none;
@@ -442,27 +381,18 @@ header ul a {
   cursor: pointer;
   transition: background-color 0.2s ease;
   text-align: center;
-
 }
-
-
 
 .btn-signing-main:hover {
   background-color: gray;
-
 }
-
-
 
 .robot-3d {
   position: absolute;
   inset-block-start: 0;
   padding-block-start: 65px;
   inset-inline-end: -35%;
-
 }
-
-
 
 @media (max-aspect-ratio: 16/9) {
   .back-vid {
@@ -471,16 +401,12 @@ header ul a {
   }
 }
 
-
-
 @media (min-aspect-ratio: 16/9) {
   .back-vid {
     inline-size: 100%;
     block-size: auto;
   }
 }
-
-
 
 .dark {
   --background: oklch(0.141 0.005 285.823);
@@ -513,10 +439,8 @@ header ul a {
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.);
+  --sidebar-ring: oklch(0.552 0.016 285);
 }
-
-
 
 .animated-gradient {
   background-image: linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1);
@@ -525,8 +449,6 @@ header ul a {
   -webkit-text-fill-color: transparent;
   animation: gradient-flow 8s ease-in-out infinite;
 }
-
-
 
 @keyframes gradient-flow {
   0% {
@@ -540,13 +462,9 @@ header ul a {
   }
 }
 
-
-
 .DropdownIndex {
   z-index: 999999999;
 }
-
-
 
 @layer base {
   * {
@@ -557,8 +475,6 @@ header ul a {
   }
 }
 
-
-
 header.user-logged-in .btn-signin {
   background: none;
   background-color: transparent;
@@ -566,43 +482,31 @@ header.user-logged-in .btn-signin {
   padding: 0;
 }
 
-
-
 header.user-logged-in .btn-signin:hover {
   animation: none;
   color: inherit;
   box-shadow: none;
 }
 
-
-
 header.user-logged-in ul {
   transform: translateX(-15%);
 }
 
-
-
 body[data-path="/login"] header,
-
 body[data-path="/signup"] header,
-
 body[data-path="/forgot-password"] header {
   display: none;
 }
-
-
 
 /* Admin Dashboard Styles */
 
 .admin-dashboard {
   display: flex;
   background-color: #101018;
-  color: #E0E0E0;
-  font-family: 'Inter', sans-serif;
+  color: #e0e0e0;
+  font-family: "Inter", sans-serif;
   min-height: 100vh;
 }
-
-
 
 .sidebar {
   width: 250px;
@@ -615,22 +519,16 @@ body[data-path="/forgot-password"] header {
   z-index: 1001; /* Ensure sidebar is above main content but below header */
 }
 
-
-
 .sidebar-header {
   margin-bottom: 30px;
 }
 
-
-
 .sidebar-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #E0E0E0;
+  color: #e0e0e0;
   text-align: center;
 }
-
-
 
 .sidebar-nav ul {
   list-style: none;
@@ -638,29 +536,27 @@ body[data-path="/forgot-password"] header {
   margin: 0;
 }
 
-
-
 .nav-item a {
   display: block;
   padding: 15px 20px;
-  color: #E0E0E0;
+  color: #e0e0e0;
   text-decoration: none;
   border-radius: 5px;
   margin-bottom: 10px;
-  transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    color 0.3s;
   border-left: 3px solid transparent;
 }
 
-
-
-.nav-item.active a, .nav-item a:hover {
+.nav-item.active a,
+.nav-item a:hover {
   background-color: rgba(159, 84, 255, 0.1);
   color: #fff;
-  border-left: 3px solid #9F54FF;
+  border-left: 3px solid #9f54ff;
   box-shadow: 0 0 15px rgba(159, 84, 255, 0.3);
 }
-
-
 
 .nav-separator {
   height: 1px;
@@ -668,31 +564,23 @@ body[data-path="/forgot-password"] header {
   margin: 20px 0;
 }
 
-
-
-.main-content {
+.admin-dashboard .main-content {
   flex-grow: 1;
   padding: 40px;
   padding-top: 120px;
   overflow-y: auto;
-  margin-left: 25
+  margin-left: 25px;
 }
-
-
 
 .admin-dashboard .retractable-header + .sidebar {
-  padding-top: 80px; 
+  padding-top: 80px;
 }
-
-
 
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
-
-
 
 .card {
   background-color: rgba(26, 26, 46, 0.5);
@@ -701,63 +589,55 @@ body[data-path="/forgot-password"] header {
   padding: 20px;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 20px rgba(159, 84, 255, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
-
-
 
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px rgba(159, 84, 255, 0.2);
 }
 
-
-
 .card h3 {
   font-size: 1.2rem;
-  color: #E0E0E0;
+  color: #e0e0e0;
   margin-bottom: 20px;
 }
 
-
-
-.create-user-card input, .create-user-card select {
+.create-user-card input,
+.create-user-card select {
   background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(159, 84, 255, 0.3);
   border-radius: 5px;
   padding: 10px;
-  color: #E0E0E0;
+  color: #e0e0e0;
   margin-bottom: 15px;
 }
 
-
-
-.create-user-card input:focus, .create-user-card select:focus {
+.create-user-card input:focus,
+.create-user-card select:focus {
   outline: none;
   box-shadow: 0 0 10px rgba(159, 84, 255, 0.5);
-  border-color: #9F54FF;
+  border-color: #9f54ff;
 }
 
-
-
 .create-user-card button {
-  background-color: #9F54FF;
+  background-color: #9f54ff;
   color: #fff;
   border: none;
   border-radius: 5px;
   padding: 12px;
   cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
 }
-
-
 
 .create-user-card button:hover {
   background-color: #b372ff;
   box-shadow: 0 0 15px rgba(159, 84, 255, 0.6);
 }
-
-
 
 /* Unified Header Styles */
 
@@ -769,20 +649,14 @@ body[data-path="/forgot-password"] header {
   z-index: 1002;
 }
 
-
-
 .main-header-bar {
   transition: transform 0.3s ease-in-out;
   background-color: #101018;
 }
 
-
-
 .main-header-bar.hidden {
   transform: translateY(-100%);
 }
-
-
 
 .control-tab {
   position: absolute;
@@ -803,64 +677,52 @@ body[data-path="/forgot-password"] header {
   animation: glow-handle 1.5s infinite alternate;
 }
 
-
-
 .main-header-bar.hidden + .control-tab {
   top: 0;
 }
-
-
 
 .control-tab:hover {
   box-shadow: 0 0 15px rgba(159, 84, 255, 0.8);
 }
 
-
-
 .chevron-up::before {
-  content: '^';
+  content: "^";
   font-size: 1rem;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
-
-
 
 .chevron-down::before {
-  content: 'v';
+  content: "v";
   font-size: 1rem;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
-
-
 
 @keyframes glow-handle {
   from {
     box-shadow: 0 0 5px rgba(159, 84, 255, 0.5);
   }
   to {
-    box-shadow: 0 0 15px rgba(159, 84, 255, 0.8), 0 0 25px rgba(159, 84, 255, 0.5);
+    box-shadow:
+      0 0 15px rgba(159, 84, 255, 0.8),
+      0 0 25px rgba(159, 84, 255, 0.5);
   }
 }
-
-
 
 .avatar-placeholder {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: transparent;
-  border: 1px solid #9F54FF;
+  border: 1px solid #9f54ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-weight: bold;
   box-shadow: 0 0 10px rgba(159, 84, 255, 0.5);
   transition: box-shadow 0.3s;
 }
 
-
-
 .avatar-placeholder:hover {
-  box-shadow: 0 0 15px rgba(159, 84, 255, 0.8)
+  box-shadow: 0 0 15px rgba(159, 84, 255, 0.8);
 }

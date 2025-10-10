@@ -1,11 +1,34 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
+export async function GET() {
+  try {
+    const applications = await prisma.positionApplied.findMany({
+      include: {
+        society: {
+          include: {
+            user: true,
+          },
+        },
+        availablePosition: {
+          include: {
+            company: true,
+          },
+        },
+      },
+      orderBy: {
+        apply_date: 'desc',
+      },
+    });
+    return NextResponse.json({ success: true, data: applications });
+  } catch (error) {
+    console.error("GET_APPLICATIONS_ERROR", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
 
   try {
     const {

@@ -89,7 +89,6 @@ export default function Page() {
             <source src="/blackhole.mp4" type="video/mp4" />
           </video>
         </div>
-
         <main className="main-content">
           <div className="content">
             <div

@@ -1,33 +1,35 @@
-/* eslint-disable prettier/prettier */
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RoleManagementPage() {
-  const [targetRole, setTargetRole] = useState('SOCIETY');
-  const [companyId, setCompanyId] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [targetRole, setTargetRole] = useState("SOCIETY");
+  const [companyId, setCompanyId] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const router = useRouter();
 
   const handleRoleChange = async () => {
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
-    const res = await fetch('/api/role-management/change-role', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ targetRole, companyId: targetRole === 'HRD' ? parseInt(companyId) : undefined }),
+    const res = await fetch("/api/role-management/change-role", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        targetRole,
+        companyId: targetRole === "HRD" ? parseInt(companyId) : undefined,
+      }),
     });
 
     if (res.ok) {
-      setSuccess('Role updated successfully!');
+      setSuccess("Role updated successfully!");
       // Optionally redirect or update UI
       router.refresh();
     } else {
       const data = await res.json();
-      setError(data.error || 'Failed to update role.');
+      setError(data.error || "Failed to update role.");
     }
   };
 
@@ -38,7 +40,9 @@ export default function RoleManagementPage() {
       {success && <p className="text-green-500">{success}</p>}
 
       <div className="mb-4">
-        <label htmlFor="role-select" className="block mb-2">Select Role:</label>
+        <label htmlFor="role-select" className="block mb-2">
+          Select Role:
+        </label>
         <select
           id="role-select"
           value={targetRole}
@@ -51,9 +55,11 @@ export default function RoleManagementPage() {
         </select>
       </div>
 
-      {targetRole === 'HRD' && (
+      {targetRole === "HRD" && (
         <div className="mb-4">
-          <label htmlFor="company-id" className="block mb-2">Company ID:</label>
+          <label htmlFor="company-id" className="block mb-2">
+            Company ID:
+          </label>
           <input
             id="company-id"
             type="text"
@@ -65,22 +71,21 @@ export default function RoleManagementPage() {
         </div>
       )}
 
-      {targetRole === 'COMPANY' && (
+      {targetRole === "COMPANY" && (
         <div className="mb-4">
-            <p>To become a company, you need to create a company profile.</p>
-            <button
-                onClick={() => router.push('/company/create')}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-                Create Company Page
-            </button>
+          <p>To become a company, you need to create a company profile.</p>
+          <button
+            onClick={() => router.push("/company/create")}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Create Company Page
+          </button>
         </div>
       )}
 
-
       <button
         onClick={handleRoleChange}
-        disabled={targetRole === 'COMPANY'}
+        disabled={targetRole === "COMPANY"}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
       >
         Save Role

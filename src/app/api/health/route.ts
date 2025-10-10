@@ -3,7 +3,7 @@ import {
   getDatabaseHealth,
   testDatabaseConnection,
   type DatabaseHealthResult,
-} from "../../../../lib/db";
+} from "@/lib/lib/db";
 
 interface HealthCheckResponse {
   status: "healthy" | "unhealthy" | "error";

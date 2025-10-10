@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = () => {
+interface ButtonProps {
+  onClick?: () => void;
+  children?: React.ReactNode;
+}
+
+const Button: React.FC<ButtonProps> = ({ onClick, children }) => {
   return (
     <StyledWrapper>
-      <button className="ui-btn">
-        <span>Button</span>
+      <button className="ui-btn" onClick={onClick}>
+        <span>{children || "Create New"}</span>
       </button>
     </StyledWrapper>
   );

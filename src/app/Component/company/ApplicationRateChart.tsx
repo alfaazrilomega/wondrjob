@@ -1,4 +1,3 @@
-// src/app/Component/company/ApplicationRateChart.tsx
 "use client";
 
 import React from "react";

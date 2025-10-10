@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/lib/db";
-import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   const { email, password, name, phone, address, date_of_birth, gender } =
@@ -23,17 +22,18 @@ export async function POST(request: Request) {
     }
 
     if (data.user) {
+      const authenticatedUser = data.user;
       // Check if user already exists in our database by email
       const userInDb = await prisma.user.findUnique({
         where: {
-          email: data.user.email!,
+          email: authenticatedUser.email!,
         },
       });
 
       if (userInDb) {
         // User with this email already exists.
         // Check if the ID matches the one from Supabase.
-        if (userInDb.id !== data.user.id) {
+        if (userInDb.id !== authenticatedUser.id) {
           // This is a data inconsistency.
           return NextResponse.json(
             { error: "User data is inconsistent. Please contact support." },
@@ -52,8 +52,8 @@ export async function POST(request: Request) {
       await prisma.$transaction(async (tx) => {
         const user = await tx.user.create({
           data: {
-            id: data.user.id, // Use Supabase user ID
-            email: data.user.email!,
+            id: authenticatedUser.id, // Use Supabase user ID
+            email: authenticatedUser.email!,
             name: name,
             phone: phone || null,
             address: address || null,

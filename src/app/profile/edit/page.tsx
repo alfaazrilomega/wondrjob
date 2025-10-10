@@ -1,14 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { prisma } from "../../../../lib/db";
-import { cookies } from "next/headers";
+import { prisma } from "@/lib/lib/db";
 import { EditProfileForm } from "./form";
 
 // This is the main page, a server component that fetches data
 // and passes it to the client component form.
 export default async function EditProfilePage() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

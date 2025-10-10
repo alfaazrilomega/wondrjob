@@ -1,4 +1,3 @@
-// src/app/company/ApplicationSuccessLineChart.tsx
 "use client";
 
 import React from "react";

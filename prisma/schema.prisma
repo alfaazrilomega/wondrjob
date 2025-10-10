@@ -109,6 +109,8 @@ model AvailablePosition {
   company               Company           @relation(fields: [company_id], references: [id])
   applicants            PositionApplied[]
   embedding             JobEmbedding?
+
+  @@index([company_id])
 }
 
 model Portofolio {
@@ -142,6 +144,9 @@ model PositionApplied {
   referral              String?
   position              AvailablePosition @relation(fields: [available_position_id], references: [id])
   society               Society           @relation(fields: [society_id], references: [id])
+
+  @@index([available_position_id])
+  @@index([status])
 }
 
 model JobEmbedding {

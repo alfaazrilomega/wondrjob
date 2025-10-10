@@ -1,8 +1,6 @@
-// src/app/company/types.ts
-
 export interface ChartDataPoint {
   month: string;
-  successRate: number; // Percentage
+  successRate: number;
 }
 
 export interface Job {

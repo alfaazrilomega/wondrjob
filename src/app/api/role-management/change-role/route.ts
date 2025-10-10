@@ -1,23 +1,27 @@
-/* eslint-disable prettier/prettier */
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/lib/db";
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { targetRole, companyId } = await req.json();
 
   if (!targetRole) {
-    return NextResponse.json({ error: 'Target role is required' }, { status: 400 });
+    return NextResponse.json(
+      { error: "Target role is required" },
+      { status: 400 },
+    );
   }
 
   try {
@@ -29,20 +33,20 @@ export async function POST(req: NextRequest) {
         data: { role: targetRole },
       });
 
-      if (targetRole === 'HRD') {
+      if (targetRole === "HRD") {
         if (!companyId) {
-          throw new Error('Company ID is required for HRD role');
+          throw new Error("Company ID is required for HRD role");
         }
         // check if company exists
         const company = await tx.company.findUnique({
-            where: { id: companyId },
+          where: { id: companyId },
         });
         if (!company) {
-            throw new Error('Company not found');
+          throw new Error("Company not found");
         }
 
         // Create HRD entry
-        await tx.hrd.create({
+        await tx.hRD.create({
           data: {
             user_id: user.id,
             company_id: companyId,
@@ -56,6 +60,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(updatedUser);
   } catch (error: unknown) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'An unknown error occurred.' }, { status: 500 });
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }

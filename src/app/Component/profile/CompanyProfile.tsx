@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { Company } from '@prisma/client';
-import { User } from '@supabase/supabase-js';
+import { Company } from "@prisma/client";
+import { User } from "@supabase/supabase-js";
 
 type CompanyProfileProps = {
   profile: Company;

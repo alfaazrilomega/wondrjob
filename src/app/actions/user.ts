@@ -4,11 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { cookies } from 'next/headers';
 
 export async function updateUserProfile(formData: FormData) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -55,9 +53,10 @@ export async function updateUserProfile(formData: FormData) {
 }
 
 export async function getFullUserProfile() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const { data: { user } } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return null;

@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { HRD, Company } from '@prisma/client';
-import { User } from '@supabase/supabase-js';
+import { HRD, Company } from "@prisma/client";
+import { User } from "@supabase/supabase-js";
 
 type HrdProfileProps = {
   profile: HRD & {

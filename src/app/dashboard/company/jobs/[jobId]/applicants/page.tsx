@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import type { PositionApplied, Society } from '@prisma/client';
-import Loader from '@/app/Component/LoadingAnimation/Loading';
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import type { PositionApplied, Society } from "@prisma/client";
+import Loader from "@/app/Component/LoadingAnimation/Loading";
 
 // Define a more specific type for the applicants
 type Applicant = PositionApplied & {
@@ -25,12 +25,14 @@ export default function JobApplicantsPage() {
         const response = await fetch(`/api/jobs/${jobId}/applicants`);
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch applicants');
+          throw new Error(errorData.error || "Failed to fetch applicants");
         }
         const data = await response.json();
         setApplicants(data.applicants);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred",
+        );
       } finally {
         setLoading(false);
       }
@@ -65,10 +67,20 @@ export default function JobApplicantsPage() {
           <div className="space-y-4">
             {applicants.length > 0 ? (
               applicants.map((applicant) => (
-                <div key={applicant.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                  <h3 className="font-bold text-lg">{applicant.society.name}</h3>
-                  <p className="text-sm text-gray-400">Applied on: {new Date(applicant.apply_date).toLocaleDateString()}</p>
-                  <p className="text-sm text-gray-400">Status: {applicant.status}</p>
+                <div
+                  key={applicant.id}
+                  className="bg-gray-800 p-4 rounded-lg border border-gray-700"
+                >
+                  <h3 className="font-bold text-lg">
+                    {applicant.society.name}
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    Applied on:{" "}
+                    {new Date(applicant.apply_date).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    Status: {applicant.status}
+                  </p>
                 </div>
               ))
             ) : (

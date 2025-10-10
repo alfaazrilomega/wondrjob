@@ -1,35 +1,34 @@
-/* eslint-disable prettier/prettier */
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreateCompanyPage() {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const router = useRouter();
 
   const handleCreateCompany = async () => {
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
-    const res = await fetch('/api/companies/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/companies/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, address, phone, description }),
     });
 
     if (res.ok) {
-      setSuccess('Company created successfully! Your role has been updated.');
+      setSuccess("Company created successfully! Your role has been updated.");
       // Redirect to the company page or dashboard
-      router.push('/company');
+      router.push("/company");
     } else {
       const data = await res.json();
-      setError(data.error || 'Failed to create company.');
+      setError(data.error || "Failed to create company.");
     }
   };
 
@@ -40,7 +39,9 @@ export default function CreateCompanyPage() {
       {success && <p className="text-green-500">{success}</p>}
 
       <div className="mb-4">
-        <label htmlFor="name" className="block mb-2">Company Name:</label>
+        <label htmlFor="name" className="block mb-2">
+          Company Name:
+        </label>
         <input
           id="name"
           type="text"
@@ -50,7 +51,9 @@ export default function CreateCompanyPage() {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="address" className="block mb-2">Address:</label>
+        <label htmlFor="address" className="block mb-2">
+          Address:
+        </label>
         <input
           id="address"
           type="text"
@@ -60,7 +63,9 @@ export default function CreateCompanyPage() {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="phone" className="block mb-2">Phone:</label>
+        <label htmlFor="phone" className="block mb-2">
+          Phone:
+        </label>
         <input
           id="phone"
           type="text"
@@ -70,7 +75,9 @@ export default function CreateCompanyPage() {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="description" className="block mb-2">Description:</label>
+        <label htmlFor="description" className="block mb-2">
+          Description:
+        </label>
         <textarea
           id="description"
           value={description}

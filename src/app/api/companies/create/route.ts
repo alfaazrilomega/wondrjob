@@ -1,23 +1,27 @@
-/* eslint-disable prettier/prettier */
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/lib/db";
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { name, address, phone, description } = await req.json();
 
   if (!name || !address || !phone || !description) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing required fields" },
+      { status: 400 },
+    );
   }
 
   try {
@@ -36,7 +40,7 @@ export async function POST(req: NextRequest) {
       // Update user role
       await tx.user.update({
         where: { id: user.id },
-        data: { role: 'COMPANY' },
+        data: { role: "COMPANY" },
       });
 
       return company;
@@ -44,6 +48,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(newCompany);
   } catch (error: unknown) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'An unknown error occurred.' }, { status: 500 });
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }

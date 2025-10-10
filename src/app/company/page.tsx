@@ -16,14 +16,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CompanyList from "../Component/company/CompanyList";
 import Filters from "../Component/company/Filters";
-import { CompanyStats } from "../Component/company/CompanyStats";
 
 // Types and Utils
 import {
   CONFIG,
   Company,
   ApiResponse,
-  AppStats,
 } from "../Component/company/types";
 import { useDebounce } from "../Component/company/useDebounce";
 import { createClient } from "@/lib/supabase/client";
@@ -40,9 +38,6 @@ export default function CompanyPage() {
     minSuccessRate: 0,
     maxSuccessRate: 100,
   });
-  const [applicationStats, setApplicationStats] = useState<AppStats[]>([]);
-  const [statsLoading, setStatsLoading] = useState(true);
-  const [statsError, setStatsError] = useState<string | null>(null);
 
   // State for scroll and user
   const [isScrolled, setIsScrolled] = useState(false);
@@ -72,26 +67,6 @@ export default function CompanyPage() {
   }, []);
 
   // --- Data Fetching Effects ---
-  useEffect(() => {
-    const fetchApplicationStats = async () => {
-      try {
-        setStatsLoading(true);
-        setStatsError(null);
-        const response = await fetch("/api/application-stats?companyId=all");
-        if (!response.ok) throw new Error("Failed to fetch application stats");
-        const data = await response.json();
-        setApplicationStats(data);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Network error";
-        setStatsError(`Failed to load application stats: ${errorMessage}`);
-      } finally {
-        setStatsLoading(false);
-      }
-    };
-    fetchApplicationStats();
-  }, []);
-
   const fetchCompanies = useCallback(async () => {
     try {
       setLoading(true);
@@ -118,22 +93,21 @@ export default function CompanyPage() {
   }, [filter.sort, debouncedSearchTerm, filter.category]);
 
   useEffect(() => {
-    if (
-      filter.sort !== "success-rate-asc" &&
-      filter.sort !== "success-rate-desc"
-    ) {
-      fetchCompanies();
-    }
-  }, [fetchCompanies, filter.sort, debouncedSearchTerm]);
+    fetchCompanies();
+  }, [fetchCompanies]);
 
   // --- Memoized Data Filtering ---
   const filteredData = useMemo(() => {
-    // eslint-disable-next-line prefer-const
     let data = companies.map((company) => {
-      const stat = applicationStats.find(
-        (stat) => stat.companyName === company.name,
-      );
-      return { ...company, successRate: stat ? stat.successRate : undefined };
+      let latestSuccessRate = 0;
+      if (company.monthlyStats && company.monthlyStats.length > 0) {
+        const sortedStats = [...company.monthlyStats].sort((a, b) => {
+          if (a.year !== b.year) return b.year - a.year;
+          return b.month - a.month;
+        });
+        latestSuccessRate = sortedStats[0].successRate;
+      }
+      return { ...company, successRate: latestSuccessRate * 100 };
     });
 
     if (filter.sort === "success-rate-asc") {
@@ -151,7 +125,6 @@ export default function CompanyPage() {
     });
   }, [
     companies,
-    applicationStats,
     filter.sort,
     filter.minSuccessRate,
     filter.maxSuccessRate,
@@ -242,13 +215,10 @@ export default function CompanyPage() {
 
       {/* --- Page Content --- */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <CompanyStats />
-        </div>
         <CompanyList
           companies={filteredData}
-          loading={loading || statsLoading}
-          error={error || statsError}
+          loading={loading}
+          error={error}
           onRetry={handleRetry}
         />
       </div>

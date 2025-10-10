@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/db";
-import { supabase } from "../../../../lib/supabase";
+import { prisma } from "@/lib/lib/db";
+import { supabase } from "@/lib/lib/supabase";
 
 export async function POST(request: Request) {
   try {
