@@ -35,9 +35,10 @@ export default function AdminLayout({
         <nav className="sidebar-nav">
           <ul>
             {navItems.map((item) => {
-              const isActive = item.href === '/admin/company' 
-                ? pathname.startsWith(item.href) 
-                : pathname === item.href;
+              const isActive =
+                item.href === "/admin/company"
+                  ? pathname.startsWith(item.href)
+                  : pathname === item.href;
               return (
                 <li
                   key={item.label}

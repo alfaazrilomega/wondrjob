@@ -20,27 +20,28 @@ export async function updateUserProfile(formData: FormData) {
   const address = formData.get("address") as string;
   const location = formData.get("location") as string;
   const gender = formData.get("gender") as string;
-  const skills = formData.get("skills") as string;
+  const skills = formData.get("skills") as string; // This is a JSON string of skill IDs
   const headline = formData.get("headline") as string;
 
-  const skillsArray = skills
-    ? skills
-        .split(",")
-        .map((s) => s.trim())
-        .filter((s) => s)
-    : [];
+  const skillIds = skills ? JSON.parse(skills) : [];
 
   try {
-    await prisma.society.update({
-      where: { user_id: user.id },
+    await prisma.user.update({
+      where: { id: user.id },
       data: {
-        name,
-        phone,
-        address,
-        location,
-        gender,
-        skills: skillsArray,
-        headline,
+        society: {
+          update: {
+            name,
+            phone,
+            address,
+            location,
+            gender,
+            headline,
+          },
+        },
+        skills: {
+          set: skillIds.map((id: number) => ({ id })),
+        },
       },
     });
   } catch (dbError) {

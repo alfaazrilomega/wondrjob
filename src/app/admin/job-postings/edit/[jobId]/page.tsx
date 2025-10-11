@@ -1,24 +1,24 @@
-
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { JobPostingForm } from '../../JobPostingForm';
-import '../../styles.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { JobPostingForm } from "../../JobPostingForm";
+import "../../styles.css";
+import { Job, JobFormData } from "../../types";
 
 interface Company {
-    id: number;
-    name: string;
-    logo: string | null;
+  id: number;
+  name: string;
+  logo: string | null;
 }
 
 const EditJobPostingPage = () => {
-  const [selectedJob, setSelectedJob] = useState(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [jobsForCompany, setJobsForCompany] = useState([]);
+  const [jobsForCompany, setJobsForCompany] = useState<Job[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   const params = useParams();
   const router = useRouter();
   const { jobId: initialJobId } = params;
@@ -30,7 +30,7 @@ const EditJobPostingPage = () => {
         try {
           const [jobRes, companiesRes] = await Promise.all([
             fetch(`/api/jobs/${initialJobId}`),
-            fetch('/api/companies'),
+            fetch("/api/companies"),
           ]);
 
           const jobData = await jobRes.json();
@@ -43,12 +43,15 @@ const EditJobPostingPage = () => {
           if (jobData.success) {
             setSelectedJob(jobData.data);
             if (companiesData.success) {
-                const company = companiesData.data.find(c => c.id === jobData.data.company_id) || null;
-                setSelectedCompany(company);
+              const company =
+                companiesData.data.find(
+                  (c) => c.id === jobData.data.company_id,
+                ) || null;
+              setSelectedCompany(company);
             }
           }
         } catch (error) {
-          console.error('Failed to fetch initial data', error);
+          console.error("Failed to fetch initial data", error);
         }
         setLoading(false);
       };
@@ -69,7 +72,7 @@ const EditJobPostingPage = () => {
             }
           }
         } catch (error) {
-          console.error('Failed to fetch jobs for company', error);
+          console.error("Failed to fetch jobs for company", error);
         }
       };
       fetchJobsForCompany();
@@ -78,49 +81,55 @@ const EditJobPostingPage = () => {
 
   const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const companyId = parseInt(e.target.value, 10);
-    const company = companies.find(c => c.id === companyId) || null;
+    const company = companies.find((c) => c.id === companyId) || null;
     setSelectedCompany(company);
     setJobsForCompany([]);
     setSelectedJob(null);
   };
 
-  const handleJobSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleJobSelectionChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const jobId = e.target.value;
-    const job = jobsForCompany.find(j => j.id === parseInt(jobId));
+    const job = jobsForCompany.find((j) => j.id === parseInt(jobId));
     setSelectedJob(job);
   };
 
-  const handleUpdateJob = async (formData: any) => {
+  const handleUpdateJob = async (formData: JobFormData) => {
     if (!selectedJob) return;
     try {
+      const dataToSave = {
+        ...formData,
+        skills: formData.skills?.map(skill => skill.id),
+      };
       const response = await fetch(`/api/jobs/${selectedJob.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSave),
       });
 
       if (response.ok) {
-        router.push('/admin/job-postings');
+        router.push("/admin/job-postings");
       } else {
-        console.error('Failed to update job');
+        console.error("Failed to update job");
       }
     } catch (error) {
-      console.error('Failed to update job', error);
+      console.error("Failed to update job", error);
     }
   };
 
   if (loading) {
-    return <div style={{ color: 'white', padding: '2rem' }}>Loading...</div>;
+    return <div style={{ color: "white", padding: "2rem" }}>Loading...</div>;
   }
 
   return (
-    <div style={{ background: '#101018', minHeight: '100vh' }}>
+    <div style={{ background: "#101018", minHeight: "100vh" }}>
       <JobPostingForm
         title="Edit Job Post"
         job={selectedJob}
         companies={companies}
         onSave={handleUpdateJob}
-        onCancel={() => router.push('/admin/job-postings')}
+        onCancel={() => router.push("/admin/job-postings")}
         selectedCompany={selectedCompany}
         onCompanyChange={handleCompanyChange}
         jobsForCompany={jobsForCompany}

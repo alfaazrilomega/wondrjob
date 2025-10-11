@@ -1,18 +1,18 @@
-'use server';
+"use server";
 
 import { prisma } from "../../lib/lib/db";
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 export async function getCompanies() {
   try {
     const companies = await prisma.company.findMany({
       orderBy: {
-        name: 'asc',
+        name: "asc",
       },
     });
     return companies;
   } catch (error) {
-    console.error('Failed to fetch companies:', error);
+    console.error("Failed to fetch companies:", error);
     return [];
   }
 }
@@ -36,10 +36,10 @@ export async function createJobPost(data: {
         submission_end_date: data.submission_end_date,
       },
     });
-    revalidatePath('/admin/job-postings');
+    revalidatePath("/admin/job-postings");
     return { success: true, data: newPosition };
   } catch (error) {
-    console.error('Failed to create job post:', error);
-    return { success: false, error: 'Failed to create job post.' };
+    console.error("Failed to create job post:", error);
+    return { success: false, error: "Failed to create job post." };
   }
 }

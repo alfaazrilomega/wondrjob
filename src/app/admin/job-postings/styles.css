@@ -61,7 +61,7 @@ input[type="date"]:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: #9F54FF;
+  border-color: #9f54ff;
   box-shadow: 0 0 10px rgba(159, 84, 255, 0.5);
 }
 
@@ -90,9 +90,9 @@ textarea:focus {
 }
 
 .btn-primary {
-  background-color: #9F54FF;
+  background-color: #9f54ff;
   color: white;
-  border: 1px solid #9F54FF;
+  border: 1px solid #9f54ff;
   box-shadow: 0 0 15px rgba(159, 84, 255, 0.4);
 }
 
@@ -103,8 +103,8 @@ textarea:focus {
 
 .btn-secondary {
   background-color: transparent;
-  color: #9F54FF;
-  border: 1px solid #9F54FF;
+  color: #9f54ff;
+  border: 1px solid #9f54ff;
 }
 
 .btn-secondary:hover {

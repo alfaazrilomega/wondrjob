@@ -2,21 +2,26 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/lib/db";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  request: Request,
+  context: { params: { id: string } },
+) {
   try {
-    const id = parseInt(params.id, 10);
+    const id = parseInt(context.params.id, 10);
 
     if (isNaN(id)) {
-      return NextResponse.json({ error: "Invalid company ID" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid company ID" },
+        { status: 400 },
+      );
     }
 
     const company = await prisma.company.findUnique({
       where: { id },
-      // **CRUCIAL FIX: Sertakan data relasi yang dibutuhkan**
       include: {
-        jobs: true,          // Untuk kartu "Available Positions"
-        monthlyStats: true,  // **Untuk kartu "Company Monthly Stats"**
-        user: true           // Untuk menampilkan info user jika perlu
+        jobs: true,
+        monthlyStats: true,
+        user: true,
       },
     });
 
@@ -25,9 +30,43 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
 
     return NextResponse.json({ success: true, data: company });
-
   } catch (error) {
     console.error("GET_COMPANY_BY_ID_ERROR", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
+export async function PUT(
+  request: Request,
+  context: { params: { id: string } },
+) {
+  try {
+    const id = parseInt(context.params.id, 10);
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: "Invalid company ID" },
+        { status: 400 },
+      );
+    }
+
+    const body = await request.json();
+    const { name, logo, address, phone, description, companyCertificateUrl } = body;
+
+    const updatedCompany = await prisma.company.update({
+      where: { id },
+      data: {
+        name,
+        logo,
+        address,
+        phone,
+        description,
+        companyCertificateUrl,
+      },
+    });
+
+    return NextResponse.json({ success: true, data: updatedCompany });
+  } catch (error) {
+    console.error("UPDATE_COMPANY_ERROR", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

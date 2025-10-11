@@ -16,7 +16,7 @@ const eslintConfig = [
     "plugin:prettier/recommended",
   ),
   {
-    ignores: ["lib/generated/**"],
+    ignores: ["src/lib/lib/generated/**"],
   },
 ];
 

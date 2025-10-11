@@ -2,14 +2,18 @@
 
 import { updateUserProfile } from "@/app/actions/user";
 import { useState, useTransition } from "react";
-import { Society } from "@prisma/client";
+import { Society, Skill } from "@prisma/client";
+import SkillInput from "@/app/Component/SkillInput";
 
-export function EditProfileForm({ society }: { society: Society }) {
+export function EditProfileForm({ profile }: { profile: { society: Society, skills: Skill[] } }) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [skills, setSkills] = useState<Skill[]>(profile.skills || []);
 
   const handleSubmit = async (formData: FormData) => {
     startTransition(async () => {
+      const skillIds = skills.map(skill => skill.id);
+      formData.append("skills", JSON.stringify(skillIds));
       const result = await updateUserProfile(formData);
       if (result?.error) {
         setError(result.error);
@@ -28,7 +32,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           name="name"
           id="name"
           className="form-input"
-          defaultValue={society.name}
+          defaultValue={profile.society.name}
           required
         />
       </div>
@@ -41,7 +45,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           name="headline"
           id="headline"
           className="form-input"
-          defaultValue={society.headline || ""}
+          defaultValue={profile.society.headline || ""}
           placeholder="e.g., Full Stack Developer"
         />
       </div>
@@ -54,7 +58,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           name="phone"
           id="phone"
           className="form-input"
-          defaultValue={society.phone}
+          defaultValue={profile.society.phone}
         />
       </div>
       <div>
@@ -66,7 +70,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           id="address"
           rows={3}
           className="form-input"
-          defaultValue={society.address}
+          defaultValue={profile.society.address}
         ></textarea>
       </div>
       <div>
@@ -78,7 +82,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           name="location"
           id="location"
           className="form-input"
-          defaultValue={society.location || ""}
+          defaultValue={profile.society.location || ""}
           placeholder="e.g., Neo-City, Cyberspace"
         />
       </div>
@@ -90,7 +94,7 @@ export function EditProfileForm({ society }: { society: Society }) {
           name="gender"
           id="gender"
           className="form-select"
-          defaultValue={society.gender || ""}
+          defaultValue={profile.society.gender || ""}
         >
           <option value="">Prefer not to say</option>
           <option value="Male">Male</option>
@@ -102,16 +106,7 @@ export function EditProfileForm({ society }: { society: Society }) {
         <label htmlFor="skills" className="form-label">
           Skills
         </label>
-        <p className="text-sm text-gray-400 mb-2">
-          Enter your skills separated by commas (e.g., React, TypeScript, Figma)
-        </p>
-        <input
-          type="text"
-          name="skills"
-          id="skills"
-          className="form-input"
-          defaultValue={society.skills?.join(", ") || ""}
-        />
+        <SkillInput skills={skills} setSkills={setSkills} />
       </div>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}

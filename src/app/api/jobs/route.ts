@@ -30,6 +30,11 @@ export async function POST(request: Request) {
       description,
       submission_start_date,
       submission_end_date,
+      jobType,
+      salaryMin,
+      salaryMax,
+      workStyle,
+      skills, // This is an array of skill IDs
     } = body;
 
     const newJob = await prisma.availablePosition.create({
@@ -40,6 +45,13 @@ export async function POST(request: Request) {
         description,
         submission_start_date: new Date(submission_start_date),
         submission_end_date: new Date(submission_end_date),
+        jobType,
+        salaryMin: salaryMin ? parseInt(salaryMin) : null,
+        salaryMax: salaryMax ? parseInt(salaryMax) : null,
+        workStyle,
+        skills: {
+          connect: skills.map((id: number) => ({ id })),
+        },
       },
     });
     return NextResponse.json({ success: true, data: newJob });

@@ -30,6 +30,7 @@ interface Company {
   description: string;
   jobs: Job[];
   monthlyStats: CompanyMonthlyStats[];
+  companyCertificateUrl?: string | null;
 }
 
 import { usePathname } from "next/navigation";
@@ -65,7 +66,8 @@ const PublicHeader = () => {
                 pathname === "/"
                   ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
                   : "text-white/60"
-              }`}>
+              }`}
+            >
               Home
               {pathname === "/" && (
                 <span
@@ -81,7 +83,8 @@ const PublicHeader = () => {
                 pathname.startsWith("/company")
                   ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
                   : "text-white/60"
-              }`}>
+              }`}
+            >
               Companies
               {pathname.startsWith("/company") && (
                 <span
@@ -146,6 +149,25 @@ const PhoneIcon = () => (
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
   </svg>
 );
+
+const CertificateIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#9F54FF"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+      <polyline points="13 2 13 9 20 9"></polyline>
+      <path d="M12 15l-2 2 2 2"></path>
+      <path d="M16 15l2 2-2 2"></path>
+    </svg>
+  );
 
 // --- MAIN COMPONENT ---
 export default function CompanyDetailPage({
@@ -238,23 +260,23 @@ export default function CompanyDetailPage({
           {/* Company Banner */}
           <div className="glass-pane flex items-center justify-between p-6 mb-8">
             <div className="flex items-center gap-5">
-                <div className="relative w-20 h-20 flex-shrink-0">
-                    <Image
-                        src={sanitizeLogoUrl(company.logo)}
-                        alt={`${company.name} logo`}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        className="rounded-full"
-                    />
-                </div>
-                <div>
-                    <h1 className="text-[2rem] font-bold text-[#E0E0E0] leading-none">
-                        {company.name}
-                    </h1>
-                    <p className="text-white/60 mt-1">
-                        IT Infrastructure Innovators
-                    </p>
-                </div>
+              <div className="relative w-20 h-20 flex-shrink-0">
+                <Image
+                  src={sanitizeLogoUrl(company.logo)}
+                  alt={`${company.name} logo`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  className="rounded-full"
+                />
+              </div>
+              <div>
+                <h1 className="text-[2rem] font-bold text-[#E0E0E0] leading-none">
+                  {company.name}
+                </h1>
+                <p className="text-white/60 mt-1">
+                  IT Infrastructure Innovators
+                </p>
+              </div>
             </div>
             <button className="bg-[#9F54FF] text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(159,84,255,0.8)]">
               Follow
@@ -327,6 +349,19 @@ export default function CompanyDetailPage({
                     <PhoneIcon />
                     <span className="text-white/80">{company.phone}</span>
                   </div>
+                  {company.companyCertificateUrl && (
+                    <div className="flex items-center gap-4">
+                        <CertificateIcon />
+                        <a
+                        href={company.companyCertificateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-purple-400 hover:underline"
+                        >
+                        View Company Certificate
+                        </a>
+                    </div>
+                  )}
                 </div>
               </div>
 

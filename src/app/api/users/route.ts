@@ -4,6 +4,23 @@ import { prisma } from "@/lib/lib/db";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const unassigned = searchParams.get("unassigned");
+
+    if (unassigned === "true") {
+      const users = await prisma.user.findMany({
+        where: {
+          role: 'COMPANY',
+          company: null,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        }
+      });
+      return NextResponse.json({ success: true, data: users });
+    }
+
     const searchQuery = searchParams.get("search") || "";
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");

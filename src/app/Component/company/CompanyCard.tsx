@@ -12,7 +12,11 @@ const CompanyCard = ({ company }: { company: Company }) => {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center">
             <div className="relative w-12 h-12 mr-4 flex-shrink-0">
-                <img src={company.logo || '/next.svg'} alt={`${company.name} logo`} className="rounded-full w-full h-full object-cover" />
+              <img
+                src={company.logo || "/next.svg"}
+                alt={`${company.name} logo`}
+                className="rounded-full w-full h-full object-cover"
+              />
             </div>
             <div>
               <h3 className="text-xl font-bold text-white">{company.name}</h3>
@@ -29,29 +33,34 @@ const CompanyCard = ({ company }: { company: Company }) => {
         </p>
 
         <div className="grid grid-cols-2 gap-6">
-            <div>
-                <h4 className="text-sm font-medium text-white mb-2">Open Positions</h4>
-                <div className="flex items-center text-2xl font-bold text-white">
-                    <Briefcase className="h-6 w-6 mr-2 text-blue-400" />
-                    <span>{company.jobs?.length ?? 0}</span>
-                </div>
+          <div>
+            <h4 className="text-sm font-medium text-white mb-2">
+              Open Positions
+            </h4>
+            <div className="flex items-center text-2xl font-bold text-white">
+              <Briefcase className="h-6 w-6 mr-2 text-blue-400" />
+              <span>{company.jobs?.length ?? 0}</span>
             </div>
-            <div>
-                <h4 className="text-sm font-medium text-white mb-2">Success Rate</h4>
-                <div className="flex items-center text-2xl font-bold text-white">
-                    {company.successRate !== undefined ? (
-                        <>
-                            <span className={`${company.successRate >= 50 ? 'text-green-400' : 'text-amber-400'}`}>
-                                {company.successRate.toFixed(0)}%
-                            </span>
-                        </>
-                    ) : (
-                        <span className="text-base text-gray-500">N/A</span>
-                    )}
-                </div>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium text-white mb-2">
+              Success Rate
+            </h4>
+            <div className="flex items-center text-2xl font-bold text-white">
+              {company.successRate !== undefined ? (
+                <>
+                  <span
+                    className={`${company.successRate >= 50 ? "text-green-400" : "text-amber-400"}`}
+                  >
+                    {company.successRate.toFixed(0)}%
+                  </span>
+                </>
+              ) : (
+                <span className="text-base text-gray-500">N/A</span>
+              )}
             </div>
+          </div>
         </div>
-
       </div>
     </div>
   );

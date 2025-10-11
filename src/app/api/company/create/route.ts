@@ -21,10 +21,12 @@ export async function POST(req: Request) {
           cookieStore.delete(name, options);
         },
       },
-    }
+    },
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -32,32 +34,26 @@ export async function POST(req: Request) {
 
   try {
     const existingCompany = await prisma.company.findUnique({
-        where: {
-            user_id: user.id,
-        },
+      where: {
+        user_id: user.id,
+      },
     });
 
     if (existingCompany) {
-        return NextResponse.json(
-            { success: false, error: "User can only have one company" },
-            { status: 400 }
-        );
+      return NextResponse.json(
+        { success: false, error: "User can only have one company" },
+        { status: 400 },
+      );
     }
 
     const body = await req.json();
-    const {
-      name,
-      logo,
-      address,
-      phone,
-      description
-    } = body;
+    const { name, logo, address, phone, description, companyCertificateUrl } = body;
 
     // Basic validation
     if (!name || !address || !phone || !description) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -68,6 +64,7 @@ export async function POST(req: Request) {
         address,
         phone,
         description,
+        companyCertificateUrl,
         user_id: user.id,
       },
     });
@@ -79,8 +76,7 @@ export async function POST(req: Request) {
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       { success: false, error: errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

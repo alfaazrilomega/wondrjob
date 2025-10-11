@@ -18,11 +18,7 @@ import CompanyList from "../Component/company/CompanyList";
 import Filters from "../Component/company/Filters";
 
 // Types and Utils
-import {
-  CONFIG,
-  Company,
-  ApiResponse,
-} from "../Component/company/types";
+import { CONFIG, Company, ApiResponse } from "../Component/company/types";
 import { useDebounce } from "../Component/company/useDebounce";
 import { createClient } from "@/lib/supabase/client";
 import { logout } from "@/app/actions/auth";
@@ -123,12 +119,7 @@ export default function CompanyPage() {
         successRate <= filter.maxSuccessRate
       );
     });
-  }, [
-    companies,
-    filter.sort,
-    filter.minSuccessRate,
-    filter.maxSuccessRate,
-  ]);
+  }, [companies, filter.sort, filter.minSuccessRate, filter.maxSuccessRate]);
 
   // --- Handlers ---
   const handleSortChange = (value: string) =>

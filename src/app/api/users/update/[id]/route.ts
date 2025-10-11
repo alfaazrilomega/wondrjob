@@ -12,11 +12,9 @@ interface UserUpdateData {
   date_of_birth?: Date | null;
 }
 
-export async function PUT(
-  request: Request,
-) {
+export async function PUT(request: Request) {
   const url = new URL(request.url);
-  const userId = url.pathname.split('/').pop();
+  const userId = url.pathname.split("/").pop();
   if (!userId) {
     return NextResponse.json(
       { error: "User ID is required." },

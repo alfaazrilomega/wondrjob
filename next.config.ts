@@ -30,6 +30,24 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "systemgroup.com.ua",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "stark.co.uk",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "wvhyhbvcupzysysalhdg.supabase.co",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

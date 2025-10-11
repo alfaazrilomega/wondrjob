@@ -21,6 +21,19 @@ enum UserRole {
   HRD
 }
 
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum WorkStyle {
+  ON_SITE
+  HYBRID
+  REMOTE
+}
+
 model User {
   id            String    @id
   name          String
@@ -35,6 +48,7 @@ model User {
   hrd           HRD?
 
   Admin Admin[]
+  skills Skill[]
 }
 
 model Admin {
@@ -66,7 +80,6 @@ model Society {
   date_of_birth DateTime
   gender        String?
   location      String?
-  skills        String[]
   user_id       String            @unique
   user          User              @relation(fields: [user_id], references: [id])
   portofolio    Portofolio[]
@@ -74,17 +87,18 @@ model Society {
 }
 
 model Company {
-  id           Int                   @id @default(autoincrement())
-  name         String
-  logo         String?
-  address      String
-  phone        String
-  description  String
-  user_id      String                @unique
-  user         User                  @relation(fields: [user_id], references: [id])
-  jobs         AvailablePosition[]
-  monthlyStats CompanyMonthlyStats[]
-  hrds         HRD[]
+  id                    Int                   @id @default(autoincrement())
+  name                  String
+  logo                  String?
+  address               String
+  phone                 String
+  description           String
+  companyCertificateUrl String? 
+  user_id               String                @unique
+  user                  User                  @relation(fields: [user_id], references: [id])
+  jobs                  AvailablePosition[]
+  monthlyStats          CompanyMonthlyStats[]
+  hrds                  HRD[]
 }
 
 model CompanyMonthlyStats {
@@ -98,6 +112,7 @@ model CompanyMonthlyStats {
   @@unique([companyId, month, year]) // Ensure unique entry per company per month/year
 }
 
+// MODIFIED MODEL
 model AvailablePosition {
   id                    Int               @id @default(autoincrement())
   position_name         String
@@ -109,6 +124,13 @@ model AvailablePosition {
   company               Company           @relation(fields: [company_id], references: [id])
   applicants            PositionApplied[]
   embedding             JobEmbedding?
+
+  // Enriched Data Fields
+  jobType               JobType?
+  salaryMin             Int?
+  salaryMax             Int?
+  workStyle             WorkStyle?
+  skills                Skill[]
 
   @@index([company_id])
 }
@@ -171,4 +193,14 @@ model PortfolioEmbedding {
   updatedAt   DateTime @updatedAt
 
   portfolio Portofolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  category  String
+  aliases   String[] @default([])
+
+  users     User[]
+  jobs      AvailablePosition[]
 }

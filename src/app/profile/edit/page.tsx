@@ -15,11 +15,15 @@ export default async function EditProfilePage() {
     redirect("/login");
   }
 
-  const society = await prisma.society.findUnique({
-    where: { user_id: user.id },
+  const profile = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      society: true,
+      skills: true,
+    },
   });
 
-  if (!society) {
+  if (!profile?.society) {
     return (
       <div className="pt-20 text-white text-center">Profile not found.</div>
     );
@@ -41,7 +45,7 @@ export default async function EditProfilePage() {
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="bg-gray-900/50 border border-gray-800 rounded-2xl shadow-2xl p-8">
             <h1 className="text-2xl font-bold text-white mb-6">Edit Profile</h1>
-            <EditProfileForm society={society} />
+            <EditProfileForm profile={profile} />
           </div>
         </div>
       </main>

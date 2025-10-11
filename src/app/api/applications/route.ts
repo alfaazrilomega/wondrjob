@@ -17,7 +17,7 @@ export async function GET() {
         },
       },
       orderBy: {
-        apply_date: 'desc',
+        apply_date: "desc",
       },
     });
     return NextResponse.json({ success: true, data: applications });
