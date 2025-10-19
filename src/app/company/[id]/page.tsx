@@ -151,23 +151,23 @@ const PhoneIcon = () => (
 );
 
 const CertificateIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#9F54FF"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-      <polyline points="13 2 13 9 20 9"></polyline>
-      <path d="M12 15l-2 2 2 2"></path>
-      <path d="M16 15l2 2-2 2"></path>
-    </svg>
-  );
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#9F54FF"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+    <polyline points="13 2 13 9 20 9"></polyline>
+    <path d="M12 15l-2 2 2 2"></path>
+    <path d="M16 15l2 2-2 2"></path>
+  </svg>
+);
 
 // --- MAIN COMPONENT ---
 export default function CompanyDetailPage({
@@ -351,15 +351,15 @@ export default function CompanyDetailPage({
                   </div>
                   {company.companyCertificateUrl && (
                     <div className="flex items-center gap-4">
-                        <CertificateIcon />
-                        <a
+                      <CertificateIcon />
+                      <a
                         href={company.companyCertificateUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-purple-400 hover:underline"
-                        >
+                      >
                         View Company Certificate
-                        </a>
+                      </a>
                     </div>
                   )}
                 </div>

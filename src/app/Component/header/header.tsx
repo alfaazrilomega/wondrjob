@@ -99,9 +99,15 @@ const Header = ({ user }: HeaderProps) => {
             <DropdownMenuContent className="DropdownIndex">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <a href={getProfileLink()}>Profile</a>
-              </DropdownMenuItem>
+              {isAdminPage ? (
+                <DropdownMenuItem>
+                  <a href="/admin/settings">Settings</a>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem>
+                  <a href={getProfileLink()}>Profile</a>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem>
                 <button onClick={handleLogout}>Log Out</button>
               </DropdownMenuItem>

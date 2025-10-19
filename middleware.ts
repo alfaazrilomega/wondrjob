@@ -77,9 +77,54 @@ export async function middleware(request: NextRequest) {
     },
   );
 
+  const isSimulating = request.cookies.get("simulation_mode")?.value === 'true';
+  const simulatedUserId = request.cookies.get("simulated_user_id")?.value;
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (isSimulating && simulatedUserId && user) {
+    // User must be logged in (i.e., an admin) to simulate.
+    const simulatedDbUser = await prisma.user.findUnique({
+      where: { id: simulatedUserId },
+      select: { role: true },
+    });
+
+    if (simulatedDbUser) {
+      // The rest of the middleware will now use the simulated user's role
+      const { role } = simulatedDbUser;
+      const homeURL = new URL("/homepage", request.url);
+
+      // Role-based redirection for the SIMULATED user
+      switch (role) {
+        case "COMPANY":
+          if (!pathname.startsWith("/dashboard/company") && !pathname.startsWith("/company/create")) {
+            return NextResponse.redirect(new URL("/dashboard/company", request.url));
+          }
+          break;
+        case "HRD":
+          if (!pathname.startsWith("/dashboard/hrd")) {
+            return NextResponse.redirect(new URL("/dashboard/hrd", request.url));
+          }
+          break;
+        case "ADMIN": // Should not happen, but as a safeguard
+          if (!pathname.startsWith("/admin")) {
+            return NextResponse.redirect(new URL("/admin", request.url));
+          }
+          break;
+        case "SOCIETY":
+          if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin") || pathname.startsWith("/company")) {
+            return NextResponse.redirect(homeURL);
+          }
+          break;
+        default:
+          return NextResponse.redirect(homeURL);
+      }
+      // If the path is allowed for the simulated role, continue.
+      return response;
+    }
+  }
 
   if (!user) {
     return NextResponse.redirect(new URL("/login", request.url));

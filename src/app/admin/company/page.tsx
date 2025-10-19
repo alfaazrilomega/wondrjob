@@ -356,7 +356,9 @@ export default function CompanyManagementPage() {
     certificateFile?: File | null,
   ) => {
     const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     if (!session) {
       alert("You are not authenticated. Please log in again.");
       return;
@@ -364,7 +366,7 @@ export default function CompanyManagementPage() {
 
     let certificateUrl = null;
     if (certificateFile) {
-      const fileName = `${Date.now()}.${certificateFile.name.split('.').pop()}`;
+      const fileName = `${Date.now()}.${certificateFile.name.split(".").pop()}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("company-certificates")
         .upload(fileName, certificateFile, {
@@ -423,7 +425,9 @@ export default function CompanyManagementPage() {
     if (!selectedCompany) return;
 
     const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     if (!session) {
       alert("You are not authenticated. Please log in again.");
       return;
@@ -432,7 +436,7 @@ export default function CompanyManagementPage() {
     let certificateUrl = formData.companyCertificateUrl;
 
     if (certificateFile) {
-      const fileName = `${Date.now()}.${certificateFile.name.split('.').pop()}`;
+      const fileName = `${Date.now()}.${certificateFile.name.split(".").pop()}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("company-certificates")
         .upload(fileName, certificateFile, {

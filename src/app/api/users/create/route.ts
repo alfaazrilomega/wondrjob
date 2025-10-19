@@ -128,7 +128,6 @@ export async function POST(request: Request) {
               date_of_birth: date_of_birth
                 ? new Date(date_of_birth)
                 : new Date(),
-              skills: [],
             },
           });
           break;
@@ -137,25 +136,25 @@ export async function POST(request: Request) {
           await tx.company.create({
             data: {
               user_id: userId,
-              name: companyName,
-              address: companyAddress,
-              phone: companyPhone,
-              description: companyDescription,
+              name: companyName!,
+              address: companyAddress!,
+              phone: companyPhone!,
+              description: companyDescription!,
             },
           });
           break;
 
         case UserRole.HRD:
           const companyExists = await tx.company.findUnique({
-            where: { id: parseInt(companyId) },
+            where: { id: parseInt(companyId!) },
           });
           if (!companyExists) {
-            throw new Error(`Company with ID ${companyId} not found.`);
+            throw new Error(`Company with ID ${companyId!} not found.`);
           }
           await tx.hRD.create({
             data: {
               user_id: userId,
-              company_id: parseInt(companyId),
+              company_id: parseInt(companyId!),
             },
           });
           break;

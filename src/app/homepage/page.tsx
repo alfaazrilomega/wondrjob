@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useMemo, useCallback } from "react";
-
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import AnimatedButton from "@/components/ui/animatedButton";
 
 const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
@@ -11,6 +12,7 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 });
 
 export default function Page() {
+  const router = useRouter();
   // Memoize AOS configuration to prevent recreation on every render
   const aosConfig = useMemo(
     () => ({
@@ -77,6 +79,14 @@ export default function Page() {
     [],
   );
 
+  const handleDocClick = () => {
+    router.push("/stat-chart");
+  };
+
+  const handleStartClick = () => {
+    router.push("/login");
+  };
+
   return (
     <div className="container">
       <div className="body">
@@ -118,12 +128,12 @@ export default function Page() {
                 data-aos-duration="3000"
                 className="btns"
               >
-                <a href="/stat-chart" className="btn-get-started">
+                <AnimatedButton onClick={handleDocClick}>
                   Documentation
-                </a>
-                <a href="/sign-in" className="btn-signing-main">
+                </AnimatedButton>
+                <AnimatedButton onClick={handleStartClick}>
                   Start
-                </a>
+                </AnimatedButton>
               </div>
             </div>
           </div>

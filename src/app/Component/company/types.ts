@@ -21,6 +21,11 @@ export interface Company {
     jobs: number;
   };
   jobs: Job[];
+  monthlyStats?: {
+    year: number;
+    month: number;
+    successRate: number;
+  }[];
   // You might add successRate here later if fetched or calculated
   successRate?: number; // Added for chart data and sorting by success rate
   historicalSuccessRates?: ChartDataPoint[]; // Added for line chart data

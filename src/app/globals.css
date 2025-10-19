@@ -369,23 +369,7 @@ header ul a {
   color: white;
 }
 
-.btn-signing-main {
-  text-decoration: none;
-  background-color: lightgray;
-  color: black;
-  padding: 0.6rem 2.5rem;
-  border-radius: 50px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  text-align: center;
-}
 
-.btn-signing-main:hover {
-  background-color: gray;
-}
 
 .robot-3d {
   position: absolute;
@@ -569,7 +553,7 @@ body[data-path="/forgot-password"] header {
   padding: 40px;
   padding-top: 120px;
   overflow-y: auto;
-  margin-left: 25px;
+  margin-left: 250px;
 }
 
 .admin-dashboard .retractable-header + .sidebar {
@@ -724,5 +708,8 @@ body[data-path="/forgot-password"] header {
 }
 
 .avatar-placeholder:hover {
+  box-shadow: 0 0 15px rgba(159, 84, 255, 0.8);
+}
+vatar-placeholder:hover {
   box-shadow: 0 0 15px rgba(159, 84, 255, 0.8);
 }

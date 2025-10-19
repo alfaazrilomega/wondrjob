@@ -5,12 +5,7 @@ import { useRouter } from "next/navigation";
 import { JobPostingForm } from "../JobPostingForm";
 import "../styles.css";
 import { JobFormData } from "../types";
-
-interface Company {
-  id: number;
-  name: string;
-  logo: string | null;
-}
+import { Company } from "@prisma/client";
 
 const CreateJobPostingPage = () => {
   const router = useRouter();
@@ -46,7 +41,7 @@ const CreateJobPostingPage = () => {
     try {
       const dataToSave = {
         ...formData,
-        skills: formData.skills?.map(skill => skill.id),
+        skills: formData.skills?.map((skill) => skill.id),
       };
       const response = await fetch("/api/jobs", {
         method: "POST",

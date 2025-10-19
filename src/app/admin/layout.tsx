@@ -19,12 +19,12 @@ export default function AdminLayout({
   ];
 
   const simulationItems = [
-    { href: "#", label: "Simulate: HRD View" },
-    { href: "#", label: "Simulate: Company View" },
-    { href: "#", label: "Simulate: Society View" },
+    { href: "/admin/simulate/hrd", label: "Simulate: HRD View" },
+    { href: "/admin/simulate/company", label: "Simulate: Company View" },
+    { href: "/admin/simulate/society", label: "Simulate: Society View" },
   ];
 
-  const settingsItem = { href: "#", label: "Settings" };
+  const settingsItem = { href: "/admin/settings", label: "Settings" };
 
   return (
     <div className="admin-dashboard">

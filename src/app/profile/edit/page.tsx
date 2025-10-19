@@ -1,10 +1,10 @@
+import React from "react";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/lib/db";
-import { EditProfileForm } from "./form";
+import { redirect } from "next/navigation";
+import NewEditProfilePage from "./NewEditProfilePage";
 
-// This is the main page, a server component that fetches data
-// and passes it to the client component form.
+// --- Main Page Server Component ---
 export default async function EditProfilePage() {
   const supabase = await createClient();
   const {
@@ -15,40 +15,32 @@ export default async function EditProfilePage() {
     redirect("/login");
   }
 
-  const profile = await prisma.user.findUnique({
-    where: { id: user.id },
-    include: {
-      society: true,
-      skills: true,
+  const userProfile = await prisma.society.findUnique({
+    where: { user_id: user.id },
+    select: {
+      id: true,
+      user_id: true,
+      name: true,
+      headline: true,
+      location: true,
+      phone: true,
+      address: true,
+      gender: true,
+      about: true,
+      profile_picture: true,
+      user: {
+        select: {
+          skills: true,
+        },
+      },
     },
   });
 
-  if (!profile?.society) {
-    return (
-      <div className="pt-20 text-white text-center">Profile not found.</div>
-    );
+  if (!userProfile) {
+    // Or redirect to a creation page
+    return <div className="text-center">Profile not found.</div>;
   }
 
-  return (
-    <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            body { background-color: #0E0E10; color: #D9ECFF; }
-            .form-input, .form-select { @apply w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300; }
-            .form-label { @apply block text-sm font-medium text-gray-400 mb-2; }
-            select option { background-color: #0E0E10; color: #D9ECFF; }
-        `,
-        }}
-      />
-      <main className="flex-grow pt-12">
-        <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-gray-900/50 border border-gray-800 rounded-2xl shadow-2xl p-8">
-            <h1 className="text-2xl font-bold text-white mb-6">Edit Profile</h1>
-            <EditProfileForm profile={profile} />
-          </div>
-        </div>
-      </main>
-    </>
-  );
+  // Pass the initial data to the client component form
+  return <NewEditProfilePage userProfile={userProfile} />;
 }

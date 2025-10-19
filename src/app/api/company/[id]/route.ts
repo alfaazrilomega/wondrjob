@@ -7,7 +7,8 @@ export async function GET(
   context: { params: { id: string } },
 ) {
   try {
-    const id = parseInt(context.params.id, 10);
+    const { id: idString } = context.params;
+    const id = parseInt(idString, 10);
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -41,7 +42,8 @@ export async function PUT(
   context: { params: { id: string } },
 ) {
   try {
-    const id = parseInt(context.params.id, 10);
+    const { id: idString } = context.params;
+    const id = parseInt(idString, 10);
     if (isNaN(id)) {
       return NextResponse.json(
         { error: "Invalid company ID" },

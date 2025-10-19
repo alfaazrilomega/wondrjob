@@ -3,7 +3,7 @@ import { prisma } from "@/lib/lib/db";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get('search') || '';
+  const query = searchParams.get("search") || "";
 
   if (!query) {
     return NextResponse.json({ success: true, data: [] });
@@ -13,11 +13,11 @@ export async function GET(request: Request) {
     const skills = await prisma.skill.findMany({
       where: {
         OR: [
-          { name: { contains: query, mode: 'insensitive' } },
-          { aliases: { has: query.toLowerCase() } }
-        ]
+          { name: { contains: query, mode: "insensitive" } },
+          { aliases: { has: query.toLowerCase() } },
+        ],
       },
-      take: 10
+      take: 10,
     });
     return NextResponse.json({ success: true, data: skills });
   } catch (error) {

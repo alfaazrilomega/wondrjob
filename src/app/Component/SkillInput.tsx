@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 interface Skill {
   id: number;
@@ -13,14 +13,17 @@ interface SkillInputProps {
 }
 
 const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<Skill[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
@@ -47,7 +50,7 @@ const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
           setIsDropdownOpen(true);
         }
       } catch (error) {
-        console.error('Failed to fetch skills', error);
+        console.error("Failed to fetch skills", error);
       }
     };
 
@@ -59,25 +62,40 @@ const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
   }, [inputValue]);
 
   const addSkill = (skill: Skill) => {
-    if (!skills.some(s => s.id === skill.id)) {
+    if (!skills.some((s) => s.id === skill.id)) {
       setSkills([...skills, skill]);
     }
-    setInputValue('');
+    setInputValue("");
     setIsDropdownOpen(false);
   };
 
   const removeSkill = (skillToRemove: Skill) => {
-    setSkills(skills.filter(skill => skill.id !== skillToRemove.id));
+    setSkills(skills.filter((skill) => skill.id !== skillToRemove.id));
   };
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="glass-pane p-3 rounded-lg" style={{backgroundColor: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(159, 84, 255, 0.2)", backdropFilter: "blur(10px)", borderRadius: "10px"}}>
+      <div
+        className="glass-pane p-3 rounded-lg"
+        style={{
+          backgroundColor: "rgba(26, 26, 46, 0.5)",
+          border: "1px solid rgba(159, 84, 255, 0.2)",
+          backdropFilter: "blur(10px)",
+          borderRadius: "10px",
+        }}
+      >
         <div className="tag-display-area min-h-[2.5rem] flex flex-wrap items-center gap-2 pb-2">
-          {skills.map(skill => (
-            <div key={skill.id} className="skill-tag bg-purple-600/50 border border-purple-500/50 text-purple-200 px-3 py-1 rounded-full flex items-center gap-2 text-sm">
+          {skills.map((skill) => (
+            <div
+              key={skill.id}
+              className="skill-tag bg-purple-600/50 border border-purple-500/50 text-purple-200 px-3 py-1 rounded-full flex items-center gap-2 text-sm"
+            >
               {skill.name}
-              <button type="button" onClick={() => removeSkill(skill)} className="text-purple-300 hover:text-white focus:outline-none">
+              <button
+                type="button"
+                onClick={() => removeSkill(skill)}
+                className="text-purple-300 hover:text-white focus:outline-none"
+              >
                 &times;
               </button>
             </div>
@@ -87,7 +105,7 @@ const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
           <input
             type="text"
             value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
             onFocus={() => {
               if (suggestions.length > 0) {
                 setIsDropdownOpen(true);
@@ -99,9 +117,17 @@ const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
         </div>
       </div>
       {isDropdownOpen && suggestions.length > 0 && (
-        <div className="absolute z-10 w-full mt-2 p-2 rounded-lg border shadow-lg" style={{backgroundColor: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(159, 84, 255, 0.2)", backdropFilter: "blur(10px)", borderRadius: "10px"}}>
+        <div
+          className="absolute z-10 w-full mt-2 p-2 rounded-lg border shadow-lg"
+          style={{
+            backgroundColor: "rgba(26, 26, 46, 0.5)",
+            border: "1px solid rgba(159, 84, 255, 0.2)",
+            backdropFilter: "blur(10px)",
+            borderRadius: "10px",
+          }}
+        >
           <ul>
-            {suggestions.map(suggestion => (
+            {suggestions.map((suggestion) => (
               <li
                 key={suggestion.id}
                 onClick={() => addSkill(suggestion)}

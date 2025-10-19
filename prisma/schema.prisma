@@ -46,6 +46,7 @@ model User {
   society       Society?
   company       Company?
   hrd           HRD?
+  twoFactorEnabled Boolean @default(false)
 
   Admin Admin[]
   skills Skill[]
@@ -80,6 +81,8 @@ model Society {
   date_of_birth DateTime
   gender        String?
   location      String?
+  about         String?
+  profile_picture String?
   user_id       String            @unique
   user          User              @relation(fields: [user_id], references: [id])
   portofolio    Portofolio[]
@@ -203,4 +206,18 @@ model Skill {
 
   users     User[]
   jobs      AvailablePosition[]
+}
+
+model Setting {
+  key   String @id
+  value Json
+}
+
+model RolePermission {
+  id         Int      @id @default(autoincrement())
+  role       UserRole
+  permission String
+  enabled    Boolean  @default(false)
+
+  @@unique([role, permission])
 }

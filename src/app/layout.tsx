@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "@/lib/registry"; // Import the registry
 import ConditionalHeader from "@/app/Component/header/ConditionalHeader";
+import SimulationBanner from "@/app/Component/SimulationBanner";
 import "./material-symbols.css";
 import { getUser } from "./actions/auth";
 
@@ -34,6 +35,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StyledComponentsRegistry>
+          <SimulationBanner />
           <ConditionalHeader user={user} />
           {children}
         </StyledComponentsRegistry>

@@ -15,29 +15,38 @@ export async function updateUserProfile(formData: FormData) {
     return { error: "You must be logged in to update your profile." };
   }
 
+  // Get all the text-based fields
   const name = formData.get("name") as string;
+  const headline = formData.get("headline") as string;
+  const about = formData.get("about") as string;
+  const location = formData.get("location") as string;
   const phone = formData.get("phone") as string;
   const address = formData.get("address") as string;
-  const location = formData.get("location") as string;
-  const gender = formData.get("gender") as string;
-  const skills = formData.get("skills") as string; // This is a JSON string of skill IDs
-  const headline = formData.get("headline") as string;
+  const skills = formData.get("skills") as string; // JSON string of skill IDs
+  const profilePictureUrl = formData.get("profile_picture_url") as string | null;
 
   const skillIds = skills ? JSON.parse(skills) : [];
 
   try {
+    const updateData: any = {
+        name,
+        headline,
+        about,
+        location,
+        phone,
+        address,
+    };
+
+    // Only add the profile picture URL if a new one was uploaded
+    if (profilePictureUrl) {
+        updateData.profile_picture = profilePictureUrl;
+    }
+
     await prisma.user.update({
       where: { id: user.id },
       data: {
         society: {
-          update: {
-            name,
-            phone,
-            address,
-            location,
-            gender,
-            headline,
-          },
+          update: updateData,
         },
         skills: {
           set: skillIds.map((id: number) => ({ id })),
@@ -50,8 +59,11 @@ export async function updateUserProfile(formData: FormData) {
   }
 
   revalidatePath("/profile");
+  revalidatePath("/profile/edit");
   redirect("/profile");
 }
+
+
 
 export async function getFullUserProfile() {
   const supabase = await createClient();

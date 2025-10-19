@@ -94,7 +94,7 @@ export default function CompanyPage() {
 
   // --- Memoized Data Filtering ---
   const filteredData = useMemo(() => {
-    let data = companies.map((company) => {
+    const data = companies.map((company) => {
       let latestSuccessRate = 0;
       if (company.monthlyStats && company.monthlyStats.length > 0) {
         const sortedStats = [...company.monthlyStats].sort((a, b) => {

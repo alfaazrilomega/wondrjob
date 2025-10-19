@@ -15,6 +15,28 @@ type Job = {
   };
 };
 
+const StatusBadge = ({ status }: { status: string }) => {
+  const baseClasses = "px-3 py-1 text-xs font-semibold rounded-full";
+  let statusClasses = "";
+
+  switch (status) {
+    case "Active":
+      statusClasses = "bg-teal-500/10 border border-teal-500/30 text-teal-400";
+      break;
+    case "Scheduled":
+      statusClasses =
+        "bg-yellow-400/10 border border-yellow-400/30 text-yellow-400";
+      break;
+    case "Closed":
+      statusClasses = "bg-gray-500/10 border border-gray-500/30 text-gray-400";
+      break;
+    default:
+      return null;
+  }
+
+  return <span className={`${baseClasses} ${statusClasses}`}>{status}</span>;
+};
+
 const Modal = ({
   title,
   isOpen,
@@ -172,7 +194,9 @@ const JobPostingsClient = () => {
                     <td className="p-4">
                       {new Date(job.submission_end_date).toLocaleDateString()}
                     </td>
-                    <td className="p-4">{job.status}</td>
+                    <td className="p-4">
+                      <StatusBadge status={job.status} />
+                    </td>
                     <td className="p-4 flex gap-4 items-center">
                       <Link href={`/admin/job-postings/edit/${job.id}`}>
                         <button className="px-4 py-1 rounded-lg border-2 border-[#9F54FF] text-[#9F54FF] font-semibold transition-all duration-300 hover:bg-[#9F54FF] hover:text-white">

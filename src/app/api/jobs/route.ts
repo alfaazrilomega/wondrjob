@@ -13,7 +13,22 @@ export async function GET(request: NextRequest) {
         company: true,
       },
     });
-    return NextResponse.json({ success: true, data: jobs });
+
+    const now = new Date();
+    const jobsWithStatus = jobs.map(job => {
+        let status = 'Scheduled';
+        const startDate = new Date(job.submission_start_date);
+        const endDate = new Date(job.submission_end_date);
+
+        if (now >= startDate && now <= endDate) {
+            status = 'Active';
+        } else if (now > endDate) {
+            status = 'Closed';
+        }
+        return { ...job, status };
+    });
+
+    return NextResponse.json({ success: true, data: jobsWithStatus });
   } catch (error) {
     console.error("GET_JOBS_ERROR", error);
     return new NextResponse("Internal Server Error", { status: 500 });

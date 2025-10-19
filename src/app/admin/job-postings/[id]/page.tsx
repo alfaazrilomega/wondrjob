@@ -104,23 +104,23 @@ const XIcon = () => (
   </svg>
 );
 const CertificateIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#9F54FF"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-      <polyline points="13 2 13 9 20 9"></polyline>
-      <path d="M12 15l-2 2 2 2"></path>
-      <path d="M16 15l2 2-2 2"></path>
-    </svg>
-  );
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#9F54FF"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+    <polyline points="13 2 13 9 20 9"></polyline>
+    <path d="M12 15l-2 2 2 2"></path>
+    <path d="M16 15l2 2-2 2"></path>
+  </svg>
+);
 
 // --- TYPES ---
 type Applicant = {
@@ -148,7 +148,7 @@ type JobData = {
   salaryMin: number | null;
   salaryMax: number | null;
   workStyle: WorkStyle | null;
-  skills: string[];
+  skills: { id: number; name: string }[];
   company: Company;
   applicants: Applicant[];
 };
@@ -176,16 +176,18 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const GlassCard = React.forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string }>(({ children, className = "" }, ref) => (
-    <div
-      ref={ref}
-      className={`bg-gray-900/50 backdrop-blur-lg border border-purple-500/20 rounded-xl shadow-lg ${className}`}
-    >
-      {children}
-    </div>
-  ));
+const GlassCard = React.forwardRef<
+  HTMLDivElement,
+  { children: React.ReactNode; className?: string }
+>(({ children, className = "" }, ref) => (
+  <div
+    ref={ref}
+    className={`bg-gray-900/50 backdrop-blur-lg border border-purple-500/20 rounded-xl shadow-lg ${className}`}
+  >
+    {children}
+  </div>
+));
 GlassCard.displayName = "GlassCard";
-
 
 // --- MAIN COMPONENT ---
 export default function JobPostingDetailPage() {
@@ -231,7 +233,7 @@ export default function JobPostingDetailPage() {
   }, [id]);
 
   const handleViewApplicantsClick = () => {
-    applicantsCardRef.current?.scrollIntoView({ behavior: "smooth" });
+    router.push(`/admin/job-postings/${id}/applicants`);
   };
 
   const handleEditClick = () => {
@@ -280,7 +282,7 @@ export default function JobPostingDetailPage() {
               onClick={handleViewApplicantsClick}
               className="px-5 py-2 rounded-lg border-2 border-purple-500 text-purple-400 font-semibold transition-all duration-300 hover:bg-purple-500 hover:text-white"
             >
-              View Applicants
+              View All Applicants
             </button>
             <button
               onClick={handleEditClick}
@@ -336,10 +338,10 @@ export default function JobPostingDetailPage() {
               <div className="flex flex-wrap gap-3">
                 {job.skills.map((skill) => (
                   <span
-                    key={skill}
+                    key={skill.id}
                     className="px-4 py-1.5 text-sm bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/30"
                   >
-                    {skill}
+                    {skill.name}
                   </span>
                 ))}
               </div>
@@ -369,28 +371,28 @@ export default function JobPostingDetailPage() {
               {job.company.description}
             </p>
             {job.company.companyCertificateUrl && (
-                <div className="mt-4">
-                    <a
-                    href={job.company.companyCertificateUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-400 hover:underline flex items-center gap-2"
-                    >
-                    <CertificateIcon />
-                    View Company Certificate
-                    </a>
-                </div>
+              <div className="mt-4">
+                <a
+                  href={job.company.companyCertificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-purple-400 hover:underline flex items-center gap-2"
+                >
+                  <CertificateIcon />
+                  View Company Certificate
+                </a>
+              </div>
             )}
           </GlassCard>
 
           {/* Applicants Card */}
           <GlassCard className="p-6" ref={applicantsCardRef}>
             <h2 className="text-2xl font-bold text-white mb-4">
-              Applicants ({job.applicants.length})
+              Recent Applicants ({job.applicants.length})
             </h2>
             <div className="space-y-4">
               {job.applicants.length > 0 ? (
-                job.applicants.map((applicant, index) => (
+                job.applicants.slice(0, 3).map((applicant, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between"

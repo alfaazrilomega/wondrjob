@@ -9,14 +9,14 @@ export async function GET(request: Request) {
     if (unassigned === "true") {
       const users = await prisma.user.findMany({
         where: {
-          role: 'COMPANY',
+          role: "COMPANY",
           company: null,
         },
         select: {
           id: true,
           name: true,
           email: true,
-        }
+        },
       });
       return NextResponse.json({ success: true, data: users });
     }
