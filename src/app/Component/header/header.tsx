@@ -36,7 +36,7 @@ const Header = ({ user }: HeaderProps) => {
 
   const handleLogout = async () => {
     await logout();
-    router.refresh();
+    router.push("/");
   };
 
   const getProfileLink = () => {

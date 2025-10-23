@@ -1,7 +1,5 @@
-export interface Skill {
-  id: number;
-  name: string;
-}
+import { Skill } from "@prisma/client";
+export type { Skill };
 
 export interface Job {
   id: number;
@@ -11,10 +9,10 @@ export interface Job {
   description: string;
   submission_start_date: string;
   submission_end_date: string;
-  jobType?: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
+  jobType?: "FULL_TIME" | "PART_TIME" | "CONTRACT" | "INTERNSHIP";
   salaryMin?: number;
   salaryMax?: number;
-  workStyle?: 'ON_SITE' | 'HYBRID' | 'REMOTE';
+  workStyle?: "ON_SITE" | "HYBRID" | "REMOTE";
   skills?: Skill[];
 }
 
@@ -25,9 +23,9 @@ export interface JobFormData {
   description: string;
   submission_start_date: string;
   submission_end_date: string;
-  jobType?: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
+  jobType?: "FULL_TIME" | "PART_TIME" | "CONTRACT" | "INTERNSHIP";
   salaryMin?: number;
   salaryMax?: number;
-  workStyle?: 'ON_SITE' | 'HYBRID' | 'REMOTE';
+  workStyle?: "ON_SITE" | "HYBRID" | "REMOTE";
   skills?: Skill[];
 }

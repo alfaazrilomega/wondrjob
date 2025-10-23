@@ -10,7 +10,7 @@ export async function GET() {
             user: true,
           },
         },
-        availablePosition: {
+        position: {
           include: {
             company: true,
           },

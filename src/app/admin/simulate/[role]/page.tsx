@@ -39,17 +39,12 @@ async function getUsers(role: string) {
   }));
 }
 
-// Define a more explicit interface for the page props
-interface SimulateUserSelectionPageProps {
-  params: {
-    role: string;
-  };
-}
-
-export default async function SimulateUserSelectionPage(
-  props: SimulateUserSelectionPageProps,
-) {
-  const { role } = props.params;
+export default async function SimulateUserSelectionPage({
+  params,
+}: {
+  params: Promise<{ role: string }>;
+}) {
+  const { role } = await params;
   const users = await getUsers(role);
 
   return <SimulateUserSelectionClient users={users} />;

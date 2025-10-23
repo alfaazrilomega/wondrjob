@@ -4,8 +4,53 @@ import { prisma } from "@/lib/lib/db";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const companyId = searchParams.get("companyId");
+  const jobId = searchParams.get("id"); // Check for job ID
 
   try {
+    // If a specific job ID is provided, fetch that job
+    if (jobId) {
+      const job = await prisma.availablePosition.findUnique({
+        where: { id: parseInt(jobId) },
+        include: {
+          company: true,
+          skills: true, // Also include skills as they are used on the page
+        },
+      });
+
+      if (!job) {
+        return NextResponse.json(
+          { success: false, error: "Job not found" },
+          { status: 404 },
+        );
+      }
+
+      // You might want to format the single job data similarly to the list
+      const now = new Date();
+      let status = "Scheduled";
+      const startDate = new Date(job.submission_start_date);
+      const endDate = new Date(job.submission_end_date);
+
+      if (now >= startDate && now <= endDate) {
+        status = "Active";
+      } else if (now > endDate) {
+        status = "Closed";
+      }
+
+      const jobWithStatus = { ...job, status };
+
+      // The frontend expects required_skills as an array of strings (skill names)
+      // but the query returns an array of skill objects. Let's transform it.
+      const transformedJob = {
+        ...jobWithStatus,
+        job_type: jobWithStatus.jobType,
+        salary: `${jobWithStatus.salaryMin} - ${jobWithStatus.salaryMax}`,
+        required_skills: job.skills.map((skill) => skill.name),
+      };
+
+      return NextResponse.json({ success: true, data: transformedJob });
+    }
+
+    // Existing logic for fetching multiple jobs
     const whereClause = companyId ? { company_id: parseInt(companyId) } : {};
     const jobs = await prisma.availablePosition.findMany({
       where: whereClause,
@@ -15,17 +60,17 @@ export async function GET(request: NextRequest) {
     });
 
     const now = new Date();
-    const jobsWithStatus = jobs.map(job => {
-        let status = 'Scheduled';
-        const startDate = new Date(job.submission_start_date);
-        const endDate = new Date(job.submission_end_date);
+    const jobsWithStatus = jobs.map((job) => {
+      let status = "Scheduled";
+      const startDate = new Date(job.submission_start_date);
+      const endDate = new Date(job.submission_end_date);
 
-        if (now >= startDate && now <= endDate) {
-            status = 'Active';
-        } else if (now > endDate) {
-            status = 'Closed';
-        }
-        return { ...job, status };
+      if (now >= startDate && now <= endDate) {
+        status = "Active";
+      } else if (now > endDate) {
+        status = "Closed";
+      }
+      return { ...job, status };
     });
 
     return NextResponse.json({ success: true, data: jobsWithStatus });

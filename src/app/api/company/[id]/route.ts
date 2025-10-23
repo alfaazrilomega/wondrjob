@@ -4,10 +4,10 @@ import { prisma } from "@/lib/lib/db";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id: idString } = context.params;
+    const { id: idString } = await params;
     const id = parseInt(idString, 10);
 
     if (isNaN(id)) {
@@ -39,10 +39,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  context: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id: idString } = context.params;
+    const { id: idString } = await params;
     const id = parseInt(idString, 10);
     if (isNaN(id)) {
       return NextResponse.json(
@@ -52,7 +52,8 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { name, logo, address, phone, description, companyCertificateUrl } = body;
+    const { name, logo, address, phone, description, companyCertificateUrl } =
+      body;
 
     const updatedCompany = await prisma.company.update({
       where: { id },

@@ -22,24 +22,45 @@ export async function updateUserProfile(formData: FormData) {
   const location = formData.get("location") as string;
   const phone = formData.get("phone") as string;
   const address = formData.get("address") as string;
-  const skills = formData.get("skills") as string; // JSON string of skill IDs
-  const profilePictureUrl = formData.get("profile_picture_url") as string | null;
+  const occupation = formData.get("occupation") as string;
+  const social_media_url = formData.get("social_media_url") as string;
+  const working_papers_url = formData.get("working_papers_url") as string;
+  const skills = formData.get("skills") as string;
+  const profilePictureUrl = formData.get("profile_picture_url") as
+    | string
+    | null;
 
   const skillIds = skills ? JSON.parse(skills) : [];
 
   try {
-    const updateData: any = {
-        name,
-        headline,
-        about,
-        location,
-        phone,
-        address,
+    type SocietyUpdate = {
+      name?: string;
+      headline?: string;
+      about?: string;
+      location?: string;
+      phone?: string;
+      address?: string;
+      occupation?: string;
+      social_media_url?: string;
+      working_papers_url?: string;
+      profile_picture?: string;
+    };
+
+    const updateData: SocietyUpdate = {
+      name,
+      headline,
+      about,
+      location,
+      phone,
+      address,
+      occupation,
+      social_media_url,
+      working_papers_url,
     };
 
     // Only add the profile picture URL if a new one was uploaded
     if (profilePictureUrl) {
-        updateData.profile_picture = profilePictureUrl;
+      updateData.profile_picture = profilePictureUrl;
     }
 
     await prisma.user.update({
@@ -63,8 +84,6 @@ export async function updateUserProfile(formData: FormData) {
   redirect("/profile");
 }
 
-
-
 export async function getFullUserProfile() {
   const supabase = await createClient();
   const {
@@ -78,6 +97,10 @@ export async function getFullUserProfile() {
   try {
     const userProfile = await prisma.user.findUnique({
       where: { id: user.id },
+      include: {
+        society: true,
+        skills: true,
+      },
     });
     return userProfile;
   } catch (error) {

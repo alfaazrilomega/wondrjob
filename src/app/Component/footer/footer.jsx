@@ -4,7 +4,7 @@ import { workgroupId } from "three/tsl";
 import { tree } from "next/dist/build/templates/app-page";
 import UIHOVER from "@/app/Component/HoverPath/Hover";
 
-const footer = () => {
+const Footer = () => {
   return (
     <div>
       <div className="left">
@@ -18,4 +18,4 @@ const footer = () => {
   );
 };
 
-export default footer;
+export default Footer;

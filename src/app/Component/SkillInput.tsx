@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-
-interface Skill {
-  id: number;
-  name: string;
-}
+import { Skill } from "@prisma/client";
 
 interface SkillInputProps {
   skills: Skill[];

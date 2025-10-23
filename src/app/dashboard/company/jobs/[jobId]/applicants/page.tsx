@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import type { PositionApplied, Society } from "@prisma/client";
 import Loader from "@/app/Component/LoadingAnimation/Loading";
 
-// Define a more specific type for the applicants
-type Applicant = PositionApplied & {
-  society: Society;
+// Local types to avoid importing prisma client model types which may vary by
+// generation. We only include the fields used in this UI.
+type Applicant = {
+  id: number;
+  apply_date: string | Date;
+  status: string;
+  society: { id: number; name: string };
 };
 
 export default function JobApplicantsPage() {

@@ -16,7 +16,7 @@ interface HealthCheckResponse {
 export async function GET(): Promise<NextResponse<HealthCheckResponse>> {
   try {
     // Test connection first
-    const connectionResult = await testDatabaseConnection(1);
+    const connectionResult = await testDatabaseConnection();
 
     if (!connectionResult.success) {
       return NextResponse.json(

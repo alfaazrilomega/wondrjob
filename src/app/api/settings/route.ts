@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
 // Helper function to get admin user
-async function getAdminUser(request: NextRequest) {
+async function getAdminUser(_request: NextRequest) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,13 +13,12 @@ async function getAdminUser(request: NextRequest) {
     {
       cookies: {
         async get(name: string) {
-          const cookie = await cookieStore.get(name);
-          return cookie?.value;
+          return (await cookieStore).get(name)?.value;
         },
         async set(name: string, value: string, options: CookieOptions) {
           try {
-            await cookieStore.set({ name, value, ...options });
-          } catch (error) {
+            (await cookieStore).set({ name, value, ...options });
+          } catch {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
@@ -27,15 +26,15 @@ async function getAdminUser(request: NextRequest) {
         },
         async remove(name: string, options: CookieOptions) {
           try {
-            await cookieStore.set({ name, value: "", ...options });
-          } catch (error) {
+            (await cookieStore).set({ name, value: "", ...options });
+          } catch {
             // The `delete` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
           }
         },
       },
-    }
+    },
   );
   const {
     data: { user },

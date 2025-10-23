@@ -1,10 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = () => {
+type CardProps = {
+  children?: React.ReactNode;
+  /** additional class names applied to the inner .card element (useful to toggle flexible sizing) */
+  cardClassName?: string;
+};
+
+const Card: React.FC<CardProps> = ({ children, cardClassName }) => {
   return (
     <StyledWrapper>
-      <div className="card">
+      <div className={`card ${cardClassName ?? ""}`}>
         <div className="background"></div>
         <div className="logo">
           <svg
@@ -67,6 +73,8 @@ const Card = () => {
           </span>
         </div>
         <div className="box box4" />
+        {/* slot for consumers to render arbitrary children inside the card */}
+        {children ? <div className="card-children">{children}</div> : null}
       </div>
     </StyledWrapper>
   );
@@ -235,6 +243,22 @@ const StyledWrapper = styled.div`
     transform: translate(0, 0);
     inset-block-end: 20px;
     inset-inline-end: 20px;
+  }
+
+  /* allow consumers to opt-out of fixed sizing by adding 'flexible' to cardClassName */
+  .card.flexible {
+    inline-size: auto;
+    block-size: auto;
+    min-inline-size: 0;
+    min-block-size: 0;
+    padding: 0.25rem;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .card-children {
+    position: relative;
+    z-index: 3;
   }
 `;
 

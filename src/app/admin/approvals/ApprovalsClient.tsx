@@ -122,7 +122,6 @@ const ApprovalsClient = () => {
       });
 
       if (response.ok) {
-        const updatedApp = await response.json();
         setApplications((prevApps) =>
           prevApps.map((app) =>
             app.id === selectedApp.id ? { ...app, status: newStatus } : app,

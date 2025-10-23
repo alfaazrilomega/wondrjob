@@ -1,15 +1,11 @@
-import React from 'react';
+import React from "react";
 
+// This layout is required by Next.js.
+// The page itself at /profile/page.tsx handles its own layout and styling.
 export default function ProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="bg-[#101018] min-h-screen text-white">
-      <main className="container mx-auto py-12 px-4">
-        {children}
-      </main>
-    </div>
-  );
+  return <>{children}</>;
 }

@@ -5,12 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { JobPostingForm } from "../../JobPostingForm";
 import "../../styles.css";
 import { Job, JobFormData } from "../../types";
-
-interface Company {
-  id: number;
-  name: string;
-  logo: string | null;
-}
+import { Company } from "@prisma/client";
 
 const EditJobPostingPage = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -34,7 +29,8 @@ const EditJobPostingPage = () => {
           ]);
 
           const jobData = await jobRes.json();
-          const companiesData = await companiesRes.json();
+          const companiesData: { success: boolean; data: Company[] } =
+            await companiesRes.json();
 
           if (companiesData.success) {
             setCompanies(companiesData.data);
@@ -91,7 +87,7 @@ const EditJobPostingPage = () => {
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const jobId = e.target.value;
-    const job = jobsForCompany.find((j) => j.id === parseInt(jobId));
+    const job = jobsForCompany.find((j) => j.id === parseInt(jobId)) || null;
     setSelectedJob(job);
   };
 
@@ -100,7 +96,7 @@ const EditJobPostingPage = () => {
     try {
       const dataToSave = {
         ...formData,
-        skills: formData.skills?.map(skill => skill.id),
+        skills: formData.skills?.map((skill) => skill.id),
       };
       const response = await fetch(`/api/jobs/${selectedJob.id}`, {
         method: "PUT",

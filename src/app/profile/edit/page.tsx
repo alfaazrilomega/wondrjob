@@ -28,6 +28,9 @@ export default async function EditProfilePage() {
       gender: true,
       about: true,
       profile_picture: true,
+      social_media_url: true,
+      working_papers_url: true,
+      occupation: true,
       user: {
         select: {
           skills: true,

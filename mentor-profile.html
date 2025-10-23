@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaelan Vercamm - Mentor Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-purple': '#ff00ff',
+                        'neon-blue': '#00ffff',
+                        'neon-pink': '#ff0080',
+                        'dark-bg': '#0a0a0f',
+                        'dark-card': '#1a1a2e',
+                        'dark-border': '#2d2d44',
+                        'text-neon': '#ffffff',
+                        'text-glow': '#e0e0ff',
+                        'text-dim': '#a0a0c0'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255, 0, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255, 0, 128, 0.3), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-200px); }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        
+        .glow-blue {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .neon-border {
+            border: 1px solid rgba(255, 0, 255, 0.5);
+            box-shadow: 
+                0 0 10px rgba(255, 0, 255, 0.3),
+                inset 0 0 10px rgba(255, 0, 255, 0.1);
+        }
+        
+        .neon-button {
+            background: linear-gradient(45deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            border: 1px solid rgba(255, 0, 255, 0.6);
+            box-shadow: 
+                0 0 15px rgba(255, 0, 255, 0.4),
+                inset 0 0 15px rgba(255, 0, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-button:hover {
+            box-shadow: 
+                0 0 25px rgba(255, 0, 255, 0.6),
+                inset 0 0 25px rgba(255, 0, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .cyber-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 16, 32, 0.9));
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 0, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+        }
+        
+        .calendar-day {
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+        
+        .calendar-active {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+        }
+        
+        .calendar-booked {
+            background: linear-gradient(45deg, #ff0080, #ff4040);
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
+        }
+        
+        .brand-text {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="content-wrapper">
+        <!-- Header Navigation -->
+        <header class="bg-dark-card/80 border-b border-dark-border sticky top-0 z-50 backdrop-blur-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-8">
+                        <div class="text-2xl font-bold text-neon-purple glow-text brand-text">mentoroo</div>
+                    </div>
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="#" class="nav-link active text-text-neon font-semibold pb-4">Overview</a>
+                        <a href="#" class="nav-link text-text-dim hover:text-text-neon pb-4">Mentor's Availability</a>
+                        <a href="#" class="nav-link text-text-dim hover:text-text-neon pb-4">Experiences</a>
+                        <a href="#" class="nav-link text-text-dim hover:text-text-neon pb-4">Reviews (7)</a>
+                        <a href="#" class="nav-link text-text-dim hover:text-text-neon pb-4">More About Kael</a>
+                    </nav>
+                    <button class="text-text-dim hover:text-neon-blue transition-colors">
+                        <i data-lucide="share-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Sidebar - Profile Card -->
+                <aside class="lg:col-span-3">
+                    <div class="cyber-card rounded-xl p-6 sticky top-24">
+                        <!-- Profile Picture -->
+                        <div class="flex justify-center mb-4">
+                            <div class="relative w-24 h-24">
+                                <img src="https://placehold.co/96x96/1a1a2e/ffffff?text=KV" alt="Kaelan Vercamm" class="w-full h-full rounded-full object-cover neon-border">
+                                <div class="absolute inset-0 rounded-full bg-gradient-to-r from-neon-purple/20 to-neon-blue/20"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Info -->
+                        <div class="text-center mb-6">
+                            <h1 class="text-2xl font-bold text-text-neon mb-1 glow-text">Kaelan Vercamm</h1>
+                            <p class="text-text-glow mb-2">Lead and Principal at Shopify</p>
+                            <div class="flex items-center justify-center text-text-dim text-sm">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                Toronto, Ontario, Canada
+                            </div>
+                        </div>
+
+                        <!-- Book Button -->
+                        <button class="w-full neon-button text-text-neon font-semibold py-3 px-6 rounded-lg mb-6">
+                            <i data-lucide="calendar" class="w-4 h-4 mr-2 inline"></i>
+                            Book Kael
+                        </button>
+
+                        <!-- Contact Section -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-semibold text-text-neon mb-3 glow-blue">Contact</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-text-dim">Social Media</span>
+                                    <span class="text-text-glow">Working Papers</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-dim">Email</span>
+                                    <span class="text-text-glow">Send Message</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-dim">Phone</span>
+                                    <span class="text-text-glow">Send Message</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Business Development Section -->
+                        <div>
+                            <h3 class="text-sm font-semibold text-text-neon mb-2 glow-blue">Business Development</h3>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="lg:col-span-6">
+                    <div class="space-y-6">
+                        <!-- How I'd Describe Myself -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h2 class="text-xl font-semibold text-text-neon mb-4 glow-text">How I'd Describe Myself</h2>
+                            <p class="text-text-glow leading-relaxed">
+                                I am a seasoned professional in business development, providing a solid, innovative 
+                                and pragmatic understanding of the need to be proactive in the best way. 
+                                I have had many and varied experiences in my career, and I am happy to share 
+                                my knowledge and experience with others.
+                            </p>
+                        </div>
+
+                        <!-- Why I Became a Mentor -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h2 class="text-xl font-semibold text-text-neon mb-4 glow-text">Why I Became a Mentor</h2>
+                            <p class="text-text-glow leading-relaxed">
+                                I have always been passionate about helping others to grow my knowledge 
+                                and to have a meaningful impact on people's lives.
+                            </p>
+                        </div>
+
+                        <!-- What Resonates To Me -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h2 class="text-xl font-semibold text-text-neon mb-4 glow-text">What Resonates To Me</h2>
+                            <p class="text-text-glow leading-relaxed">
+                                I am looking to create relationships that can industry experience, 
+                                expertise, and long-term.
+                            </p>
+                        </div>
+
+                        <!-- Kael's Community -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold text-text-neon glow-text">Kael's Community (25)</h2>
+                                <a href="#" class="text-neon-blue text-sm font-medium glow-blue">Show All</a>
+                            </div>
+                            <div class="space-y-4">
+                                <!-- Community Member 1 -->
+                                <div class="flex items-center space-x-3 p-3 rounded-lg bg-dark-bg/30 neon-border">
+                                    <img src="https://placehold.co/48x48/1a1a2e/ffffff?text=AB" alt="Alicia Edwards" class="w-12 h-12 rounded-full neon-border">
+                                    <div>
+                                        <h4 class="font-medium text-text-neon">Alicia Edwards</h4>
+                                        <p class="text-sm text-text-dim">Senior Product Designer</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Community Member 2 -->
+                                <div class="flex items-center space-x-3 p-3 rounded-lg bg-dark-bg/30 neon-border">
+                                    <img src="https://placehold.co/48x48/1a1a2e/ffffff?text=KM" alt="Kathryn Murphy" class="w-12 h-12 rounded-full neon-border">
+                                    <div>
+                                        <h4 class="font-medium text-text-neon">Kathryn Murphy</h4>
+                                        <p class="text-sm text-text-dim">Product Manager</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Community Member 3 -->
+                                <div class="flex items-center space-x-3 p-3 rounded-lg bg-dark-bg/30 neon-border">
+                                    <img src="https://placehold.co/48x48/1a1a2e/ffffff?text=SR" alt="Savannah Nguyen" class="w-12 h-12 rounded-full neon-border">
+                                    <div>
+                                        <h4 class="font-medium text-text-neon">Savannah Nguyen</h4>
+                                        <p class="text-sm text-text-dim">Senior UX Designer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Right Sidebar -->
+                <aside class="lg:col-span-3">
+                    <div class="space-y-6">
+                        <!-- Availability Calendar -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-text-neon mb-4 glow-blue">Availability On February</h3>
+                            <div class="text-center mb-4">
+                                <div class="text-2xl font-bold text-text-neon glow-text">February 2024</div>
+                            </div>
+                            
+                            <!-- Calendar Grid -->
+                            <div class="grid grid-cols-7 gap-1 text-center text-sm mb-4">
+                                <div class="text-text-dim font-medium py-2">S</div>
+                                <div class="text-text-dim font-medium py-2">M</div>
+                                <div class="text-text-dim font-medium py-2">T</div>
+                                <div class="text-text-dim font-medium py-2">W</div>
+                                <div class="text-text-dim font-medium py-2">T</div>
+                                <div class="text-text-dim font-medium py-2">F</div>
+                                <div class="text-text-dim font-medium py-2">S</div>
+                                
+                                <!-- Calendar Days -->
+                                <div class="calendar-day py-2 text-text-dim rounded">28</div>
+                                <div class="calendar-day py-2 text-text-dim rounded">29</div>
+                                <div class="calendar-day py-2 text-text-dim rounded">30</div>
+                                <div class="calendar-day py-2 text-text-dim rounded">31</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">1</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">2</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">3</div>
+                                
+                                <div class="calendar-day py-2 text-text-glow rounded">4</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">5</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">6</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">7</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">8</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">9</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">10</div>
+                                
+                                <div class="calendar-day py-2 text-text-glow rounded">11</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">12</div>
+                                <div class="calendar-active py-2 text-white rounded font-semibold">13</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">14</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">15</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">16</div>
+                                <div class="calendar-booked py-2 text-white rounded font-semibold">17</div>
+                                
+                                <div class="calendar-day py-2 text-text-glow rounded">18</div>
+                                <div class="calendar-booked py-2 text-white rounded font-semibold">19</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">20</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">21</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">22</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">23</div>
+                                <div class="calendar-day py-2 text-text-glow rounded">24</div>
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-neon-purple to-neon-blue rounded mr-2"></div>
+                                    <span class="text-text-glow">13 Feb - 1 session</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-neon-pink to-red-400 rounded mr-2"></div>
+                                    <span class="text-text-glow">17 Feb - 1 session</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-neon-pink to-red-400 rounded mr-2"></div>
+                                    <span class="text-text-glow">19 Feb - 1 session</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kaelan's Best Skills -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-text-neon mb-4 glow-blue">Kaelan's Best Skills</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-2 rounded bg-dark-bg/30">
+                                    <span class="text-text-glow">Communication</span>
+                                    <span class="text-neon-blue text-sm glow-blue">Experienced (85%)</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 rounded bg-dark-bg/30">
+                                    <span class="text-text-glow">Product Management</span>
+                                    <span class="text-neon-purple text-sm glow-text">Expert</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 rounded bg-dark-bg/30">
+                                    <span class="text-text-glow">Team Management</span>
+                                    <span class="text-neon-purple text-sm glow-text">Expert</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Most Memorable Tip -->
+                        <div class="cyber-card rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-text-neon mb-4 glow-blue">Most Memorable Tip</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-2 rounded bg-dark-bg/30">
+                                    <span class="text-text-glow">Consulting a Job</span>
+                                    <span class="text-text-dim text-sm">Helping others</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 rounded bg-dark-bg/30">
+                                    <span class="text-text-glow">Learning</span>
+                                    <span class="text-text-dim text-sm">Never</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark-card/80 border-t border-dark-border mt-16 backdrop-blur-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="text-2xl font-bold text-neon-purple mb-4 glow-text brand-text">mentoroo</div>
+                        <p class="text-text-glow text-sm leading-relaxed">
+                            Guiding ambitious individuals around the globe.
+                            Book a mentor. Expand your network, and learn
+                            from the best in the industry.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-text-neon mb-4 glow-blue">Quick links</h4>
+                        <ul class="space-y-2 text-sm text-text-glow">
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Browse Mentors</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Become a Mentor</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Mentor Registration</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Mentor Registration</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-text-neon mb-4 glow-blue">About</h4>
+                        <ul class="space-y-2 text-sm text-text-glow">
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">About us</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Mentors</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Terms & Conditions</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Contact</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Mentoring Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-text-neon mb-4 glow-blue">Social</h4>
+                        <ul class="space-y-2 text-sm text-text-glow">
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">LinkedIn</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Instagram</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">Facebook</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">YouTube</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

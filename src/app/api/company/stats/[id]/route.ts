@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/lib/db";
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(
+  req: Request,
+  context: { params: Promise<{ id: string }> },
+) {
   try {
-    const companyId = parseInt(context.params.id);
+    const { id } = await context.params;
+    const companyId = parseInt(id);
     if (isNaN(companyId)) {
       return NextResponse.json(
         { success: false, error: "Invalid company ID" },
@@ -61,10 +65,11 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
 
 export async function DELETE(
   req: Request,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const companyId = parseInt(context.params.id);
+    const { id } = await context.params;
+    const companyId = parseInt(id);
     if (isNaN(companyId)) {
       return NextResponse.json(
         { success: false, error: "Invalid company ID" },
@@ -96,7 +101,12 @@ export async function DELETE(
   } catch (error) {
     console.error("DELETE_STATS_ERROR", error);
     // Prisma throws a specific error code if the record to delete is not found
-    if (error.code === "P2025") {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code: unknown }).code === "P2025"
+    ) {
       return NextResponse.json(
         {
           success: false,

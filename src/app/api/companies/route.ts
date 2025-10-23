@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       if (!company) {
         return NextResponse.json(
           { success: false, error: "Company not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 

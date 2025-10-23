@@ -6,9 +6,14 @@ export async function POST(request: Request) {
   const supabase = await createClient();
 
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized: You must be logged in to create a company.' }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized: You must be logged in to create a company." },
+        { status: 401 },
+      );
     }
 
     const body = await request.json();
@@ -23,7 +28,10 @@ export async function POST(request: Request) {
     } = body;
 
     if (!name || !user_id) {
-      return NextResponse.json({ error: 'Name and assigned user are required.' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Name and assigned user are required." },
+        { status: 400 },
+      );
     }
 
     const existingCompany = await prisma.company.findUnique({
@@ -51,8 +59,10 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, data: newCompany }, { status: 201 });
-
+    return NextResponse.json(
+      { success: true, data: newCompany },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("CREATE_COMPANY_ERROR", error);
     const errorMessage =

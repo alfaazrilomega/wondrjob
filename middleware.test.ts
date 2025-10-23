@@ -2,6 +2,25 @@ import { middleware } from "./middleware";
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
+type MockNextRequest = {
+  url: string;
+  nextUrl: {
+    pathname: string;
+    origin: string;
+  };
+  headers: Headers;
+  cookies: {
+    get: jest.Mock;
+    set: jest.Mock;
+    remove: jest.Mock;
+  };
+};
+
+type MockNextResponse = {
+  headers: Headers;
+  redirect: jest.Mock;
+};
+
 // Mock Next.js server and Supabase client
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -22,9 +41,13 @@ jest.mock("@supabase/ssr", () => ({
 }));
 
 describe("middleware", () => {
-  let mockRequest: any;
-  let mockResponse: any;
-  let mockSupabase: any;
+  let mockRequest: MockNextRequest;
+  let mockResponse: MockNextResponse;
+  let mockSupabase: {
+    auth: {
+      getUser: jest.Mock;
+    };
+  };
 
   beforeEach(() => {
     mockRequest = {
@@ -42,7 +65,7 @@ describe("middleware", () => {
     };
     mockResponse = {
       headers: new Headers(),
-      redirect: jest.fn(),
+      redirect: jest.fn(() => ({})),
     };
     mockSupabase = {
       auth: {
@@ -63,7 +86,8 @@ describe("middleware", () => {
   // Test Case 1: Public route access
   it("should allow access to public routes without authentication", async () => {
     mockRequest.nextUrl.pathname = "/login";
-    const response = await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (middleware as any)(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);
     expect(createServerClient).not.toHaveBeenCalled();
@@ -77,7 +101,8 @@ describe("middleware", () => {
       data: { user: { id: "user-123" } },
     });
 
-    const response = await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (middleware as any)(mockRequest);
 
     expect(response).toBe(mockResponse);
     expect(createServerClient).toHaveBeenCalledTimes(1);
@@ -90,7 +115,8 @@ describe("middleware", () => {
     mockRequest.nextUrl.pathname = "/dashboard";
     mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
-    const response = await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (middleware as any)(mockRequest);
 
     expect(response).toBe(mockResponse);
     expect(createServerClient).toHaveBeenCalledTimes(1);
@@ -107,7 +133,8 @@ describe("middleware", () => {
       data: { user: { id: "user-456" } },
     });
 
-    await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (middleware as any)(mockRequest);
 
     expect(createServerClient).toHaveBeenCalledTimes(1);
     expect(mockSupabase.auth.getUser).toHaveBeenCalledTimes(1);
@@ -116,7 +143,8 @@ describe("middleware", () => {
   // Test Case 5: Public API route access
   it("should allow access to public API routes without authentication", async () => {
     mockRequest.nextUrl.pathname = "/api/auth/login";
-    const response = await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (middleware as any)(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);
     expect(createServerClient).not.toHaveBeenCalled();
@@ -126,7 +154,8 @@ describe("middleware", () => {
   // Test Case 6: Another public route
   it("should allow access to another public route", async () => {
     mockRequest.nextUrl.pathname = "/signup";
-    const response = await middleware(mockRequest);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await (middleware as any)(mockRequest);
     expect(response).toBe(mockResponse);
     expect(NextResponse.next).toHaveBeenCalledTimes(1);
     expect(createServerClient).not.toHaveBeenCalled();

@@ -1,0 +1,500 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+
+/* CSS Containment untuk isolasi penuh */
+.profileContainer {
+  contain: layout style paint;
+  isolation: isolate;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  color: #ffffff; /* Pastikan warna dasar putih */
+}
+
+/* Profile-specific body styles */
+.profileBody {
+  font-family: 'Exo 2', sans-serif;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%) !important;
+  position: relative;
+  overflow-x: clip;
+  color: #ffffff !important; /* Force white text */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cyberpunk animated background */
+.profileBody::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 0, 255, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 0, 128, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: sparkle 20s linear infinite !important;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes sparkle {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-200px); }
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 2;
+  contain: layout style;
+  color: #ffffff; /* Ensure text color inheritance */
+}
+
+/* Header Styles */
+.headerBg {
+  background: rgba(26, 26, 46, 0.8);
+  border-bottom: 1px solid #2d2d44;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.headerBorder {
+  border-bottom: 1px solid #2d2d44;
+}
+
+.brandText {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  color: #ff00ff !important;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.navLink {
+  position: relative;
+  transition: all 0.3s ease;
+  color: #a0a0c0 !important;
+  text-decoration: none;
+  padding-bottom: 1rem;
+  font-weight: 600;
+}
+
+.navLink:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.active {
+  color: #ffffff !important;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff00ff, #00ffff);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+
+.shareButton {
+  color: #a0a0c0 !important;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.shareButton:hover {
+  color: #ffffff !important;
+  background: rgba(255, 0, 255, 0.1);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+/* Main Container */
+.mainContainer {
+  position: relative;
+  z-index: 10;
+  color: #ffffff; /* Ensure text color */
+}
+
+/* Profile Card */
+.profileCard {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 16, 32, 0.9));
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  contain: layout style;
+  color: #ffffff; /* Ensure text color */
+}
+
+/* Text Color Classes */
+.profileName {
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.profileRole {
+  color: #e0e0ff !important;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 5px rgba(224, 224, 255, 0.5);
+}
+
+.profileLocation {
+  color: #a0a0c0 !important;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+/* Content Cards */
+.cyberCard {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 16, 32, 0.9));
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  contain: layout style;
+  color: #ffffff; /* Ensure text color */
+}
+
+.cardTitle {
+  color: #ffffff !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.cardText {
+  color: #e0e0ff !important;
+  line-height: 1.6;
+  text-shadow: 0 0 5px rgba(224, 224, 255, 0.3);
+}
+
+.sectionTitle {
+  color: #ffffff !important;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+/* Calendar Styles */
+.calendarTitle {
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.calendarHeader {
+  color: #a0a0c0 !important;
+  font-weight: 500;
+  padding: 0.5rem;
+}
+
+.calendarDay {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: #e0e0ff !important;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendarPrev {
+  color: #666666 !important;
+}
+
+.calendarCurrent {
+  color: #e0e0ff !important;
+}
+
+.calendarActive {
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.calendarBooked {
+  background: linear-gradient(45deg, #ff0080, #ff4040);
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.6);
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Skills and Community */
+.skillName {
+  color: #e0e0ff !important;
+}
+
+.skillLevel {
+  color: #00ffff !important;
+  font-size: 0.875rem;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.skillExpert {
+  color: #ff00ff !important;
+  font-size: 0.875rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.memberName {
+  color: #ffffff !important;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.memberRole {
+  color: #a0a0c0 !important;
+  font-size: 0.875rem;
+}
+
+/* Contact Section */
+.contactLabel {
+  color: #a0a0c0 !important;
+}
+
+.contactValue {
+  color: #e0e0ff !important;
+}
+
+/* Legend */
+.legendText {
+  color: #e0e0ff !important;
+}
+
+.tipValue {
+  color: #a0a0c0 !important;
+  font-size: 0.875rem;
+}
+
+/* Show All Link */
+.showAllLink {
+  color: #00ffff !important;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.showAllLink:hover {
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+}
+
+/* Add these missing footer classes */
+
+.footerBg {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.footerBorder {
+  border-top: 1px solid #2d2d44;
+}
+
+.footerContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .footerGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.footerBrand {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  color: #ff00ff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.footerText {
+  color: #e0e0ff;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.footerTitle {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.footerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerListItem {
+  margin-bottom: 0.5rem;
+}
+
+.footerLink {
+  color: #e0e0ff;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.footerLink:hover {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Utility classes that might be missing */
+.glowText {
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.glowBlue {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.brandText {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  color: #ff00ff;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+/* Utility Classes */
+.glowText {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.glowBlue {
+  color: #00ffff !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.neonButton {
+  background: linear-gradient(45deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+  border: 1px solid rgba(255, 0, 255, 0.6);
+  box-shadow: 
+    0 0 15px rgba(255, 0, 255, 0.4),
+    inset 0 0 15px rgba(255, 0, 255, 0.1);
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+}
+
+.neonButton:hover {
+  box-shadow: 
+    0 0 25px rgba(255, 0, 255, 0.6),
+    inset 0 0 25px rgba(255, 0, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Member Card */
+.memberCard {
+  background: rgba(10, 10, 15, 0.3);
+  border: 1px solid rgba(255, 0, 255, 0.5);
+  box-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.3),
+    inset 0 0 10px rgba(255, 0, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.neonBorder {
+  border: 1px solid rgba(255, 0, 255, 0.5);
+  box-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.3),
+    inset 0 0 10px rgba(255, 0, 255, 0.1);
+}
+
+/* Skill Item */
+.skillItem {
+  background: rgba(10, 10, 15, 0.3);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+/* Legend Items */
+.legendActive {
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+}
+
+.legendBooked {
+  background: linear-gradient(45deg, #ff0080, #ff4040);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profileName {
+    font-size: 1.25rem;
+  }
+  
+  .cardTitle {
+    font-size: 1.125rem;
+  }
+}
+
+/* Override any potential global styles */
+.profileContainer * {
+  color: inherit;
+}
+
+.profileContainer h1,
+.profileContainer h2,
+.profileContainer h3,
+.profileContainer h4,
+.profileContainer h5,
+.profileContainer h6 {
+  color: inherit;
+}
+
+.profileContainer p,
+.profileContainer span,
+.profileContainer div {
+  color: inherit;
+}

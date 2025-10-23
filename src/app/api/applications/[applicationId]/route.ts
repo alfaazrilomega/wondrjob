@@ -4,14 +4,15 @@ import { ApplicationStatus } from "@prisma/client";
 
 export async function PATCH(
   request: Request,
-  context: { params: { applicationId: string } }
+  context: { params: Promise<{ applicationId: string }> },
 ) {
   try {
-    const applicationId = parseInt(context.params.applicationId, 10);
+    const { applicationId: appIdString } = await context.params;
+    const applicationId = parseInt(appIdString, 10);
     if (isNaN(applicationId)) {
       return NextResponse.json(
         { success: false, error: "Invalid application ID" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,7 +22,7 @@ export async function PATCH(
     if (!status || !Object.values(ApplicationStatus).includes(status)) {
       return NextResponse.json(
         { success: false, error: "Invalid status value" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,7 +36,7 @@ export async function PATCH(
     console.error(`Error updating application status:`, error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

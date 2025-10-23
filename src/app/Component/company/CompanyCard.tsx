@@ -1,5 +1,6 @@
 import React from "react";
-import { Building2, Briefcase, MapPin } from "lucide-react";
+import Image from "next/image";
+import { Briefcase, MapPin } from "lucide-react";
 import { Company } from "./types";
 
 const CompanyCard = ({ company }: { company: Company }) => {
@@ -12,10 +13,12 @@ const CompanyCard = ({ company }: { company: Company }) => {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center">
             <div className="relative w-12 h-12 mr-4 flex-shrink-0">
-              <img
+              <Image
                 src={company.logo || "/next.svg"}
                 alt={`${company.name} logo`}
                 className="rounded-full w-full h-full object-cover"
+                width={48}
+                height={48}
               />
             </div>
             <div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { addPortfolioItem } from "@/app/actions/portfolio";
+import { createPortfolioItem } from "@/app/actions/portfolio";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 
@@ -10,7 +10,7 @@ export default function AddPortfolioPage() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (formData: FormData) => {
-    const result = await addPortfolioItem(formData);
+    const result = await createPortfolioItem(formData);
     if (result?.error) {
       setError(result.error);
     }

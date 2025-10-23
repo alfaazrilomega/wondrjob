@@ -1,8 +1,6 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/lib/db";
-import { redirect } from "next/navigation";
 
 export async function logout() {
   const supabase = await createClient();
@@ -11,13 +9,15 @@ export async function logout() {
 
 export async function getUser() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return user;
 }
 
 export async function updateEmail(formData: FormData) {
-  const newEmail = formData.get('email') as string;
-  if (!newEmail) return { error: 'New email is required.' };
+  const newEmail = formData.get("email") as string;
+  if (!newEmail) return { error: "New email is required." };
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ email: newEmail });
@@ -25,18 +25,20 @@ export async function updateEmail(formData: FormData) {
   if (error) {
     return { error: `Failed to update email: ${error.message}` };
   }
-  return { success: 'Please check your new email address to confirm the change.' };
+  return {
+    success: "Please check your new email address to confirm the change.",
+  };
 }
 
 export async function updatePassword(formData: FormData) {
-  const password = formData.get('password') as string;
-  const confirmPassword = formData.get('confirmPassword') as string;
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
 
   if (password !== confirmPassword) {
-    return { error: 'Passwords do not match.' };
+    return { error: "Passwords do not match." };
   }
   if (password.length < 6) {
-    return { error: 'Password must be at least 6 characters long.' };
+    return { error: "Password must be at least 6 characters long." };
   }
 
   const supabase = await createClient();
@@ -45,21 +47,26 @@ export async function updatePassword(formData: FormData) {
   if (error) {
     return { error: `Failed to update password: ${error.message}` };
   }
-  return { success: 'Password updated successfully.' };
+  return { success: "Password updated successfully." };
 }
 
 export async function deleteAccount() {
   const supabase = await createClient();
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    return { error: 'Could not authenticate user.' };
+    return { error: "Could not authenticate user." };
   }
 
   // This requires admin privileges and is a complex operation.
   // We need to use a service role key to delete a user from auth.
   // This is a placeholder for the actual implementation which should be handled with extreme care.
-  console.log(`Request to delete user ${user.id}. This needs a secure admin implementation.`);
+  console.log(
+    `Request to delete user ${user.id}. This needs a secure admin implementation.`,
+  );
 
   // In a real scenario, you would:
   // 1. Create a Supabase admin client with the service role key.
@@ -68,7 +75,7 @@ export async function deleteAccount() {
   // 4. Sign the user out and redirect.
 
   // For now, we will just return a message.
-  return { error: 'Account deletion is not yet implemented.' };
+  return { error: "Account deletion is not yet implemented." };
 
   /*
   // Example of a real implementation (DO NOT RUN WITHOUT SETUP):

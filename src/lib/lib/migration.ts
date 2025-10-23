@@ -1,6 +1,3 @@
-// lib/migration.ts
-// This file contains utilities to migrate from Upstash Vector to Prisma
-
 import { prisma } from "./db";
 
 // Migration utilities

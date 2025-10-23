@@ -13,6 +13,7 @@ export interface Job {
 export interface Company {
   id: number;
   name: string;
+  logo?: string | null;
   address: string;
   phone: string;
   description: string;

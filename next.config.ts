@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
         hostname: "s3.ap-southeast-1.amazonaws.com",
         port: "",
         pathname: "/**",
@@ -48,9 +56,28 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+
       {
         protocol: "https",
-        hostname: "wvhyhbvcupzysysalhdg.supabase.co",
+        hostname: "placehold.co",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "blog.codepen.io",
         port: "",
         pathname: "/**",
       },

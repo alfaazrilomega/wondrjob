@@ -197,53 +197,58 @@ export default function JobDetailPage() {
                   {job.position_name}
                 </h1>
                 <Link href={`/company/${job.company.id}`} passHref>
-                    <span className="text-white/60 mt-1 cursor-pointer hover:text-[#9F54FF]">
-                        {job.company.name} - {job.company.address}
-                    </span>
+                  <span className="text-white/60 mt-1 cursor-pointer hover:text-[#9F54FF]">
+                    {job.company.name} - {job.company.address}
+                  </span>
                 </Link>
               </div>
             </div>
             <Link href={`/apply/${job.id}`} passHref>
-                <button className="bg-[#9F54FF] text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(159,84,255,0.8)] mt-4 md:mt-0">
+              <button className="bg-[#9F54FF] text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(159,84,255,0.8)] mt-4 md:mt-0">
                 Apply Now
-                </button>
+              </button>
             </Link>
           </div>
 
           {/* Main Content */}
-            <div className="glass-pane p-8">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Job Description
-                </h2>
-                <p
-                  style={{ color: "rgba(224, 224, 224, 0.7)" }}
-                  className="leading-relaxed whitespace-pre-line"
-                >
-                  {job.description}
-                </p>
+          <div className="glass-pane p-8">
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Job Description
+            </h2>
+            <p
+              style={{ color: "rgba(224, 224, 224, 0.7)" }}
+              className="leading-relaxed whitespace-pre-line"
+            >
+              {job.description}
+            </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                    <div>
-                        <h3 className="text-xl font-bold text-white mb-2">Job Type</h3>
-                        <p className="text-white/70">{job.job_type}</p>
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-bold text-white mb-2">Salary</h3>
-                        <p className="text-white/70">{job.salary}</p>
-                    </div>
-                </div>
-
-                <div className="mt-8">
-                    <h3 className="text-xl font-bold text-white mb-4">Required Skills</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {job.required_skills.map((skill, index) => (
-                            <span key={index} className="bg-[rgba(159,84,255,0.2)] text-[#E0E0E0] text-sm font-medium px-3 py-1 rounded-full">
-                                {skill}
-                            </span>
-                        ))}
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">Job Type</h3>
+                <p className="text-white/70">{job.job_type}</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">Salary</h3>
+                <p className="text-white/70">{job.salary}</p>
+              </div>
             </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Required Skills
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {job.required_skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-[rgba(159,84,255,0.2)] text-[#E0E0E0] text-sm font-medium px-3 py-1 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     </>

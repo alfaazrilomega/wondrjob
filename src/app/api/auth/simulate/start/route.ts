@@ -1,24 +1,33 @@
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/lib/db";
 
 // This endpoint starts the simulation
 export async function POST(request: NextRequest) {
-  const response = NextResponse.next();
+  const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => request.cookies.get(name)?.value,
-        set: (name, value, options) => response.cookies.set({ name, value, ...options }),
-        remove: (name, options) => response.cookies.set({ name, value: "", ...options }),
+        async get(name: string) {
+          return (await cookieStore).get(name)?.value;
+        },
+        async set(name: string, value: string, options: CookieOptions) {
+          (await cookieStore).set({ name, value, ...options });
+        },
+        async remove(name: string, options: CookieOptions) {
+          (await cookieStore).set({ name, value: "", ...options });
+        },
       },
-    }
+    },
   );
 
   // 1. Check if the current user is an admin
-  const { data: { user: adminUser } } = await supabase.auth.getUser();
+  const {
+    data: { user: adminUser },
+  } = await supabase.auth.getUser();
 
   if (!adminUser) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -29,7 +38,7 @@ export async function POST(request: NextRequest) {
     select: { role: true },
   });
 
-  if (adminDbUser?.role !== 'ADMIN') {
+  if (adminDbUser?.role !== "ADMIN") {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -49,10 +58,12 @@ export async function POST(request: NextRequest) {
   }
 
   // 3. Set the simulation cookies
-  response.cookies.set("simulation_mode", "true", { path: '/' });
-  response.cookies.set("simulated_user_id", targetUserId, { path: '/' });
-  response.cookies.set("original_admin_id", adminUser.id, { path: '/' });
-  response.cookies.set("simulated_user_name", targetUser.name, { path: '/' }); // Store name
+  (await cookieStore).set("simulation_mode", "true", { path: "/" });
+  (await cookieStore).set("simulated_user_id", targetUserId, { path: "/" });
+  (await cookieStore).set("original_admin_id", adminUser.id, { path: "/" });
+  (await cookieStore).set("simulated_user_name", targetUser.name, {
+    path: "/",
+  }); // Store name
 
   return NextResponse.json({ success: true });
 }

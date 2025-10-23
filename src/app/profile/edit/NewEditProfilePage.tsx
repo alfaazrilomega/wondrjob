@@ -9,12 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-
-// --- TYPE DEFINITIONS (should be aligned with prisma schema) ---
-interface Skill {
-  id: number;
-  name: string;
-}
+import { Skill } from "@prisma/client";
 
 interface UserProfile {
   id: number;
@@ -27,6 +22,9 @@ interface UserProfile {
   gender: string | null;
   about: string | null;
   profile_picture: string | null;
+  social_media_url: string | null;
+  working_papers_url: string | null;
+  occupation: string | null;
   user: {
     skills: Skill[];
   } | null;
@@ -62,6 +60,13 @@ export default function NewEditProfilePage({
   const [location, setLocation] = useState(userProfile.location || "");
   const [phone, setPhone] = useState(userProfile.phone || "");
   const [address, setAddress] = useState(userProfile.address || "");
+  const [social_media_url, setSocialMediaUrl] = useState(
+    userProfile.social_media_url || "",
+  );
+  const [working_papers_url, setWorkingPapersUrl] = useState(
+    userProfile.working_papers_url || "",
+  );
+  const [occupation, setOccupation] = useState(userProfile.occupation || "");
   const [skills, setSkills] = useState<Skill[]>(userProfile.user?.skills || []);
   const [profilePicture, setProfilePicture] = useState(
     userProfile.profile_picture,
@@ -136,6 +141,9 @@ export default function NewEditProfilePage({
       formData.append("location", location);
       formData.append("phone", phone);
       formData.append("address", address);
+      formData.append("occupation", occupation);
+      formData.append("social_media_url", social_media_url);
+      formData.append("working_papers_url", working_papers_url);
       formData.append("skills", JSON.stringify(skills.map((s) => s.id)));
       if (finalProfilePictureUrl) {
         formData.append("profile_picture_url", finalProfilePictureUrl);
@@ -256,6 +264,36 @@ export default function NewEditProfilePage({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="bg-gray-800/50 border-gray-600 text-white mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="occupation">Occupation</Label>
+                  <Input
+                    id="occupation"
+                    value={occupation}
+                    onChange={(e) => setOccupation(e.target.value)}
+                    className="bg-gray-800/50 border-gray-600 text-white mt-1"
+                    placeholder="e.g., Software Engineer, Student"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="social_media_url">Social Media URL</Label>
+                  <Input
+                    id="social_media_url"
+                    value={social_media_url}
+                    onChange={(e) => setSocialMediaUrl(e.target.value)}
+                    className="bg-gray-800/50 border-gray-600 text-white mt-1"
+                    placeholder="https://linkedin.com/in/your-profile"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="working_papers_url">Working Papers URL</Label>
+                  <Input
+                    id="working_papers_url"
+                    value={working_papers_url}
+                    onChange={(e) => setWorkingPapersUrl(e.target.value)}
+                    className="bg-gray-800/50 border-gray-600 text-white mt-1"
+                    placeholder="https://example.com/your-cv.pdf"
                   />
                 </div>
                 <div className="md:col-span-2">

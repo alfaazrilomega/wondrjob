@@ -6,9 +6,9 @@ export const dynamic = "force-dynamic";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const userId = params.id;
+  const { id: userId } = await params;
   if (!userId) {
     return NextResponse.json(
       { error: "User ID is required." },
@@ -35,7 +35,7 @@ export async function DELETE(
       // Delete role-specific data first
       switch (user.role) {
         case UserRole.ADMIN:
-          if (user.Admin.length > 0) {
+          if (user.Admin) {
             await tx.admin.delete({ where: { user_id: userId } });
           }
           break;

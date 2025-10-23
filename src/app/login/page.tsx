@@ -33,8 +33,9 @@ const LoginPage = () => {
         return;
       }
 
-      // Redirect to the page specified by the API
-      router.push(data.redirectTo || "/homepage");
+      // Redirect to the page specified by the API, and force a full page reload
+      // to ensure the server-side rendered layout is updated with the new session.
+      window.location.href = data.redirectTo || "/homepage";
     } catch (err: unknown) {
       console.error("Client-side login error:", err);
       if (err instanceof Error) {

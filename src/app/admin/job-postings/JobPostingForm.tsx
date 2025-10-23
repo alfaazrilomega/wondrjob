@@ -9,7 +9,7 @@ import SkillInput from "../../Component/SkillInput";
 interface JobPostingFormProps {
   title: string;
   companies: Company[];
-  job?: Job;
+  job?: Job | null;
   onSave: (formData: JobFormData) => void;
   onCancel: () => void;
   selectedCompany: Company | null;

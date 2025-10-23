@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
-import { prisma } from '@/lib/lib/db';
+import { NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { prisma } from "@/lib/lib/db";
 
 export async function GET(request: Request) {
   const supabase = createServerClient(
@@ -8,15 +8,31 @@ export async function GET(request: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => (request.headers.get('cookie') ?? '').includes(name) ? request.headers.get('cookie').split('; ').find(row => row.startsWith(name + '=')).split('=')[1] : undefined,
+        get: (name) => {
+          const cookieHeader = request.headers.get("cookie");
+          if (!cookieHeader) {
+            return undefined;
+          }
+          const cookie = cookieHeader
+            .split("; ")
+            .find((row) => row.startsWith(name + "="));
+
+          if (!cookie) {
+            return undefined;
+          }
+          return cookie.split("=")[1];
+        },
       },
-    }
+    },
   );
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    return new NextResponse('Unauthorized', { status: 401 });
+    return new NextResponse("Unauthorized", { status: 401 });
   }
 
   try {
@@ -30,11 +46,11 @@ export async function GET(request: Request) {
     });
 
     if (!dbUser) {
-      return new NextResponse('User not found in database', { status: 404 });
+      return new NextResponse("User not found in database", { status: 404 });
     }
 
     return NextResponse.json(dbUser);
-  } catch (error) {
-    return new NextResponse('Internal Server Error', { status: 500 });
+  } catch {
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

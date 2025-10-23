@@ -5,14 +5,18 @@ import { useState, useTransition } from "react";
 import { Society, Skill } from "@prisma/client";
 import SkillInput from "@/app/Component/SkillInput";
 
-export function EditProfileForm({ profile }: { profile: { society: Society, skills: Skill[] } }) {
+export function EditProfileForm({
+  profile,
+}: {
+  profile: { society: Society; skills: Skill[] };
+}) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [skills, setSkills] = useState<Skill[]>(profile.skills || []);
 
   const handleSubmit = async (formData: FormData) => {
     startTransition(async () => {
-      const skillIds = skills.map(skill => skill.id);
+      const skillIds = skills.map((skill) => skill.id);
       formData.append("skills", JSON.stringify(skillIds));
       const result = await updateUserProfile(formData);
       if (result?.error) {

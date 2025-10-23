@@ -4,9 +4,9 @@ import { JobType, WorkStyle } from "@prisma/client";
 
 export async function GET(
   request: Request,
-  context: { params: { jobId: string } },
+  context: { params: Promise<{ jobId: string }> },
 ) {
-  const { jobId: jobIdString } = context.params;
+  const { jobId: jobIdString } = await context.params;
 
   try {
     const jobId = parseInt(jobIdString, 10);
@@ -59,9 +59,9 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  context: { params: { jobId: string } },
+  context: { params: Promise<{ jobId: string }> },
 ) {
-  const { jobId } = context.params;
+  const { jobId } = await context.params;
   try {
     const body = await request.json();
     const {

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,7 +13,12 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 // This should be a real component from your UI library
-const Button = ({ children, ...props }) => (
+const Button = ({
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: React.ReactNode;
+}) => (
   <button
     {...props}
     className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-purple-600 text-white hover:bg-purple-700 h-10 px-4 py-2"
@@ -22,12 +27,23 @@ const Button = ({ children, ...props }) => (
   </button>
 );
 
-const SimulateUserSelectionClient = ({ users }) => {
+interface SimulatedUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  companyName?: string | null;
+}
+
+const SimulateUserSelectionClient = ({ users }: { users: SimulatedUser[] }) => {
   const params = useParams();
   const role = params.role as string;
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null);
 
-  const handleSimulate = async (targetUserId: string, targetUserRole: string) => {
+  const handleSimulate = async (
+    targetUserId: string,
+    targetUserRole: string,
+  ) => {
     setLoadingUserId(targetUserId);
     try {
       const response = await fetch("/api/auth/simulate/start", {
@@ -57,7 +73,6 @@ const SimulateUserSelectionClient = ({ users }) => {
           break;
       }
       window.location.href = dashboardPath;
-
     } catch (error) {
       console.error("Simulation error:", error);
       alert("Simulation failed. You must be an admin.");
