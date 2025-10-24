@@ -200,12 +200,14 @@ const MentorProfile: React.FC = () => {
         <div className={containerStyles.contentWrapper}>
           <header className={containerStyles.header}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-16">
-                <div className={`text-2xl font-bold ${styles.brandText}`}>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between h-auto md:h-16 gap-4 md:gap-0">
+                <div
+                  className={`text-2xl font-bold ${styles.brandText} md:flex-shrink-0`}
+                >
                   <Link href="/">WonderJob</Link>
                 </div>
 
-                <nav className="hidden md:flex space-x-8">
+                <nav className="flex justify-center space-x-8 md:flex-1 md:justify-center">
                   <a
                     href="#"
                     className={`${styles.navLink} ${styles.active} text-white font-semibold pb-4`}
@@ -225,23 +227,26 @@ const MentorProfile: React.FC = () => {
                     Experiences
                   </a>
                 </nav>
-                <a
-                  href="/profile/edit"
-                  className={`${styles.shareButton} text-gray-300 hover:text-white ml-4`}
-                >
-                  Edit Profile
-                </a>
-                <button
-                  onClick={handleLogout}
-                  className={`${styles.shareButton} text-gray-300 hover:text-white ml-4`}
-                >
-                  Log Out
-                </button>
-                <button
-                  className={`${styles.shareButton} text-gray-300 hover:text-white`}
-                >
-                  <Share2 className="w-5 h-5" />
-                </button>
+
+                <div className="flex justify-end space-x-4 md:flex-shrink-0">
+                  <a
+                    href="/profile/edit"
+                    className={`${styles.shareButton} text-gray-300 hover:text-white`}
+                  >
+                    Edit Profile
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className={`${styles.shareButton} text-gray-300 hover:text-white`}
+                  >
+                    Log Out
+                  </button>
+                  <button
+                    className={`${styles.shareButton} text-gray-300 hover:text-white`}
+                  >
+                    <Share2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           </header>

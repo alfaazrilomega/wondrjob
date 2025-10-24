@@ -27,10 +27,7 @@ const Header = ({ user }: HeaderProps) => {
 
   const noHeaderPaths = ["/login", "/signup", "/forgot-password"];
   const isApplyPage = pathname.startsWith("/apply");
-  const isCompanyDetailPage =
-    pathname.startsWith("/company/") && pathname.split("/").length > 2;
-
-  if (noHeaderPaths.includes(pathname) || isCompanyDetailPage || isApplyPage) {
+  if (noHeaderPaths.includes(pathname) || isApplyPage) {
     return null;
   }
 

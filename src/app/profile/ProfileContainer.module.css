@@ -28,14 +28,19 @@
   background: transparent;
 }
 
-/* Header dengan backdrop blur */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(26, 26, 46, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 0, 255, 0.2);
+/* Header dengan backdrop blur - override global header styles */
+.profileContainer header.header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  background: rgba(26, 26, 46, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 0, 255, 0.2) !important;
+  display: block !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  justify-content: unset !important;
+  align-items: unset !important;
 }
 
 /* Main content area */

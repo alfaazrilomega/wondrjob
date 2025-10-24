@@ -33,73 +33,6 @@ interface Company {
   companyCertificateUrl?: string | null;
 }
 
-import { usePathname } from "next/navigation";
-
-// --- PUBLIC HEADER ---
-const PublicHeader = () => {
-  const pathname = usePathname();
-  const glowStyle = { textShadow: "0 0 8px rgba(159, 84, 255, 0.6)" };
-
-  return (
-    <header
-      className="sticky top-0 z-50 w-full"
-      style={{
-        backgroundColor: "rgba(16, 16, 24, 0.5)",
-        borderBottom: "1px solid rgba(159, 84, 255, 0.2)",
-        backdropFilter: "blur(12px)",
-        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
-        <Link href="/" passHref>
-          <span
-            className="cursor-pointer text-2xl font-bold text-[#E0E0E0]"
-            style={glowStyle}
-          >
-            WondrJob
-          </span>
-        </Link>
-        <nav className="flex items-center gap-8">
-          <Link href="/" passHref>
-            <span
-              className={`cursor-pointer transition-colors hover:text-[#9F54FF] hover:[text-shadow:0_0_8px_rgba(159,84,255,0.6)] relative ${
-                pathname === "/"
-                  ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
-                  : "text-white/60"
-              }`}
-            >
-              Home
-              {pathname === "/" && (
-                <span
-                  className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#9F54FF]"
-                  style={{ boxShadow: "0 0 4px #9F54FF" }}
-                ></span>
-              )}
-            </span>
-          </Link>
-          <Link href="/company" passHref>
-            <span
-              className={`cursor-pointer transition-colors hover:text-[#9F54FF] hover:[text-shadow:0_0_8px_rgba(159,84,255,0.6)] relative ${
-                pathname.startsWith("/company")
-                  ? "text-[#9F54FF] [text-shadow:0_0_8px_rgba(159,84,255,0.6)]"
-                  : "text-white/60"
-              }`}
-            >
-              Companies
-              {pathname.startsWith("/company") && (
-                <span
-                  className="absolute -bottom-2 left-0 w-full h-0.5 bg-[#9F54FF]"
-                  style={{ boxShadow: "0 0 4px #9F54FF" }}
-                ></span>
-              )}
-            </span>
-          </Link>
-        </nav>
-      </div>
-    </header>
-  );
-};
-
 // --- HELPERS ---
 const sanitizeLogoUrl = (url: string | null | undefined): string => {
   if (!url) return "/next.svg";
@@ -254,8 +187,6 @@ export default function CompanyDetailPage({
         className="min-h-screen bg-[#101018] text-white p-4 md:p-8"
         style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif' }}
       >
-        <PublicHeader />
-
         <main className="max-w-7xl mx-auto">
           {/* Company Banner */}
           <div className="glass-pane flex items-center justify-between p-6 mb-8">

@@ -75,6 +75,21 @@
   color: #ff00ff !important;
   font-size: 1.5rem;
   text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-align: left;
+}
+
+/* Isolation rules to prevent global CSS from overriding profile-specific styles */
+.profileContainer {
+  all: initial;
+  position: relative;
+  min-height: 100vh;
+  z-index: 10;
+  isolation: isolate;
+  contain: layout style;
+}
+
+.profileContainer * {
+  box-sizing: border-box;
 }
 
 .navLink {
