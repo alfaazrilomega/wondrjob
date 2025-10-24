@@ -115,7 +115,7 @@
 
 header {
   display: flex;
-  position: absolute;
+  position: fixed;
   block-size: 70px;
   inset-inline-end: 0;
   inset-block-start: 0;

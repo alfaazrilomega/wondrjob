@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
@@ -184,8 +185,8 @@ export default function CompanyDetailPage({
         }
       `}</style>
       <div
-        className="min-h-screen bg-[#101018] text-white p-4 md:p-8"
-        style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif' }}
+        className="bg-[#101018] text-white p-4 md:p-8"
+        style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif', paddingTop: '120px' }}
       >
         <main className="max-w-7xl mx-auto">
           {/* Company Banner */}
