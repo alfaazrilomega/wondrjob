@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
 // Helper function to get admin user
-async function getAdminUser(_request: NextRequest) {
+async function getAdminUser() {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -65,7 +65,7 @@ export async function GET() {
 
 // PUT /api/settings - Updates one or more settings
 export async function PUT(request: NextRequest) {
-  const admin = await getAdminUser(request);
+  const admin = await getAdminUser();
   if (!admin) {
     return new NextResponse("Unauthorized", { status: 401 });
   }

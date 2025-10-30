@@ -125,7 +125,6 @@ const EditJobPostingPage = () => {
         job={selectedJob}
         companies={companies}
         onSave={handleUpdateJob}
-        onCancel={() => router.push("/admin/job-postings")}
         selectedCompany={selectedCompany}
         onCompanyChange={handleCompanyChange}
         jobsForCompany={jobsForCompany}

@@ -715,7 +715,291 @@ const backupData = {
       id: 18,
       name: "Figma",
       category: "Frontend",
-      aliases: ["design", "ui/ux", "prototyping"],
+      aliases: ["design", "ui", "ux", "prototyping"],
+    },
+    {
+      id: 19,
+      name: "UI/UX Design",
+      category: "Frontend",
+      aliases: ["ui", "ux", "design", "user experience"],
+    },
+    {
+      id: 20,
+      name: "Node.js",
+      category: "Backend",
+      aliases: ["nodejs", "backend", "javascript"],
+    },
+    {
+      id: 21,
+      name: "Express.js",
+      category: "Backend",
+      aliases: ["express", "nodejs", "backend"],
+    },
+    {
+      id: 22,
+      name: "Django",
+      category: "Backend",
+      aliases: ["python", "backend"],
+    },
+    {
+      id: 23,
+      name: "Flask",
+      category: "Backend",
+      aliases: ["python", "backend"],
+    },
+    {
+      id: 24,
+      name: "Spring Boot",
+      category: "Backend",
+      aliases: ["java", "backend", "enterprise"],
+    },
+    {
+      id: 25,
+      name: ".NET Core",
+      category: "Backend",
+      aliases: ["dotnet", "csharp", "backend"],
+    },
+    {
+      id: 26,
+      name: "REST APIs",
+      category: "Backend",
+      aliases: ["api", "restful", "backend"],
+    },
+    {
+      id: 27,
+      name: "GraphQL",
+      category: "Backend",
+      aliases: ["api", "query language", "backend"],
+    },
+    {
+      id: 28,
+      name: "PostgreSQL",
+      category: "Database",
+      aliases: ["postgres", "sql", "database"],
+    },
+    {
+      id: 29,
+      name: "MySQL",
+      category: "Database",
+      aliases: ["sql", "database"],
+    },
+    {
+      id: 30,
+      name: "MongoDB",
+      category: "Database",
+      aliases: ["nosql", "database", "document"],
+    },
+    {
+      id: 31,
+      name: "Redis",
+      category: "Database",
+      aliases: ["cache", "in-memory", "database"],
+    },
+    {
+      id: 32,
+      name: "Prisma",
+      category: "Database",
+      aliases: ["orm", "database", "typescript"],
+    },
+    {
+      id: 33,
+      name: "Docker",
+      category: "DevOps",
+      aliases: ["container", "devops", "deployment"],
+    },
+    {
+      id: 34,
+      name: "Kubernetes",
+      category: "DevOps",
+      aliases: ["k8s", "orchestration", "devops"],
+    },
+    {
+      id: 35,
+      name: "CI/CD",
+      category: "DevOps",
+      aliases: ["continuous integration", "continuous delivery", "devops"],
+    },
+    {
+      id: 36,
+      name: "AWS",
+      category: "Cloud",
+      aliases: ["amazon web services", "cloud", "devops"],
+    },
+    {
+      id: 37,
+      name: "Google Cloud (GCP)",
+      category: "Cloud",
+      aliases: ["gcp", "cloud", "devops"],
+    },
+    {
+      id: 38,
+      name: "Microsoft Azure",
+      category: "Cloud",
+      aliases: ["azure", "cloud", "devops"],
+    },
+    {
+      id: 39,
+      name: "Terraform",
+      category: "DevOps",
+      aliases: ["iac", "infrastructure as code", "devops"],
+    },
+    {
+      id: 40,
+      name: "Git",
+      category: "DevOps",
+      aliases: ["version control", "source control"],
+    },
+    {
+      id: 41,
+      name: "React Native",
+      category: "Mobile",
+      aliases: ["mobile", "react", "javascript"],
+    },
+    {
+      id: 42,
+      name: "Flutter",
+      category: "Mobile",
+      aliases: ["mobile", "dart", "google"],
+    },
+    {
+      id: 43,
+      name: "Swift",
+      category: "Mobile",
+      aliases: ["ios", "apple", "mobile"],
+    },
+    {
+      id: 44,
+      name: "Kotlin",
+      category: "Mobile",
+      aliases: ["android", "google", "mobile"],
+    },
+    {
+      id: 45,
+      name: "Machine Learning",
+      category: "AI/ML",
+      aliases: ["ml", "ai", "data science"],
+    },
+    {
+      id: 46,
+      name: "TensorFlow",
+      category: "AI/ML",
+      aliases: ["deep learning", "ai", "google"],
+    },
+    {
+      id: 47,
+      name: "PyTorch",
+      category: "AI/ML",
+      aliases: ["deep learning", "ai", "facebook"],
+    },
+    {
+      id: 48,
+      name: "Data Analysis",
+      category: "AI/ML",
+      aliases: ["data", "analytics", "pandas", "numpy"],
+    },
+    {
+      id: 49,
+      name: "IT Support",
+      category: "IT",
+      aliases: ["it", "helpdesk", "technical support"],
+    },
+    {
+      id: 50,
+      name: "Network Administration",
+      category: "IT",
+      aliases: ["networking", "cisco", "sysadmin"],
+    },
+    {
+      id: 51,
+      name: "Cybersecurity",
+      category: "Security",
+      aliases: ["security", "infosec", "hacking"],
+    },
+    {
+      id: 52,
+      name: "Penetration Testing",
+      category: "Security",
+      aliases: ["pentesting", "ethical hacking", "security"],
+    },
+    {
+      id: 53,
+      name: "Agile",
+      category: "Methodology",
+      aliases: ["scrum", "kanban", "project management"],
+    },
+    {
+      id: 54,
+      name: "Scrum",
+      category: "Methodology",
+      aliases: ["agile", "project management"],
+    },
+    {
+      id: 55,
+      name: "JIRA",
+      category: "Methodology",
+      aliases: ["project management", "ticketing", "atlassian"],
+    },
+  ],
+  Admin: [],
+  JobEmbedding: [],
+  PortfolioEmbedding: [],
+  Setting: [
+    {
+      key: "sendWelcomeEmail",
+      value: true,
+    },
+    {
+      key: "notifyAdminOnRegistration",
+      value: true,
+    },
+    {
+      key: "websiteLogo",
+      value:
+        "https://wvhyhbvcupzysysalhdg.supabase.co/storage/v1/object/public/site-assets/public/1760454724966-valentin-salja-f_GboRmilvw-unsplash.jpg",
+    },
+    {
+      key: "twoFactorEnabled",
+      value: true,
+    },
+    {
+      key: "websiteName",
+      value: "WondrJob",
+    },
+    {
+      key: "maintenanceMode",
+      value: true,
+    },
+  ],
+  RolePermission: [
+    {
+      id: 1,
+      role: "HRD",
+      permission: "Can Post Jobs",
+      enabled: true,
+    },
+    {
+      id: 2,
+      role: "HRD",
+      permission: "Can View All Applicants",
+      enabled: true,
+    },
+    {
+      id: 3,
+      role: "COMPANY",
+      permission: "Can Edit Company Profiles",
+      enabled: true,
+    },
+    {
+      id: 4,
+      role: "COMPANY",
+      permission: "Can View All Applicants",
+      enabled: true,
+    },
+    {
+      id: 5,
+      role: "COMPANY",
+      permission: "Can Post Jobs",
+      enabled: true,
     },
   ],
 };
@@ -802,6 +1086,24 @@ async function main() {
       where: { id: skill.id },
       update: {},
       create: skill,
+    });
+  }
+
+  // Seed Setting
+  for (const setting of backupData.Setting) {
+    await prisma.setting.upsert({
+      where: { key: setting.key },
+      update: {},
+      create: setting,
+    });
+  }
+
+  // Seed RolePermission
+  for (const permission of backupData.RolePermission) {
+    await prisma.rolePermission.upsert({
+      where: { id: permission.id },
+      update: {},
+      create: permission,
     });
   }
 

@@ -112,6 +112,14 @@ const SkillInput: React.FC<SkillInputProps> = ({ skills, setSkills }) => {
           />
         </div>
       </div>
+
+      {/* Hidden input to store skill names for form submission */}
+      <input
+        type="hidden"
+        name="skills"
+        value={skills.map((s) => s.name).join(",")}
+      />
+
       {isDropdownOpen && suggestions.length > 0 && (
         <div
           className="absolute z-10 w-full mt-2 p-2 rounded-lg border shadow-lg"

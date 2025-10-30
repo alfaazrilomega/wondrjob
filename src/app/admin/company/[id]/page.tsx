@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import CompanyMonthlySuccessRateChart from "@/app/Component/company/CompanyMonthlySuccessRateChart";
 
 // --- TYPES ---
@@ -94,9 +93,12 @@ const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
 };
 
 // --- PAGE ---
-export default function CompanyProfilePage() {
-  const params = useParams();
-  const id = params.id as string;
+export default function CompanyProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const [id, setId] = useState<string>("");
 
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
@@ -122,6 +124,14 @@ export default function CompanyProfilePage() {
   const [deleteMonth, setDeleteMonth] = useState<number | "">(
     new Date().getMonth() + 1,
   );
+
+  useEffect(() => {
+    const fetchParams = async () => {
+      const resolvedParams = await params;
+      setId(resolvedParams.id);
+    };
+    fetchParams();
+  }, [params]);
 
   useEffect(() => {
     if (!id) return;

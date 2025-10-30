@@ -40,16 +40,13 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
+          // If the cookie is set, update the request's cookies.
           request.cookies.set({
             name,
             value,
             ...options,
           });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
+          // Also update the response's cookies.
           response.cookies.set({
             name,
             value,
@@ -57,16 +54,13 @@ export async function middleware(request: NextRequest) {
           });
         },
         remove(name: string, options: CookieOptions) {
+          // If the cookie is removed, update the request's cookies.
           request.cookies.set({
             name,
             value: "",
             ...options,
           });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
+          // Also update the response's cookies.
           response.cookies.set({
             name,
             value: "",
@@ -77,12 +71,11 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  const isSimulating = request.cookies.get("simulation_mode")?.value === 'true';
-  const simulatedUserId = request.cookies.get("simulated_user_id")?.value;
+  // Refresh session if expired - important!
+  const { data: { user } } = await supabase.auth.getUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const isSimulating = request.cookies.get("simulation_mode")?.value === "true";
+  const simulatedUserId = request.cookies.get("simulated_user_id")?.value;
 
   if (isSimulating && simulatedUserId && user) {
     // User must be logged in (i.e., an admin) to simulate.
@@ -99,13 +92,20 @@ export async function middleware(request: NextRequest) {
       // Role-based redirection for the SIMULATED user
       switch (role) {
         case "COMPANY":
-          if (!pathname.startsWith("/dashboard/company") && !pathname.startsWith("/company/create")) {
-            return NextResponse.redirect(new URL("/dashboard/company", request.url));
+          if (
+            !pathname.startsWith("/dashboard/company") &&
+            !pathname.startsWith("/company/create")
+          ) {
+            return NextResponse.redirect(
+              new URL("/dashboard/company", request.url),
+            );
           }
           break;
         case "HRD":
           if (!pathname.startsWith("/dashboard/hrd")) {
-            return NextResponse.redirect(new URL("/dashboard/hrd", request.url));
+            return NextResponse.redirect(
+              new URL("/dashboard/hrd", request.url),
+            );
           }
           break;
         case "ADMIN": // Should not happen, but as a safeguard
@@ -114,7 +114,11 @@ export async function middleware(request: NextRequest) {
           }
           break;
         case "SOCIETY":
-          if (pathname.startsWith("/dashboard") || pathname.startsWith("/admin") || pathname.startsWith("/company")) {
+          if (
+            pathname.startsWith("/dashboard") ||
+            pathname.startsWith("/admin") ||
+            pathname.startsWith("/company")
+          ) {
             return NextResponse.redirect(homeURL);
           }
           break;

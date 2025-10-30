@@ -2,20 +2,37 @@
 
 import React, { useState, useEffect, useTransition } from "react";
 import Image from "next/image";
-import { Company, JobType, WorkStyle } from "@prisma/client";
 import { Job, JobFormData, Skill } from "./types";
 import SkillInput from "../../Component/SkillInput";
+import { JobFormActions } from "../../dashboard/company-owner/edit/JobFormActions";
+export type Company = {
+  id: number;
+  name: string;
+  logo: string | null;
+};
+
+export enum JobType {
+  FULL_TIME = "FULL_TIME",
+  PART_TIME = "PART_TIME",
+  CONTRACT = "CONTRACT",
+  INTERNSHIP = "INTERNSHIP",
+}
+
+export enum WorkStyle {
+  ON_SITE = "ON_SITE",
+  HYBRID = "HYBRID",
+  REMOTE = "REMOTE",
+}
 
 interface JobPostingFormProps {
   title: string;
   companies: Company[];
   job?: Job | null;
-  onSave: (formData: JobFormData) => void;
-  onCancel: () => void;
+  onSave?: (formData: JobFormData) => void;
   selectedCompany: Company | null;
-  onCompanyChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onCompanyChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   jobsForCompany: Job[];
-  onJobSelectionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onJobSelectionChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   isLoadingCompanies?: boolean;
 }
 
@@ -24,11 +41,10 @@ export function JobPostingForm({
   companies,
   job,
   onSave,
-  onCancel,
   selectedCompany,
-  onCompanyChange,
+  onCompanyChange = () => {},
   jobsForCompany,
-  onJobSelectionChange,
+  onJobSelectionChange = () => {},
   isLoadingCompanies,
 }: JobPostingFormProps) {
   const [isPending, startTransition] = useTransition();
@@ -95,13 +111,6 @@ export function JobPostingForm({
     setFormData((prev) => ({ ...prev, skills: newSkills }));
   };
 
-  const handlePublish = (e: React.FormEvent) => {
-    e.preventDefault();
-    startTransition(() => {
-      onSave(formData);
-    });
-  };
-
   const areFieldsDisabled =
     !selectedCompany || (jobsForCompany.length > 1 && !job);
 
@@ -110,7 +119,7 @@ export function JobPostingForm({
       <div className="form-column">
         <div className="glass-card form-container">
           <h2>{title}</h2>
-          <form onSubmit={handlePublish}>
+          <div className="form-fields">
             <div className="form-group">
               <label htmlFor="company-select">Select Company</label>
               <select
@@ -298,22 +307,25 @@ export function JobPostingForm({
             </div>
 
             <div className="action-buttons">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="btn btn-secondary"
-              >
-                Cancel
-              </button>
+              <JobFormActions jobId={job?.id || 0} />
               <button
                 type="submit"
                 className="btn btn-primary"
                 disabled={isPending || areFieldsDisabled}
+                onClick={(e) => {
+                  if (onSave) {
+                    e.preventDefault();
+                    startTransition(async () => {
+                      onSave(formData);
+                    });
+                  }
+                  // If no onSave, let the form submit normally for server actions
+                }}
               >
                 {isPending ? "Saving..." : "Save Changes"}
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
@@ -354,7 +366,7 @@ export function JobPostingForm({
               <p>
                 <strong>Salary:</strong>{" "}
                 {formData.salaryMin && formData.salaryMax
-                  ? `$${formData.salaryMin} - $${formData.salaryMax}`
+                  ? `${formData.salaryMin} - ${formData.salaryMax}`
                   : "N/A"}
               </p>
               <p>

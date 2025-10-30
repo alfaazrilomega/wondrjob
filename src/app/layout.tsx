@@ -7,6 +7,8 @@ import SimulationBanner from "@/app/Component/SimulationBanner";
 import "./material-symbols.css";
 import { getUser } from "./actions/auth";
 
+import { Toaster } from "@/components/ui/sonner";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -38,6 +40,7 @@ export default async function RootLayout({
           <SimulationBanner />
           <ConditionalHeader user={user} />
           {children}
+          <Toaster />
         </StyledComponentsRegistry>
       </body>
     </html>

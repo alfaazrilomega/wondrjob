@@ -1,14 +1,16 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
+  redirect("/");
 }
 
 export async function getUser() {
-  const supabase = await createClient();
+  const supabase = await createClient(false);
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -62,7 +64,7 @@ export async function deleteAccount() {
   }
 
   // This requires admin privileges and is a complex operation.
-  // We need to use a service role key to delete a user from auth.
+  // We need to use a Supabase admin client with the service role key to delete a user from auth.
   // This is a placeholder for the actual implementation which should be handled with extreme care.
   console.log(
     `Request to delete user ${user.id}. This needs a secure admin implementation.`,

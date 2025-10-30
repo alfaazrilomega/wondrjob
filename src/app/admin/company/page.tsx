@@ -364,7 +364,7 @@ export default function CompanyManagementPage() {
       return;
     }
 
-    let certificateUrl = null;
+    let certificateUrl: string | null = null;
     if (certificateFile) {
       const fileName = `${Date.now()}.${certificateFile.name.split(".").pop()}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -382,7 +382,7 @@ export default function CompanyManagementPage() {
       const { data: urlData } = supabase.storage
         .from("company-certificates")
         .getPublicUrl(uploadData.path);
-      certificateUrl = urlData.publicUrl;
+      certificateUrl = urlData.publicUrl || null;
     }
 
     let logoUrl = formData.logo;
@@ -433,7 +433,7 @@ export default function CompanyManagementPage() {
       return;
     }
 
-    let certificateUrl = formData.companyCertificateUrl;
+    let certificateUrl: string | null = formData.companyCertificateUrl || null;
 
     if (certificateFile) {
       const fileName = `${Date.now()}.${certificateFile.name.split(".").pop()}`;
@@ -452,7 +452,7 @@ export default function CompanyManagementPage() {
       const { data: urlData } = supabase.storage
         .from("company-certificates")
         .getPublicUrl(uploadData.path);
-      certificateUrl = urlData.publicUrl;
+      certificateUrl = urlData.publicUrl || null;
     }
 
     let logoUrl = formData.logo;

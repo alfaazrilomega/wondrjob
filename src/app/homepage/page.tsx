@@ -1,15 +1,9 @@
 "use client";
 import React, { useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AnimatedButton from "@/components/ui/animatedButton";
-
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
-  ssr: false,
-  loading: () => <div className="robot-3d" />,
-});
 
 export default function Page() {
   const router = useRouter();
@@ -138,12 +132,6 @@ export default function Page() {
             </div>
           </div>
         </main>
-        <Spline
-          {...commonAosProps}
-          data-aos-duration="3000"
-          className="robot-3d"
-          scene="https://prod.spline.design/Bu5fDnoYxikxjlDm/scene.splinecode"
-        />
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
-
+import { NextResponse } from "next/server";
 // This endpoint exits the simulation
 export async function POST() {
   const response = NextResponse.json({ success: true });

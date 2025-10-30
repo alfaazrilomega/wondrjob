@@ -184,7 +184,7 @@
       "user_id": "6aff0c56-82f8-468e-b5ea-d2d9fe81983f",
       "location": "Malang, Malang City, East Java, Indonesia",
       "headline": "Senior Frontend Developer - Innovate. Build. Inspire.",
-      "about": "\"At EchoStream Media, we believe in the power of great user experience to drive our mission forward. We're on the hunt for a Senior Frontend Developer who is eager to Innovate, Build, and Inspire within a supportive and ambitious environment. You'll architect robust frontend solutions, champion best practices, and play a crucial role in bringing our product vision to life. Beyond just coding, you'll inspire your peers, foster a culture of technical excellence, and contribute directly to products used by a global audience consuming engaging content.\"",
+      "about": "At EchoStream Media, we believe in the power of great user experience to drive our mission forward. We're on the hunt for a Senior Frontend Developer who is eager to Innovate, Build, and Inspire within a supportive and ambitious environment. You'll architect robust frontend solutions, champion best practices, and play a crucial role in bringing our product vision to life. Beyond just coding, you'll inspire your peers, foster a culture of technical excellence, and contribute directly to products used by a global audience consuming engaging content.",
       "profile_picture": "https://wvhyhbvcupzysysalhdg.supabase.co/storage/v1/object/public/profile-pictures/6aff0c56-82f8-468e-b5ea-d2d9fe81983f/1760598137191-WhatsApp Image 2025-09-14 at 14.11.02.jpeg",
       "available_dates": [
         "2025-10-22T17:00:00.000Z",
@@ -574,554 +574,331 @@
       "id": 1,
       "name": "JavaScript",
       "category": "Language",
-      "aliases": [
-        "js",
-        "frontend",
-        "backend"
-      ]
+      "aliases": ["js", "frontend", "backend"]
     },
     {
       "id": 2,
       "name": "TypeScript",
       "category": "Language",
-      "aliases": [
-        "ts",
-        "javascript",
-        "frontend",
-        "backend"
-      ]
+      "aliases": ["ts", "javascript", "frontend", "backend"]
     },
     {
       "id": 3,
       "name": "Python",
       "category": "Language",
-      "aliases": [
-        "py",
-        "backend",
-        "data science",
-        "ai"
-      ]
+      "aliases": ["py", "backend", "data science", "ai"]
     },
     {
       "id": 4,
       "name": "Java",
       "category": "Language",
-      "aliases": [
-        "backend",
-        "android",
-        "enterprise"
-      ]
+      "aliases": ["backend", "android", "enterprise"]
     },
     {
       "id": 5,
       "name": "C#",
       "category": "Language",
-      "aliases": [
-        "csharp",
-        "dotnet",
-        ".net",
-        "backend",
-        "game dev"
-      ]
+      "aliases": ["csharp", "dotnet", ".net", "backend", "game dev"]
     },
     {
       "id": 6,
       "name": "Go",
       "category": "Language",
-      "aliases": [
-        "golang",
-        "backend",
-        "system"
-      ]
+      "aliases": ["golang", "backend", "system"]
     },
     {
       "id": 7,
       "name": "Rust",
       "category": "Language",
-      "aliases": [
-        "backend",
-        "system",
-        "performance"
-      ]
+      "aliases": ["backend", "system", "performance"]
     },
     {
       "id": 8,
       "name": "PHP",
       "category": "Language",
-      "aliases": [
-        "backend",
-        "web"
-      ]
+      "aliases": ["backend", "web"]
     },
     {
       "id": 9,
       "name": "SQL",
       "category": "Language",
-      "aliases": [
-        "database",
-        "query",
-        "data"
-      ]
+      "aliases": ["database", "query", "data"]
     },
     {
       "id": 10,
       "name": "HTML",
       "category": "Language",
-      "aliases": [
-        "frontend",
-        "web",
-        "markup"
-      ]
+      "aliases": ["frontend", "web", "markup"]
     },
     {
       "id": 11,
       "name": "CSS",
       "category": "Language",
-      "aliases": [
-        "frontend",
-        "web",
-        "styling",
-        "design"
-      ]
+      "aliases": ["frontend", "web", "styling", "design"]
     },
     {
       "id": 12,
       "name": "React",
       "category": "Frontend",
-      "aliases": [
-        "reactjs",
-        "frontend",
-        "javascript",
-        "ui"
-      ]
+      "aliases": ["reactjs", "frontend", "javascript", "ui"]
     },
     {
       "id": 13,
       "name": "Next.js",
       "category": "Frontend",
-      "aliases": [
-        "nextjs",
-        "react",
-        "frontend",
-        "ssr"
-      ]
+      "aliases": ["nextjs", "react", "frontend", "ssr"]
     },
     {
       "id": 14,
       "name": "Angular",
       "category": "Frontend",
-      "aliases": [
-        "angularjs",
-        "frontend",
-        "javascript"
-      ]
+      "aliases": ["angularjs", "frontend", "javascript"]
     },
     {
       "id": 15,
       "name": "Vue.js",
       "category": "Frontend",
-      "aliases": [
-        "vue",
-        "frontend",
-        "javascript"
-      ]
+      "aliases": ["vue", "frontend", "javascript"]
     },
     {
       "id": 16,
       "name": "Svelte",
       "category": "Frontend",
-      "aliases": [
-        "frontend",
-        "javascript"
-      ]
+      "aliases": ["frontend", "javascript"]
     },
     {
       "id": 17,
       "name": "Tailwind CSS",
       "category": "Frontend",
-      "aliases": [
-        "css",
-        "utility-first",
-        "styling"
-      ]
+      "aliases": ["css", "utility-first", "styling"]
     },
     {
       "id": 18,
       "name": "Figma",
       "category": "Frontend",
-      "aliases": [
-        "design",
-        "ui",
-        "ux",
-        "prototyping"
-      ]
+      "aliases": ["design", "ui", "ux", "prototyping"]
     },
     {
       "id": 19,
       "name": "UI/UX Design",
       "category": "Frontend",
-      "aliases": [
-        "ui",
-        "ux",
-        "design",
-        "user experience"
-      ]
+      "aliases": ["ui", "ux", "design", "user experience"]
     },
     {
       "id": 20,
       "name": "Node.js",
       "category": "Backend",
-      "aliases": [
-        "nodejs",
-        "backend",
-        "javascript"
-      ]
+      "aliases": ["nodejs", "backend", "javascript"]
     },
     {
       "id": 21,
       "name": "Express.js",
       "category": "Backend",
-      "aliases": [
-        "express",
-        "nodejs",
-        "backend"
-      ]
+      "aliases": ["express", "nodejs", "backend"]
     },
     {
       "id": 22,
       "name": "Django",
       "category": "Backend",
-      "aliases": [
-        "python",
-        "backend"
-      ]
+      "aliases": ["python", "backend"]
     },
     {
       "id": 23,
       "name": "Flask",
       "category": "Backend",
-      "aliases": [
-        "python",
-        "backend"
-      ]
+      "aliases": ["python", "backend"]
     },
     {
       "id": 24,
       "name": "Spring Boot",
       "category": "Backend",
-      "aliases": [
-        "java",
-        "backend",
-        "enterprise"
-      ]
+      "aliases": ["java", "backend", "enterprise"]
     },
     {
       "id": 25,
       "name": ".NET Core",
       "category": "Backend",
-      "aliases": [
-        "dotnet",
-        "csharp",
-        "backend"
-      ]
+      "aliases": ["dotnet", "csharp", "backend"]
     },
     {
       "id": 26,
       "name": "REST APIs",
       "category": "Backend",
-      "aliases": [
-        "api",
-        "restful",
-        "backend"
-      ]
+      "aliases": ["api", "restful", "backend"]
     },
     {
       "id": 27,
       "name": "GraphQL",
       "category": "Backend",
-      "aliases": [
-        "api",
-        "query language",
-        "backend"
-      ]
+      "aliases": ["api", "query language", "backend"]
     },
     {
       "id": 28,
       "name": "PostgreSQL",
       "category": "Database",
-      "aliases": [
-        "postgres",
-        "sql",
-        "database"
-      ]
+      "aliases": ["postgres", "sql", "database"]
     },
     {
       "id": 29,
       "name": "MySQL",
       "category": "Database",
-      "aliases": [
-        "sql",
-        "database"
-      ]
+      "aliases": ["sql", "database"]
     },
     {
       "id": 30,
       "name": "MongoDB",
       "category": "Database",
-      "aliases": [
-        "nosql",
-        "database",
-        "document"
-      ]
+      "aliases": ["nosql", "database", "document"]
     },
     {
       "id": 31,
       "name": "Redis",
       "category": "Database",
-      "aliases": [
-        "cache",
-        "in-memory",
-        "database"
-      ]
+      "aliases": ["cache", "in-memory", "database"]
     },
     {
       "id": 32,
       "name": "Prisma",
       "category": "Database",
-      "aliases": [
-        "orm",
-        "database",
-        "typescript"
-      ]
+      "aliases": ["orm", "database", "typescript"]
     },
     {
       "id": 33,
       "name": "Docker",
       "category": "DevOps",
-      "aliases": [
-        "container",
-        "devops",
-        "deployment"
-      ]
+      "aliases": ["container", "devops", "deployment"]
     },
     {
       "id": 34,
       "name": "Kubernetes",
       "category": "DevOps",
-      "aliases": [
-        "k8s",
-        "orchestration",
-        "devops"
-      ]
+      "aliases": ["k8s", "orchestration", "devops"]
     },
     {
       "id": 35,
       "name": "CI/CD",
       "category": "DevOps",
-      "aliases": [
-        "continuous integration",
-        "continuous delivery",
-        "devops"
-      ]
+      "aliases": ["continuous integration", "continuous delivery", "devops"]
     },
     {
       "id": 36,
       "name": "AWS",
       "category": "Cloud",
-      "aliases": [
-        "amazon web services",
-        "cloud",
-        "devops"
-      ]
+      "aliases": ["amazon web services", "cloud", "devops"]
     },
     {
       "id": 37,
       "name": "Google Cloud (GCP)",
       "category": "Cloud",
-      "aliases": [
-        "gcp",
-        "cloud",
-        "devops"
-      ]
+      "aliases": ["gcp", "cloud", "devops"]
     },
     {
       "id": 38,
       "name": "Microsoft Azure",
       "category": "Cloud",
-      "aliases": [
-        "azure",
-        "cloud",
-        "devops"
-      ]
+      "aliases": ["azure", "cloud", "devops"]
     },
     {
       "id": 39,
       "name": "Terraform",
       "category": "DevOps",
-      "aliases": [
-        "iac",
-        "infrastructure as code",
-        "devops"
-      ]
+      "aliases": ["iac", "infrastructure as code", "devops"]
     },
     {
       "id": 40,
       "name": "Git",
       "category": "DevOps",
-      "aliases": [
-        "version control",
-        "source control"
-      ]
+      "aliases": ["version control", "source control"]
     },
     {
       "id": 41,
       "name": "React Native",
       "category": "Mobile",
-      "aliases": [
-        "mobile",
-        "react",
-        "javascript"
-      ]
+      "aliases": ["mobile", "react", "javascript"]
     },
     {
       "id": 42,
       "name": "Flutter",
       "category": "Mobile",
-      "aliases": [
-        "mobile",
-        "dart",
-        "google"
-      ]
+      "aliases": ["mobile", "dart", "google"]
     },
     {
       "id": 43,
       "name": "Swift",
       "category": "Mobile",
-      "aliases": [
-        "ios",
-        "apple",
-        "mobile"
-      ]
+      "aliases": ["ios", "apple", "mobile"]
     },
     {
       "id": 44,
       "name": "Kotlin",
       "category": "Mobile",
-      "aliases": [
-        "android",
-        "google",
-        "mobile"
-      ]
+      "aliases": ["android", "google", "mobile"]
     },
     {
       "id": 45,
       "name": "Machine Learning",
       "category": "AI/ML",
-      "aliases": [
-        "ml",
-        "ai",
-        "data science"
-      ]
+      "aliases": ["ml", "ai", "data science"]
     },
     {
       "id": 46,
       "name": "TensorFlow",
       "category": "AI/ML",
-      "aliases": [
-        "deep learning",
-        "ai",
-        "google"
-      ]
+      "aliases": ["deep learning", "ai", "google"]
     },
     {
       "id": 47,
       "name": "PyTorch",
       "category": "AI/ML",
-      "aliases": [
-        "deep learning",
-        "ai",
-        "facebook"
-      ]
+      "aliases": ["deep learning", "ai", "facebook"]
     },
     {
       "id": 48,
       "name": "Data Analysis",
       "category": "AI/ML",
-      "aliases": [
-        "data",
-        "analytics",
-        "pandas",
-        "numpy"
-      ]
+      "aliases": ["data", "analytics", "pandas", "numpy"]
     },
     {
       "id": 49,
       "name": "IT Support",
       "category": "IT",
-      "aliases": [
-        "it",
-        "helpdesk",
-        "technical support"
-      ]
+      "aliases": ["it", "helpdesk", "technical support"]
     },
     {
       "id": 50,
       "name": "Network Administration",
       "category": "IT",
-      "aliases": [
-        "networking",
-        "cisco",
-        "sysadmin"
-      ]
+      "aliases": ["networking", "cisco", "sysadmin"]
     },
     {
       "id": 51,
       "name": "Cybersecurity",
       "category": "Security",
-      "aliases": [
-        "security",
-        "infosec",
-        "hacking"
-      ]
+      "aliases": ["security", "infosec", "hacking"]
     },
     {
       "id": 52,
       "name": "Penetration Testing",
       "category": "Security",
-      "aliases": [
-        "pentesting",
-        "ethical hacking",
-        "security"
-      ]
+      "aliases": ["pentesting", "ethical hacking", "security"]
     },
     {
       "id": 53,
       "name": "Agile",
       "category": "Methodology",
-      "aliases": [
-        "scrum",
-        "kanban",
-        "project management"
-      ]
+      "aliases": ["scrum", "kanban", "project management"]
     },
     {
       "id": 54,
       "name": "Scrum",
       "category": "Methodology",
-      "aliases": [
-        "agile",
-        "project management"
-      ]
+      "aliases": ["agile", "project management"]
     },
     {
       "id": 55,
       "name": "JIRA",
       "category": "Methodology",
-      "aliases": [
-        "project management",
-        "ticketing",
-        "atlassian"
-      ]
+      "aliases": ["project management", "ticketing", "atlassian"]
     }
   ],
   "Setting": [

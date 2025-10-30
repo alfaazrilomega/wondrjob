@@ -12,10 +12,12 @@ model User {
   id               String    @id
   name             String
   email            String    @unique
+  password         String?
   role             UserRole  @default(SOCIETY)
   phone            String?
   address          String?
   date_of_birth    DateTime?
+  profile_picture  String?
   createdAt        DateTime  @default(now())
   twoFactorEnabled Boolean   @default(false)
   Admin            Admin?
@@ -32,7 +34,7 @@ model Admin {
   id            Int       @id @default(autoincrement())
   name          String
   email         String    @unique
-  password      String
+  password      String?
   phone         String?
   address       String?
   date_of_birth DateTime?
@@ -78,8 +80,11 @@ model Company {
   description           String
   user_id               String                @unique
   logo                  String?
+  tagline               String?
   companyCertificateUrl String?
+  website               String?
   jobs                  AvailablePosition[]
+  jobDrafts             JobDraft[]
   user                  User                  @relation(fields: [user_id], references: [id])
   monthlyStats          CompanyMonthlyStats[]
   hrds                  HRD[]
@@ -93,6 +98,9 @@ model CompanyMonthlyStats {
   month       Int
   year        Int
   successRate Float
+  revenue     Float   @default(0) // Added revenue
+  expenses    Float   @default(0) // Added expenses
+  netIncome   Float   @default(0) // Added net income
   company     Company @relation(fields: [companyId], references: [id])
 
   @@unique([companyId, month, year])
@@ -106,6 +114,8 @@ model AvailablePosition {
   submission_start_date DateTime
   submission_end_date   DateTime
   company_id            Int
+  department            String?
+  location              String?
   jobType               JobType?
   salaryMax             Int?
   salaryMin             Int?
@@ -170,12 +180,13 @@ model PortfolioEmbedding {
 }
 
 model Skill {
-  id       Int                 @id @default(autoincrement())
-  name     String              @unique
-  category String
-  aliases  String[]            @default([])
-  jobs     AvailablePosition[] @relation("AvailablePositionToSkill")
-  users    User[]              @relation("SkillToUser")
+  id        Int                 @id @default(autoincrement())
+  name      String              @unique
+  category  String
+  aliases   String[]            @default([])
+  jobs      AvailablePosition[] @relation("AvailablePositionToSkill")
+  jobDrafts JobDraft[]          @relation("JobDraftToSkill")
+  users     User[]              @relation("SkillToUser")
 }
 
 model Setting {
@@ -184,30 +195,29 @@ model Setting {
 }
 
 model RolePermission {
-  id         Int      @id @default(autoincrement())
-  role       UserRole
+  id         Int     @id @default(autoincrement())
+  role       String
   permission String
-  enabled    Boolean  @default(false)
+  enabled    Boolean @default(false)
 
   @@unique([role, permission])
 }
 
 model Follow {
+  id                Int      @id @default(autoincrement())
+  followerId        String // ID of the user doing the following
+  follower          User     @relation("UserFollows", fields: [followerId], references: [id])
+  followedUserId    String? // when following another user
+  followedUser      User?    @relation("UserFollowers", fields: [followedUserId], references: [id])
+  followedCompanyId Int? // when following a company
+  followedCompany   Company? @relation("CompanyFollowers", fields: [followedCompanyId], references: [id])
+  createdAt         DateTime @default(now())
 
-id Int @id @default(autoincrement())
-followerId String // ID of the user doing the following
-follower User @relation("UserFollows", fields: [followerId], references: [id])
-followedUserId String? // when following another user
-followedUser User? @relation("UserFollowers", fields: [followedUserId], references: [id])
-followedCompanyId Int? // when following a company
-followedCompany Company? @relation("CompanyFollowers", fields: [followedCompanyId], references: [id])
-createdAt DateTime @default(now())
-@@unique([followerId, followedUserId])
-@@unique([followerId, followedCompanyId])
-@@index([followerId])
-@@index([followedUserId])
-@@index([followedCompanyId])
-
+  @@unique([followerId, followedUserId])
+  @@unique([followerId, followedCompanyId])
+  @@index([followerId])
+  @@index([followedUserId])
+  @@index([followedCompanyId])
 }
 
 enum UserRole {
@@ -234,4 +244,61 @@ enum ApplicationStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+model JobDraft {
+  id                    Int            @id @default(autoincrement())
+  position_name         String
+  capacity              Int
+  description           String
+  submission_start_date DateTime
+  submission_end_date   DateTime
+  company_id            Int
+  department            String?
+  location              String?
+  jobType               JobType?
+  salaryMax             Int?
+  salaryMin             Int?
+  workStyle             WorkStyle?
+  status                DraftStatus    @default(PENDING)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  createdBy             String // HRD user_id
+  company               Company        @relation(fields: [company_id], references: [id])
+  skills                Skill[]        @relation("JobDraftToSkill")
+  notifications         Notification[]
+
+  @@index([company_id])
+  @@index([status])
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  type        NotificationType
+  title       String
+  message     String
+  recipientId String // Company Owner user_id
+  senderId    String? // HRD user_id who created the draft
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  jobDraftId  Int?
+  jobDraft    JobDraft?        @relation(fields: [jobDraftId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
+  @@index([isRead])
+  @@index([jobDraftId])
+}
+
+enum DraftStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  JOB_APPROVAL_REQUEST
+  JOB_APPROVAL_ACCEPTED
+  JOB_APPROVAL_REJECTED
+  APPLICANT_UPDATE
+  INFO
 }

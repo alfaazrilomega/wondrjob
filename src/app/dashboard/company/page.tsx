@@ -24,10 +24,15 @@ export default function CompanyDashboard() {
 
         if (!response.ok) {
           // Handle non-2xx responses
-          const errorData = await response.json();
-          throw new Error(
-            errorData.error || `HTTP error! status: ${response.status}`,
-          );
+          let errorMessage = `HTTP error! status: ${response.status}`;
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.error || errorMessage;
+          } catch {
+            // If .json() fails (like on a 405), just use the status text
+            errorMessage = `${errorMessage} (${response.statusText})`;
+          }
+          throw new Error(errorMessage);
         }
 
         const data = await response.json();

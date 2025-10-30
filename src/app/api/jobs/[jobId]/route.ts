@@ -75,6 +75,8 @@ export async function PUT(
       salaryMax,
       workStyle,
       skills, // This is an array of skill IDs
+      department,
+      location,
     } = body;
 
     const updatedJob = await prisma.availablePosition.update({
@@ -93,6 +95,8 @@ export async function PUT(
         salaryMin: salaryMin ? parseInt(salaryMin) : undefined,
         salaryMax: salaryMax ? parseInt(salaryMax) : undefined,
         workStyle: workStyle ? (workStyle as WorkStyle) : undefined,
+        department,
+        location,
         skills: {
           set: skills.map((id: number) => ({ id })),
         },

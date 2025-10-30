@@ -7,6 +7,7 @@ import { User } from "@supabase/supabase-js";
 export default function ConditionalHeader({ user }: { user: User | null }) {
   const pathname = usePathname();
   const noHeaderPaths = [
+    "/dashboard",
     "/profile",
     "/login",
     "/signup",

@@ -95,6 +95,8 @@ export async function POST(request: Request) {
       salaryMax,
       workStyle,
       skills, // This is an array of skill IDs
+      department,
+      location,
     } = body;
 
     const newJob = await prisma.availablePosition.create({
@@ -109,6 +111,8 @@ export async function POST(request: Request) {
         salaryMin: salaryMin ? parseInt(salaryMin) : null,
         salaryMax: salaryMax ? parseInt(salaryMax) : null,
         workStyle,
+        department,
+        location,
         skills: {
           connect: skills.map((id: number) => ({ id })),
         },

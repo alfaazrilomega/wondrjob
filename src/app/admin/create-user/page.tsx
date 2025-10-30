@@ -295,6 +295,7 @@ const UserFormModal = ({
       if (isEditMode && user) {
         setFormData({
           ...user,
+          password: user.password || undefined,
           date_of_birth: user.date_of_birth
             ? new Date(user.date_of_birth).toISOString().split("T")[0]
             : "",
@@ -450,11 +451,8 @@ const UserFormModal = ({
             value={formData.companyId || ""}
             onChange={handleChange}
             className="w-full p-2 bg-gray-700 rounded"
-            required
           >
-            <option value="" disabled>
-              Select a company
-            </option>
+            <option value="">No company (HRD can be assigned later)</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
                 {company.name}

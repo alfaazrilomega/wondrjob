@@ -1,0 +1,189 @@
+.golden-ratio-layout {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.form-column {
+  flex: 0 0 65%;
+}
+
+.preview-column {
+  flex: 0 0 35%;
+}
+
+.glass-card {
+  background-color: rgba(26, 26, 46, 0.5);
+  border: 1px solid rgba(159, 84, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(159, 84, 255, 0.1);
+  padding: 2rem;
+  color: #e0e0e0;
+}
+
+.form-container h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #e0e0e0;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #9f54ff;
+  box-shadow: 0 0 10px rgba(159, 84, 255, 0.5);
+}
+
+.date-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.date-fields .form-group {
+  flex: 1;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #9f54ff;
+  color: white;
+  border: 1px solid #9f54ff;
+  box-shadow: 0 0 15px rgba(159, 84, 255, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(159, 84, 255, 0.7);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #9f54ff;
+  border: 1px solid #9f54ff;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(159, 84, 255, 0.1);
+}
+
+.live-preview-container {
+  position: sticky;
+  top: 2rem;
+}
+
+.live-preview-container h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(159, 84, 255, 0.2);
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.preview-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+}
+
+.preview-company-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.preview-position-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.preview-details p {
+  margin-bottom: 0.5rem;
+  color: #c0c0c0;
+}
+
+.preview-description {
+  margin-top: 1.5rem;
+}
+
+.preview-description h5 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #a0a0a0;
+  margin-bottom: 0.5rem;
+}
+
+.preview-description p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  white-space: pre-wrap;
+}
+
+.preview-apply-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #7a42cc;
+  border: none;
+  border-radius: 8px;
+  opacity: 0.5;
+  cursor: not-allowed;
+}

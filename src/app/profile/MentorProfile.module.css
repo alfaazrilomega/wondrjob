@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap");
 
 /* CSS Containment untuk isolasi penuh */
 .profileContainer {
@@ -12,8 +12,12 @@
 
 /* Profile-specific body styles */
 .profileBody {
-  font-family: 'Exo 2', sans-serif;
-  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%) !important;
+  font-family: "Exo 2", sans-serif;
+  background: radial-gradient(
+    ellipse at center,
+    #1a1a2e 0%,
+    #0a0a0f 70%
+  ) !important;
   position: relative;
   overflow-x: clip;
   color: #ffffff !important; /* Force white text */
@@ -25,16 +29,20 @@
 
 /* Cyberpunk animated background */
 .profileBody::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     radial-gradient(2px 2px at 20px 30px, rgba(255, 0, 255, 0.3), transparent),
     radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(
+      1px 1px at 90px 40px,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    ),
     radial-gradient(1px 1px at 130px 80px, rgba(255, 0, 128, 0.3), transparent);
   background-repeat: repeat;
   background-size: 200px 200px;
@@ -44,8 +52,12 @@
 }
 
 @keyframes sparkle {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-200px); }
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-200px);
+  }
 }
 
 .contentWrapper {
@@ -70,11 +82,13 @@
 }
 
 .brandText {
-  font-family: 'Orbitron', monospace;
+  font-family: "Orbitron", monospace;
   font-weight: 700;
   color: #ff00ff !important;
   font-size: 1.5rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
   text-align: left;
 }
 
@@ -111,7 +125,7 @@
 }
 
 .active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
@@ -145,9 +159,13 @@
 
 /* Profile Card */
 .profileCard {
-  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 16, 32, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.9),
+    rgba(16, 16, 32, 0.9)
+  );
   border: 1px solid rgba(255, 0, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 0 20px rgba(255, 0, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -163,7 +181,9 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .profileRole {
@@ -183,9 +203,13 @@
 
 /* Content Cards */
 .cyberCard {
-  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 16, 32, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.9),
+    rgba(16, 16, 32, 0.9)
+  );
   border: 1px solid rgba(255, 0, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 0 20px rgba(255, 0, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -200,7 +224,9 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .cardText {
@@ -214,7 +240,9 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 /* Calendar Styles */
@@ -223,7 +251,9 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .calendarHeader {
@@ -272,13 +302,17 @@
 .skillLevel {
   color: #00ffff !important;
   font-size: 0.875rem;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .skillExpert {
   color: #ff00ff !important;
   font-size: 0.875rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .memberName {
@@ -317,7 +351,9 @@
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .showAllLink:hover {
@@ -354,12 +390,14 @@
 }
 
 .footerBrand {
-  font-family: 'Orbitron', monospace;
+  font-family: "Orbitron", monospace;
   font-weight: 700;
   color: #ff00ff;
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .footerText {
@@ -372,7 +410,9 @@
   color: #ffffff;
   font-weight: 600;
   margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .footerList {
@@ -399,35 +439,49 @@
 
 /* Utility classes that might be missing */
 .glowText {
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .glowBlue {
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .brandText {
-  font-family: 'Orbitron', monospace;
+  font-family: "Orbitron", monospace;
   font-weight: 700;
   color: #ff00ff;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 /* Utility Classes */
 .glowText {
   color: #ffffff !important;
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .glowBlue {
   color: #00ffff !important;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow:
+    0 0 10px rgba(0, 255, 255, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .neonButton {
-  background: linear-gradient(45deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+  background: linear-gradient(
+    45deg,
+    rgba(255, 0, 255, 0.1),
+    rgba(0, 255, 255, 0.1)
+  );
   border: 1px solid rgba(255, 0, 255, 0.6);
-  box-shadow: 
+  box-shadow:
     0 0 15px rgba(255, 0, 255, 0.4),
     inset 0 0 15px rgba(255, 0, 255, 0.1);
   color: #ffffff !important;
@@ -435,7 +489,7 @@
 }
 
 .neonButton:hover {
-  box-shadow: 
+  box-shadow:
     0 0 25px rgba(255, 0, 255, 0.6),
     inset 0 0 25px rgba(255, 0, 255, 0.2);
   transform: translateY(-2px);
@@ -445,7 +499,7 @@
 .memberCard {
   background: rgba(10, 10, 15, 0.3);
   border: 1px solid rgba(255, 0, 255, 0.5);
-  box-shadow: 
+  box-shadow:
     0 0 10px rgba(255, 0, 255, 0.3),
     inset 0 0 10px rgba(255, 0, 255, 0.1);
   padding: 0.75rem;
@@ -458,7 +512,7 @@
 
 .neonBorder {
   border: 1px solid rgba(255, 0, 255, 0.5);
-  box-shadow: 
+  box-shadow:
     0 0 10px rgba(255, 0, 255, 0.3),
     inset 0 0 10px rgba(255, 0, 255, 0.1);
 }
@@ -488,7 +542,7 @@
   .profileName {
     font-size: 1.25rem;
   }
-  
+
   .cardTitle {
     font-size: 1.125rem;
   }
