@@ -13,11 +13,14 @@ import type { User } from "@supabase/supabase-js";
 interface Skill {
   id: number;
   name: string;
+  category: string;
+  aliases: string[];
 }
 
 interface CompanyForForm {
   id: number;
   name: string;
+  logo: string | null;
 }
 
 interface JobDraftFromDB {
@@ -59,10 +62,11 @@ interface JobDraftUpdateData {
 function formatDraftForForm(draft: JobDraftFromDB | null) {
   if (!draft) return null;
   return {
-    ...draft,
     id: draft.id,
-    company_id: draft.company_id.toString(),
+    company_id: draft.company_id,
+    position_name: draft.position_name,
     capacity: draft.capacity,
+    description: draft.description,
     salaryMin: draft.salaryMin ?? undefined,
     salaryMax: draft.salaryMax ?? undefined,
     submission_start_date:
@@ -70,10 +74,8 @@ function formatDraftForForm(draft: JobDraftFromDB | null) {
     submission_end_date:
       draft.submission_end_date?.toISOString().split("T")[0] || "",
     skills: draft.skills || [],
-    jobType: draft.jobType || undefined,
-    workStyle: draft.workStyle || undefined,
-    department: draft.department || "",
-    location: draft.location || "",
+    jobType: draft.jobType as "FULL_TIME" | "PART_TIME" | "CONTRACT" | "INTERNSHIP" | undefined,
+    workStyle: draft.workStyle as "ON_SITE" | "HYBRID" | "REMOTE" | undefined,
   };
 }
 
@@ -88,7 +90,7 @@ export default function EditDraftForm({
   const [hrdCompany, setHrdCompany] = useState<CompanyForForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const router = useRouter();
 
   useEffect(() => {

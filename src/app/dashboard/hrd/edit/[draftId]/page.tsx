@@ -4,9 +4,10 @@ import { getCurrentUser } from "@/lib/lib/auth";
 export default async function EditHrdJobDraftPage({
   params,
 }: {
-  params: { draftId: string };
+  params: Promise<{ draftId: string }>;
 }) {
-  const draftIdNum = parseInt(params.draftId, 10);
+  const { draftId } = await params;
+  const draftIdNum = parseInt(draftId, 10);
   const user = await getCurrentUser();
 
   // Basic validation in the server component
