@@ -1,238 +1,198 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   getMyJobDrafts,
   deleteJobDraft,
   JobDraftData,
 } from "@/actions/jobDrafts";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+import { Edit, Trash2, Plus } from "lucide-react";
 
-export default function HrdDashboard() {
+export default function ManageJobDraftsPage() {
   const router = useRouter();
-  const [currentView, setCurrentView] = useState<"create" | "manage">("create");
   const [drafts, setDrafts] = useState<JobDraftData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchDrafts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const draftsData = await getMyJobDrafts();
-      setDrafts(draftsData);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      console.error("Error fetching drafts:", err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [isPendingDelete, startDeleteTransition] = useTransition();
 
   useEffect(() => {
-    if (currentView === "manage") {
-      fetchDrafts();
-    } else {
-      setDrafts([]);
-      setLoading(true);
-      setError(null);
-    }
-  }, [currentView]);
-
-  const handleEditDraft = (draftId: number) => {
-    router.push(`/dashboard/hrd/edit/${draftId}`);
-  };
-
-  const handleDeleteDraft = async (draftId: number) => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this draft? This action cannot be undone.",
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const result = await deleteJobDraft(draftId);
-      if (result.success) {
-        alert("Draft deleted successfully");
-        fetchDrafts(); // Refresh the list
-      } else {
-        alert(`Failed to delete draft: ${result.error}`);
+    // Fungsi ini akan mengambil draf saat halaman dimuat
+    const fetchDrafts = async () => {
+      try {
+        // Ambil data draf dari Server Action
+        const draftsData = await getMyJobDrafts();
+        setDrafts(draftsData);
+      } catch (error) {
+        console.error("Error fetching drafts:", error);
+        toast.error("Failed to load job drafts");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error deleting draft:", err);
-      alert("An error occurred while deleting the draft");
+    };
+
+    fetchDrafts();
+  }, []); // Dijalankan sekali saat mount
+
+  // Fungsi untuk menangani penghapusan draf
+  const handleDeleteDraft = async (draftId: number) => {
+    const confirmed = confirm(
+      "Are you sure you want to delete this draft? This cannot be undone.",
+    );
+    if (!confirmed) return;
+
+    startDeleteTransition(async () => {
+      const result = await deleteJobDraft(draftId);
+      if (!result.success) {
+        toast.error(result.error || "Failed to delete draft");
+      } else {
+        toast.success("Draft deleted successfully");
+        // Perbarui state lokal untuk menghapus draf dari UI
+        setDrafts((prev) => prev.filter((d) => d.id !== draftId));
+      }
+    });
+  };
+
+  // Fungsi untuk mendapatkan badge status
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "PENDING":
+        return (
+          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+            Pending Approval
+          </Badge>
+        );
+      case "APPROVED":
+        return (
+          <Badge variant="secondary" className="bg-green-100 text-green-800">
+            Approved
+          </Badge>
+        );
+      case "REJECTED":
+        return (
+          <Badge variant="secondary" className="bg-red-100 text-red-800">
+            Rejected
+          </Badge>
+        );
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusClasses = {
-      PENDING: "bg-yellow-100 text-yellow-800",
-      APPROVED: "bg-green-100 text-green-800",
-      REJECTED: "bg-red-100 text-red-800",
-    };
-
-    const statusText = {
-      PENDING: "Pending",
-      APPROVED: "Approved",
-      REJECTED: "Rejected",
-    };
-
+  // Tampilan saat loading
+  if (loading) {
     return (
-      <span
-        className={`px-2 py-1 text-xs font-medium rounded-full ${
-          statusClasses[status as keyof typeof statusClasses] ||
-          "bg-gray-100 text-gray-800"
-        }`}
-      >
-        {statusText[status as keyof typeof statusText] || status}
-      </span>
-    );
-  };
-
-  const sortedDrafts = [...drafts].sort((a, b) => {
-    if (a.status === "PENDING" && b.status !== "PENDING") return -1;
-    if (a.status !== "PENDING" && b.status === "PENDING") return 1;
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
-
-  return (
-    <div className="p-8 md:p-12 text-gray-200">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">HRD Dashboard</h1>
-
-        {/* Navigation */}
-        <div className="flex gap-4 mb-8">
-          <button
-            onClick={() => setCurrentView("create")}
-            className={`px-6 py-2 rounded-md font-semibold transition-colors ${
-              currentView === "create"
-                ? "bg-purple-600 text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-            }`}
-          >
-            Create Job Draft
-          </button>
-          <button
-            onClick={() => setCurrentView("manage")}
-            className={`px-6 py-2 rounded-md font-semibold transition-colors ${
-              currentView === "manage"
-                ? "bg-purple-600 text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-            }`}
-          >
-            Manage My Drafts
-          </button>
-        </div>
-
-        {/* Content */}
-        {currentView === "create" ? (
-          <div className="bg-[#1e1e24] rounded-lg p-8 border border-gray-700">
-            <h2 className="text-2xl font-semibold text-white mb-6">
-              Create New Job Draft
-            </h2>
-            <p className="text-gray-400 mb-6">
-              Fill out the job draft form to submit it for company owner
-              approval.
-            </p>
-            <button
-              onClick={() => router.push("/dashboard/hrd/create")}
-              className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-500 font-semibold transition-colors"
-            >
-              Start Creating Draft
-            </button>
-          </div>
-        ) : (
-          <div className="bg-[#1e1e24] rounded-lg p-8 border border-gray-700">
-            <h2 className="text-2xl font-semibold text-white mb-6">
-              Manage My Job Drafts
-            </h2>
-
-            {error && (
-              <div className="mb-6 p-4 bg-red-900/50 border border-red-700 rounded-md">
-                <p className="text-red-300">{error}</p>
-              </div>
-            )}
-
-            {loading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div>
-                <p className="text-gray-400 mt-4">Loading drafts...</p>
-              </div>
-            ) : drafts.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-400">
-                  You haven&apos;t created any job drafts yet.
-                </p>
-                <button
-                  onClick={() => setCurrentView("create")}
-                  className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-500 font-semibold transition-colors"
-                >
-                  Create Your First Draft
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {sortedDrafts.map((draft) => (
-                  <div
-                    key={draft.id}
-                    className="p-6 bg-gray-800/50 rounded-lg border border-gray-700 hover:bg-gray-800/70 transition-colors"
-                  >
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                      <div className="flex-grow">
-                        <h3 className="text-lg font-semibold text-white mb-2">
-                          {draft.position_name}
-                        </h3>
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                          {draft.department && (
-                            <span>Department: {draft.department}</span>
-                          )}
-                          {draft.location && (
-                            <span>Location: {draft.location}</span>
-                          )}
-                          <span>
-                            Created:{" "}
-                            {new Date(draft.createdAt).toLocaleDateString()}
-                          </span>
-                          {draft.updatedAt && (
-                            <span>
-                              Updated:{" "}
-                              {new Date(draft.updatedAt).toLocaleDateString()}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        {getStatusBadge(draft.status)}
-                        {draft.status === "PENDING" && (
-                          <>
-                            <button
-                              onClick={() => handleEditDraft(draft.id)}
-                              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 font-medium transition-colors"
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDeleteDraft(draft.id)}
-                              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 font-medium transition-colors"
-                            >
-                              Delete
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div>
+        <p className="text-gray-400 mt-4">Loading drafts...</p>
       </div>
-    </div>
+    );
+  }
+
+  // Tampilan utama
+  return (
+    <>
+      {/* Header Halaman (di dalam area konten) */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-white">Manage My Job Drafts</h1>
+        <Button
+          onClick={() => router.push("/dashboard/hrd/create-job-draft")}
+          className="flex items-center gap-2"
+        >
+          <Plus size={18} />
+          Create New Draft
+        </Button>
+      </div>
+
+      {/* Konten Halaman */}
+      {drafts.length === 0 ? (
+        // Tampilan jika tidak ada draf
+        <div className="text-center py-12 bg-[#1e1e24] rounded-lg border border-gray-700">
+          <p className="text-gray-400 mb-4">
+            You haven't created any job drafts yet.
+          </p>
+          <Button
+            onClick={() => router.push("/dashboard/hrd/create-job-draft")}
+          >
+            Create Your First Draft
+          </Button>
+        </div>
+      ) : (
+        // Tampilan tabel jika ada draf
+        <div className="bg-[#1e1e24] rounded-lg shadow-lg overflow-hidden border border-gray-700">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-gray-700">
+                <TableHead className="text-gray-300">Position Name</TableHead>
+                <TableHead className="text-gray-300">Department</TableHead>
+                <TableHead className="text-gray-300">Location</TableHead>
+                <TableHead className="text-gray-300">Created Date</TableHead>
+                <TableHead className="text-gray-300">Status</TableHead>
+                <TableHead className="text-gray-300">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {drafts.map((draft) => (
+                <TableRow key={draft.id} className="border-gray-700">
+                  <TableCell className="text-white">
+                    {draft.position_name}
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    {draft.department || "—"}
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    {draft.location || "—"}
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    {new Date(draft.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{getStatusBadge(draft.status)}</TableCell>
+                  <TableCell>
+                    {/* Tombol Edit/Delete hanya muncul jika status PENDING */}
+                    {draft.status === "PENDING" && (
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white"
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/hrd/edit/${draft.id}`, // Arahkan ke halaman edit
+                            )
+                          }
+                        >
+                          <Edit className="w-4 h-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteDraft(draft.id)}
+                          disabled={isPendingDelete}
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+    </>
   );
 }

@@ -1,5 +1,7 @@
+/* eslint-disable prettier/prettier */
 import EditDraftForm from "./EditDraftForm";
 import { getCurrentUser } from "@/lib/lib/auth";
+import "./styles.css";
 
 export default async function EditHrdJobDraftPage({
   params,

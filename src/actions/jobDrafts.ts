@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/lib/db";
 import { getCurrentUser } from "@/lib/lib/auth";
 import { revalidatePath } from "next/cache";
+import { JobType, WorkStyle } from "@prisma/client";
 
 export interface JobDraftData {
   id: number;
@@ -64,10 +65,10 @@ export async function createJobDraft(data: {
         submission_end_date: data.submission_end_date,
         department: data.department,
         location: data.location,
-        jobType: data.jobType,
+        jobType: data.jobType as JobType,
         salaryMax: data.salaryMax,
         salaryMin: data.salaryMin,
-        workStyle: data.workStyle,
+        workStyle: data.workStyle as WorkStyle,
         createdBy: user.id,
         company_id: hrd.company_id,
         skills: {
@@ -132,7 +133,15 @@ export async function getMyJobDrafts(): Promise<JobDraftData[]> {
       },
     });
 
-    return drafts;
+    return drafts.map((draft) => ({
+      ...draft,
+      department: draft.department || undefined,
+      location: draft.location || undefined,
+      jobType: draft.jobType || undefined,
+      salaryMax: draft.salaryMax || undefined,
+      salaryMin: draft.salaryMin || undefined,
+      workStyle: draft.workStyle || undefined,
+    }));
   } catch (error) {
     console.error("Error fetching job drafts:", error);
     throw new Error("Failed to fetch job drafts");
@@ -188,10 +197,10 @@ export async function updateJobDraft(
       submission_end_date?: Date;
       department?: string;
       location?: string;
-      jobType?: string;
+      jobType?: JobType;
       salaryMax?: number;
       salaryMin?: number;
-      workStyle?: string;
+      workStyle?: WorkStyle;
       skills?: { set: { id: number }[] };
     } = restData;
 
