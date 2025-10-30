@@ -188,7 +188,7 @@ export async function updateJobDraft(
       };
     }
 
-    const { skillIds, ...restData } = data;
+    const { skillIds, jobType, workStyle, ...restData } = data;
     const updateData: {
       position_name?: string;
       capacity?: number;
@@ -202,7 +202,11 @@ export async function updateJobDraft(
       salaryMin?: number;
       workStyle?: WorkStyle;
       skills?: { set: { id: number }[] };
-    } = restData;
+    } = {
+      ...restData,
+      jobType: jobType as JobType | undefined,
+      workStyle: workStyle as WorkStyle | undefined,
+    };
 
     if (skillIds) {
       updateData.skills = {
