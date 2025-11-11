@@ -97,9 +97,18 @@ export default function ManageJobDraftsPage() {
   return (
     <div className="p-8 md:p-12 text-gray-200">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">
-          Manage My Job Drafts
-        </h1>
+        <div className="flex items-center gap-4 mb-8">
+          <Button
+            variant="outline"
+            onClick={() => router.push("/dashboard/hrd")}
+            className="text-purple-400 border-purple-600 hover:bg-purple-600/10 hover:text-purple-400"
+          >
+            ← Back to HRD Dashboard
+          </Button>
+          <h1 className="text-3xl font-bold text-white">
+            Manage My Job Drafts
+          </h1>
+        </div>
 
         {drafts.length === 0 ? (
           <div className="text-center py-12">

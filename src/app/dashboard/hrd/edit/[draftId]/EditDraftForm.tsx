@@ -1,11 +1,13 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import React, { useState, useEffect, useTransition } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { getJobDraftDetails, updateJobDraft } from "@/actions/jobDrafts";
 import { JobPostingForm } from "@/app/admin/job-postings/JobPostingForm";
-import { JobFormActions } from "./JobFormActions";
 import { toast } from "sonner";
+import type { JobFormData } from "@/app/admin/job-postings/types";
+import "./styles.css";
 
 import type { User } from "@supabase/supabase-js";
 
@@ -13,11 +15,14 @@ import type { User } from "@supabase/supabase-js";
 interface Skill {
   id: number;
   name: string;
+  category: string;
+  aliases: string[];
 }
 
 interface CompanyForForm {
   id: number;
   name: string;
+  logo: string | null;
 }
 
 interface JobDraftFromDB {
@@ -59,10 +64,11 @@ interface JobDraftUpdateData {
 function formatDraftForForm(draft: JobDraftFromDB | null) {
   if (!draft) return null;
   return {
-    ...draft,
     id: draft.id,
-    company_id: draft.company_id.toString(),
+    company_id: draft.company_id,
+    position_name: draft.position_name,
     capacity: draft.capacity,
+    description: draft.description,
     salaryMin: draft.salaryMin ?? undefined,
     salaryMax: draft.salaryMax ?? undefined,
     submission_start_date:
@@ -70,10 +76,8 @@ function formatDraftForForm(draft: JobDraftFromDB | null) {
     submission_end_date:
       draft.submission_end_date?.toISOString().split("T")[0] || "",
     skills: draft.skills || [],
-    jobType: draft.jobType || undefined,
-    workStyle: draft.workStyle || undefined,
-    department: draft.department || "",
-    location: draft.location || "",
+    jobType: draft.jobType as "FULL_TIME" | "PART_TIME" | "CONTRACT" | "INTERNSHIP" | undefined,
+    workStyle: draft.workStyle as "ON_SITE" | "HYBRID" | "REMOTE" | undefined,
   };
 }
 
@@ -88,7 +92,7 @@ export default function EditDraftForm({
   const [hrdCompany, setHrdCompany] = useState<CompanyForForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const router = useRouter();
 
   useEffect(() => {
@@ -136,77 +140,85 @@ export default function EditDraftForm({
     fetchData();
   }, [draftId, user]);
 
-  const handleUpdate = (formData: FormData) => {
+  const handleSaveDraft = (formData: JobFormData) => {
     startTransition(async () => {
-      try {
-        const data: JobDraftUpdateData = {
-          position_name: formData.get("position_name") as string,
-          capacity: Number(formData.get("capacity")),
-          description: formData.get("description") as string,
-          submission_start_date: new Date(
-            formData.get("submission_start_date") as string,
-          ),
-          submission_end_date: new Date(
-            formData.get("submission_end_date") as string,
-          ),
-          salaryMin: Number(formData.get("salaryMin")) || undefined,
-          salaryMax: Number(formData.get("salaryMax")) || undefined,
-          jobType: formData.get("jobType") as string,
-          workStyle: formData.get("workStyle") as string,
-          department: formData.get("department") as string,
-          location: formData.get("location") as string,
-          skillIds: formData.getAll("skills").map(Number),
-        };
+      const draftData = {
+        position_name: formData.position_name,
+        capacity: formData.capacity,
+        description: formData.description,
+        submission_start_date: new Date(formData.submission_start_date),
+        submission_end_date: new Date(formData.submission_end_date),
+        department: "", // Not in form, can be added later
+        location: "", // Not in form, can be added later
+        jobType: formData.jobType,
+        salaryMax: formData.salaryMax ? parseInt(formData.salaryMax.toString()) : undefined,
+        salaryMin: formData.salaryMin ? parseInt(formData.salaryMin.toString()) : undefined,
+        workStyle: formData.workStyle,
+        skillIds: formData.skills
+          ? formData.skills.map((skill) => skill.id)
+          : [],
+      };
 
-        const result = await updateJobDraft(draftId, data);
+      const result = await updateJobDraft(draftId, draftData);
 
-        if (result?.success) {
-          toast.success("Draft updated successfully!");
-          router.push("/dashboard/hrd");
-          router.refresh();
-        } else {
-          toast.error(result?.error || "Failed to update draft.");
-        }
-      } catch (e) {
-        toast.error("An unexpected error occurred.");
-        console.error(e);
+      if (!result.success) {
+        toast.error(result.error || "Failed to update draft.");
+      } else {
+        toast.success("Draft updated successfully!");
+        router.push("/dashboard/hrd/my-drafts");
       }
     });
   };
 
+  const handleCancel = () => {
+    router.back();
+  };
+
   if (loading) {
-    return <div className="p-8 text-center">Loading...</div>;
+    return (
+      <div className="p-8 md:p-12 text-gray-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center">Loading...</div>
+        </div>
+      </div>
+    );
   }
 
-  if (error) {
-    return <div className="p-8 text-red-400">{error}</div>;
+  if (!hrdCompany) {
+    return (
+      <div className="p-8 md:p-12 text-gray-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center text-red-400">
+            Unable to load company information
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const formattedDraft = formatDraftForForm(jobDraft);
 
   return (
-    <div className="p-4 md:p-8 bg-[#121217] min-h-screen text-gray-200">
+    <div className="p-8 md:p-12 text-gray-200">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Edit Job Draft</h1>
-
-        <form action={handleUpdate}>
-          <input type="hidden" name="company_id" value={hrdCompany!.id} />
-
-          <JobPostingForm
-            title="Edit Draft Details"
-            job={formattedDraft!}
-            companies={[hrdCompany!]}
-            selectedCompany={hrdCompany!}
-            jobsForCompany={[]}
-            isLoadingCompanies={false}
-          />
-
-          <div className="bg-[#1e1e24] rounded-b-lg shadow-lg p-8 border-t border-gray-700">
-            <div className="flex justify-end gap-4">
-              <JobFormActions draftId={draftId} />
-            </div>
-          </div>
-        </form>
+        <JobPostingForm
+          title="Edit Job Draft"
+          job={formattedDraft!}
+          companies={[hrdCompany]}
+          selectedCompany={hrdCompany}
+          onSave={handleSaveDraft}
+          jobsForCompany={[]}
+          isLoadingCompanies={false}
+        />
+        <div className="flex justify-end mt-4">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="px-6 py-2 rounded-md text-purple-400 border border-purple-600 hover:bg-purple-600/10"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

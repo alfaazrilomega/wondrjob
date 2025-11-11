@@ -1370,14 +1370,9 @@ export default function App() {
         const dashboardResult = await dashboardResponse.json();
         setData(dashboardResult);
 
-        // Handle notifications
+        // Handle notifications - getMyNotifications returns NotificationData[] or throws
         if (notificationResult && Array.isArray(notificationResult)) {
-          setNotifications(notificationResult as NotificationData[]);
-        } else if (notificationResult?.error) {
-          console.error(
-            "Failed to fetch notifications:",
-            notificationResult.error,
-          );
+          setNotifications(notificationResult);
         } else {
           console.warn(
             "Unexpected notification data format:",
